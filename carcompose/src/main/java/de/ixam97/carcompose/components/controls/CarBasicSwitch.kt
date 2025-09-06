@@ -4,6 +4,9 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,10 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,13 +23,13 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.layout.Measurable
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.invalidateMeasurement
+import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
-import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.utils.buildGradientBrush
@@ -42,35 +42,49 @@ fun CarBasicSwitch(
     onCheckedChange: (isChecked: Boolean) -> Unit,
     enabled: Boolean = true,
     checkedText: String = "On",
-    uncheckedText: String = "Off"
+    uncheckedText: String = "Off",
+    interactionSource: MutableInteractionSource? = null,
 ) {
+    @Suppress("NAME_SHADOWING")
+    val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
+
     val localDensity = LocalDensity.current
     val accentContainerBrush = buildGradientBrush(CarTheme.carColors.accentContainer)
     val disabledOverlay = CarTheme.carColors.disabledOverlay
 
-    var size by remember { mutableStateOf(IntSize.Zero) }
-
     val textColor = CarTheme.carColors.onSurface
     val thumbTextColor = CarTheme.carColors.onAccentContainer
 
+
+    val cornerPercentEdge = CarTheme.carDimensions.buttonRadiusPercent
+    val cornerPercentInside = cornerPercentEdge / 10
+
+    val thumbWidth = CarTheme.carDimensions.buttonMinWidth
+    val thumbHeight = CarTheme.carDimensions.buttonMinHeight
+
     Box (
         modifier = modifier
-            .height(CarTheme.carDimensions.buttonMinHeight)
-            .width(CarTheme.carDimensions.buttonMinWidth * 2)
-            .clip(RoundedCornerShape(CarTheme.carDimensions.buttonRadiusPercent))
+            .height(thumbHeight)
+            .width(thumbWidth * 2)
+            .clip(RoundedCornerShape(cornerPercentEdge))
             .background(CarTheme.carColors.secondarySurface.first())
-            .onSizeChanged { size = it }
             .drawWithContent {
                 drawContent()
                 if (!enabled) drawRect(color = disabledOverlay)
             }
     ) {
-        Box(ThumbElement(isChecked)) {
+        Box(
+            modifier = Modifier
+                .then(ThumbElement(interactionSource, isChecked, thumbWidth))
+        ) {
             with(localDensity) {
                 Box(modifier = Modifier
-                    .width((size.width / 2).toDp())
-                    .height(size.height.toDp())
-                    .background(accentContainerBrush, RoundedCornerShape(CarTheme.carDimensions.buttonRadiusPercent))
+                    .width(thumbWidth)
+                    .height(thumbHeight)
+                    .background(
+                        brush = accentContainerBrush,
+                        shape = RoundedCornerShape(cornerPercentInside)
+                    )
                 )
             }
         }
@@ -106,13 +120,14 @@ fun CarBasicSwitch(
 }
 
 private data class ThumbElement(
-    val checked: Boolean
+    val interactionSource: InteractionSource,
+    val checked: Boolean,
+    val defaultOffset: Dp
 ) : ModifierNodeElement<ThumbNode>() {
-    override fun create(): ThumbNode {
-        return ThumbNode(checked)
-    }
+    override fun create() = ThumbNode(interactionSource, checked, defaultOffset)
 
     override fun update(node: ThumbNode) {
+        node.interactionSource = interactionSource
         if (node.checked != checked) {
             node.invalidateMeasurement()
         }
@@ -120,10 +135,18 @@ private data class ThumbElement(
         node.update()
     }
 
+    override fun InspectorInfo.inspectableProperties() {
+        name = "switchThumb"
+        properties["interactionSource"] = interactionSource
+        properties["checked"] = checked
+    }
+
 }
 
 private class ThumbNode(
-    var checked: Boolean
+    var interactionSource: InteractionSource,
+    var checked: Boolean,
+    val defaultOffset: Dp
 ) : Modifier.Node(), LayoutModifierNode {
 
     override val shouldAutoInvalidate: Boolean
@@ -131,9 +154,24 @@ private class ThumbNode(
 
     private var offsetAnim: Animatable<Float, AnimationVector1D>? = null
     private var initialOffset: Float = Float.NaN
+    private var isPressed = false
 
     override fun onAttach() {
-        invalidateMeasurement()
+        coroutineScope.launch {
+            var pressCount = 0
+            interactionSource.interactions.collect { interaction ->
+                when (interaction) {
+                    is PressInteraction.Press -> pressCount++
+                    is PressInteraction.Release -> pressCount--
+                    is PressInteraction.Cancel -> pressCount--
+                }
+                val pressed = pressCount > 0
+                if (isPressed != pressed) {
+                    isPressed = pressed
+                    invalidateMeasurement()
+                }
+            }
+        }
     }
 
     override fun MeasureScope.measure(
@@ -141,7 +179,7 @@ private class ThumbNode(
         constraints: Constraints
     ): MeasureResult {
         val placeable = measurable.measure(Constraints())
-        val offset = if (checked) placeable.width.toFloat() else 0f
+        val offset = if (checked) defaultOffset.toPx() else 0f
 
         if (offsetAnim?.targetValue != offset) {
             coroutineScope.launch {

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarDimensions
 import de.ixam97.carcompose.theme.LocalCarUiProperties
+import de.ixam97.carcompose.utils.buildGradientBrush
 
 @Composable
 fun CarHeader(
@@ -97,7 +98,7 @@ fun CarHeaderDivider(
             .height(2.dp)
             .fillMaxWidth()
             .padding(horizontal = LocalCarDimensions.current.headerDividerHorizontalPadding)
-            .background(CarTheme.carColors.primaryDivider.first())
+            .background(brush = buildGradientBrush(CarTheme.carColors.primaryDivider))
     ) {
         if (isLoading) LinearProgressIndicator(
             modifier = Modifier.fillMaxSize(),

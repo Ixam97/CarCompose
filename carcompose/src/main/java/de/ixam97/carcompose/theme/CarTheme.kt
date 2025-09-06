@@ -11,10 +11,44 @@ import androidx.compose.ui.Modifier
 import de.ixam97.carcompose.theme.themes.PolestarClassicTheme
 import de.ixam97.carcompose.theme.themes.PolestarModernTheme
 
-enum class UiType { 
+enum class UiType {
     Generic,
     PolestarClassic,
     PolestarModern
+}
+
+interface UiTheme {
+    @Composable
+    fun CarTheme(
+        content: @Composable () -> Unit
+    )
+}
+
+object CarComposeTheme {
+    object Generic: UiTheme {
+        @Composable
+        override fun CarTheme(
+            content: @Composable () -> Unit
+        ) {
+            GenericCarTheme(content)
+        }
+    }
+    object PolestarClassic: UiTheme {
+        @Composable
+        override fun CarTheme(
+            content: @Composable () -> Unit
+        ) {
+            PolestarClassicTheme(content)
+        }
+    }
+    object PolestarModern: UiTheme {
+        @Composable
+        override fun CarTheme(
+            content: @Composable () -> Unit
+        ) {
+            PolestarModernTheme(content)
+        }
+    }
 }
 
 interface CarBackstackEntry

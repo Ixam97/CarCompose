@@ -3,6 +3,7 @@ package de.ixam97.carcompose.components.controls
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
@@ -25,6 +26,7 @@ fun CarRow(
     browsable: Boolean = false,
     enabled: Boolean = true,
     onBrowse: () -> Unit = {},
+    descriptionContent: @Composable (ColumnScope.() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null
 ) {
     Row(
@@ -53,7 +55,11 @@ fun CarRow(
                             alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha
                         )
                     )
-                    description?.let { description ->
+                    if (descriptionContent != null) {
+                        Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
+                        descriptionContent()
+                    }
+                    else description?.let { description ->
                         Spacer(Modifier.size(CarTheme.carDimensions.rowTextSpacing))
                         Text(
                             text = description,
