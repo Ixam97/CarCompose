@@ -4,8 +4,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,7 +28,9 @@ fun CarRow(
     browsable: Boolean = false,
     enabled: Boolean = true,
     onBrowse: () -> Unit = {},
+    leadingContent: @Composable (() -> Unit)? = null,
     descriptionContent: @Composable (ColumnScope.() -> Unit)? = null,
+    trailingContent: @Composable (() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null
 ) {
     Row(
@@ -39,9 +43,14 @@ fun CarRow(
                horizontal = CarTheme.carDimensions.defaultHorizontalPadding,
                vertical = CarTheme.carDimensions.defaultVerticalPadding
            )
+           .height(IntrinsicSize.Min)
            .heightIn(min = CarTheme.carDimensions.rowMinHeight),
        verticalAlignment = Alignment.CenterVertically
     ) {
+        if (leadingContent != null) {
+            leadingContent()
+            Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+        }
         Box(
             Modifier.weight(1f)
         ) {
@@ -71,6 +80,10 @@ fun CarRow(
                     }
                 }
             }
+        }
+        if (trailingContent != null) {
+            Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+            trailingContent()
         }
         if (browsable) {
             Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))

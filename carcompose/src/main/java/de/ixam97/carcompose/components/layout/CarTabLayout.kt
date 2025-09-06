@@ -38,7 +38,8 @@ object CarTabLayout {
     data class Tab (
         val title: String,
         val icon: Painter,
-        val iconActive: Painter? = null
+        val iconActive: Painter? = null,
+        val enabled: Boolean = true
     )
 }
 
@@ -127,7 +128,8 @@ private fun CarTabLayout(
                             selected = selectedTabIndex == index,
                             title = tab.title,
                             icon = tab.icon,
-                            iconActive = tab.iconActive
+                            iconActive = tab.iconActive,
+                            enabled = tab.enabled
                         ) {
                             onTabSelected(index)
                         }
@@ -161,7 +163,8 @@ private fun CarTabLayout(
                             selected = selectedTabIndex == index,
                             title = tab.title,
                             icon = tab.icon,
-                            iconActive = tab.iconActive
+                            iconActive = tab.iconActive,
+                            enabled = tab.enabled
                         ) {
                             onTabSelected(index)
                         }
@@ -180,19 +183,21 @@ private fun CarTabLayoutVerticalTab(
     title: String,
     icon: Painter,
     iconActive: Painter? = null,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     val foregroundColor = if (selected) {
         CarTheme.carColors.accent
     } else {
         CarTheme.carColors.onBackground
-    }
+    }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .height(195.dp)
             .clickable(
-                enabled = true,
+                enabled = enabled,
                 onClick = onClick
             )
             .padding(start = CarTheme.carDimensions.defaultHorizontalPadding),
@@ -221,19 +226,20 @@ private fun CarTabLayoutHorizontalTab(
     title: String,
     icon: Painter,
     iconActive: Painter? = null,
+    enabled: Boolean = true,
     onClick: () -> Unit
 ) {
     val foregroundColor = if (selected) {
         CarTheme.carColors.accent
     } else {
         CarTheme.carColors.onBackground
-    }
+    }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
 
     Column(
         modifier = modifier
             .fillMaxHeight()
             .clickable(
-                enabled = true,
+                enabled = enabled,
                 onClick = onClick
             ),
         horizontalAlignment = Alignment.CenterHorizontally,

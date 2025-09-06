@@ -4,7 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,9 +23,12 @@ import de.ixam97.carcompose.components.controls.CarRowSwitch
 import de.ixam97.carcompose.components.controls.CarSegmentedButton
 import de.ixam97.carcompose.components.layout.CarColumn
 import de.ixam97.carcompose.components.layout.CarListDivider
-import de.ixam97.carcompose.components.layout.CarPaneLayout
+import de.ixam97.carcompose.components.layout.CarTabLayout
+import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarComposeTheme
+import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.UiTheme
+import de.ixam97.carcompose.utils.buildGradientBrush
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,14 +56,47 @@ class MainActivity : ComponentActivity() {
             }
 
             theme.CarTheme {
-                CarPaneLayout(
+                CarTabLayout(
                     headerTitle = "Car Compose",
-                    headerStartContent = { HeaderIconDummy() }
+                    headerStartContent = { HeaderIconDummy() },
+                    tabSelectedIndex = 0,
+                    tabOnIndexChanged = {},
+                    tabs = listOf(
+                        CarTabLayout.Tab(
+                            title = "Selected Tab",
+                            icon = CarIcons.settings,
+                            enabled = true
+                        ),
+                        CarTabLayout.Tab(
+                            title = "Enabled Tab",
+                            icon = CarIcons.arrowOutwards,
+                            enabled = true
+                        ),
+                        CarTabLayout.Tab(
+                            title = "Disabled Tab",
+                            icon = CarIcons.close,
+                            enabled = false
+                        )
+                    )
                 ) {
                     CarColumn {
                         CarRow(
                             title = "Hello World!",
                             description = "This is a row element with content text!"
+                        )
+                        CarListDivider()
+                        CarRow(
+                            title = "Row with leading Content",
+                            leadingContent = {
+                                HeaderIconDummy()
+                            }
+                        )
+                        CarListDivider()
+                        CarRow(
+                            title = "Row with trailing Content",
+                            trailingContent = {
+                                HeaderIconDummy()
+                            }
                         )
                         CarListDivider()
                         CarRow(
@@ -90,6 +130,32 @@ class MainActivity : ComponentActivity() {
                             state = switchState
                         ) { switchState = !switchState}
                         CarListDivider()
+                        CarRow(
+                            title = "Row with everything",
+                            description = "Description for everything\nOver Multiple\nLines",
+                            browsable = true,
+                            leadingContent =  {
+                                Icon(
+                                    painter = CarIcons.settings,
+                                    contentDescription = null
+                                )
+                            },
+                            trailingContent = {
+                                HeaderIconDummy()
+                            }
+                        )
+                        CarListDivider()
+                        CarRow(
+                            browsable = true
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .background(buildGradientBrush(CarTheme.carColors.primarySurface))
+                            ) {
+
+                            }
+                        }
                     }
                 }
             }
