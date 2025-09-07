@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,11 @@ fun CarRow(
     trailingContent: @Composable (() -> Unit)? = null,
     content: @Composable (() -> Unit)? = null
 ) {
+
+    val foregroundColor = CarTheme.carColors.onBackground.copy(
+        alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha
+    )
+
     Row(
        modifier = modifier
            .clickable(
@@ -47,55 +54,54 @@ fun CarRow(
            .heightIn(min = CarTheme.carDimensions.rowMinHeight),
        verticalAlignment = Alignment.CenterVertically
     ) {
-        if (leadingContent != null) {
-            leadingContent()
-            Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
-        }
-        Box(
-            Modifier.weight(1f)
+
+        CompositionLocalProvider(
+            LocalContentColor provides foregroundColor
         ) {
-            if (content != null) content()
-            else if (title != null) {
-                Column {
-                    Text(
-                        text = title,
-                        style = CarTheme.carTypography.rowTitle,
-                        color = CarTheme.carColors.onBackground.copy(
-                            alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha
-                        )
-                    )
-                    if (descriptionContent != null) {
-                        Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
-                        descriptionContent()
-                    }
-                    else description?.let { description ->
-                        Spacer(Modifier.size(CarTheme.carDimensions.rowTextSpacing))
+            if (leadingContent != null) {
+                leadingContent()
+                Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+            }
+            Box(
+                Modifier.weight(1f)
+            ) {
+                if (content != null) content()
+                else if (title != null) {
+                    Column {
                         Text(
-                            text = description,
-                            style = CarTheme.carTypography.rowContent,
-                            color = CarTheme.carColors.onBackground.copy(
-                                alpha = if (enabled) 0.7f else (CarTheme.carColors.disabledAlpha - 0.1f)
-                            )
+                            text = title,
+                            style = CarTheme.carTypography.rowTitle,
+                            color = LocalContentColor.current
                         )
+                        if (descriptionContent != null) {
+                            Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
+                            descriptionContent()
+                        }
+                        else description?.let { description ->
+                            Spacer(Modifier.size(CarTheme.carDimensions.rowTextSpacing))
+                            Text(
+                                text = description,
+                                style = CarTheme.carTypography.rowContent,
+                                color = LocalContentColor.current.copy(alpha =  0.7f)
+                            )
+                        }
                     }
                 }
             }
-        }
-        if (trailingContent != null) {
-            Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
-            trailingContent()
-        }
-        if (browsable) {
-            Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
-            Icon(
-                modifier = Modifier
-                    .size(48.dp),
-                painter = CarIcons.arrowForwards,
-                tint = CarTheme.carColors.onBackground.copy(
-                    alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha
-                ),
-                contentDescription = null
-            )
+            if (trailingContent != null) {
+                Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+                trailingContent()
+            }
+            if (browsable) {
+                Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+                Icon(
+                    modifier = Modifier
+                        .size(48.dp),
+                    painter = CarIcons.arrowForwards,
+                    tint = LocalContentColor.current,
+                    contentDescription = null
+                )
+            }
         }
     }
 }

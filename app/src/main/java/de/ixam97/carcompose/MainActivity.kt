@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.HeaderIconDummy
 import de.ixam97.carcompose.components.controls.CarRow
 import de.ixam97.carcompose.components.controls.CarRowSwitch
@@ -146,16 +148,17 @@ class MainActivity : ComponentActivity() {
                         )
                         CarListDivider()
                         CarRow(
-                            browsable = true
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .background(buildGradientBrush(CarTheme.carColors.primarySurface))
-                            ) {
-
+                            browsable = true,
+                            title = "Text Box?",
+                            descriptionContent = {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .heightIn(min = 80.dp)
+                                        .background(buildGradientBrush(CarTheme.carColors.primarySurface))
+                                )
                             }
-                        }
+                        )
                     }
                 }
             }
