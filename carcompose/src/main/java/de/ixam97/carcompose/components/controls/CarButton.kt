@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.utils.buildGradientBrush
 
@@ -32,6 +33,13 @@ data class CarButtonColors(
     val activeBrush: Brush,
     val textColor: Color,
     val activeTextColor: Color
+)
+
+data class CarButtonDimensions(
+    val minWidth: Dp,
+    val minHeight: Dp,
+    val horizontalPadding: Dp,
+    val verticalPadding: Dp
 )
 
 object CarButtonDefaults {
@@ -44,6 +52,13 @@ object CarButtonDefaults {
         )
     val shape: Shape
         @Composable get() = RoundedCornerShape(CarTheme.carDimensions.buttonRadiusPercent)
+    val dimensions: CarButtonDimensions
+        @Composable get () = CarButtonDimensions(
+            minWidth = CarTheme.carDimensions.buttonMinWidth,
+            minHeight = CarTheme.carDimensions.buttonMinHeight,
+            horizontalPadding = CarTheme.carDimensions.defaultHorizontalPadding,
+            verticalPadding = CarTheme.carDimensions.defaultVerticalPadding
+        )
 }
 
 @Composable
@@ -54,6 +69,7 @@ fun CarButton(
     active: Boolean = false,
     colors: CarButtonColors = CarButtonDefaults.colors,
     shape: Shape = CarButtonDefaults.shape,
+    dimensions: CarButtonDimensions = CarButtonDefaults.dimensions,
     content: @Composable RowScope.() -> Unit
 ) {
 
@@ -62,8 +78,8 @@ fun CarButton(
     val disabledOverlay = CarTheme.carColors.disabledOverlay
     Box(
         modifier = modifier
-            .heightIn(min = CarTheme.carDimensions.buttonMinHeight)
-            .widthIn(min = CarTheme.carDimensions.buttonMinWidth)
+            .heightIn(min = dimensions.minHeight)
+            .widthIn(min = dimensions.minWidth)
             .clip(shape)
             .background(backgroundBrush)
             .clickable(
@@ -83,8 +99,8 @@ fun CarButton(
             Row(
                 modifier = Modifier
                     .padding(
-                        horizontal = CarTheme.carDimensions.defaultHorizontalPadding,
-                        vertical = CarTheme.carDimensions.defaultVerticalPadding
+                        horizontal = dimensions.horizontalPadding,
+                        vertical = dimensions.verticalPadding
                     ),
                 horizontalArrangement = Arrangement.spacedBy(CarTheme.carDimensions.defaultHorizontalPadding),
                 verticalAlignment = Alignment.CenterVertically,

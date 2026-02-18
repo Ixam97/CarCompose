@@ -6,9 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.HeaderIconDummy
+import de.ixam97.carcompose.components.controls.CarButtonDefaults
 import de.ixam97.carcompose.components.controls.CarRow
 import de.ixam97.carcompose.components.controls.CarRowSwitch
 import de.ixam97.carcompose.components.controls.CarSegmentedButton
@@ -60,6 +70,7 @@ class MainActivity : ComponentActivity() {
             theme.CarTheme {
                 CarTabLayout(
                     headerTitle = "Car Compose",
+                    tabOrientation = CarTabLayout.Orientation.HorizontalCompact,
                     headerStartContent = { HeaderIconDummy() },
                     tabSelectedIndex = 0,
                     tabOnIndexChanged = {},
@@ -124,6 +135,49 @@ class MainActivity : ComponentActivity() {
                                         selectedIndex = newIndex
                                     },
                                 )
+                            }
+                        )
+                        CarListDivider()
+                        CarRow(
+                            title = "Segmented Icon Buttons",
+                            descriptionContent = {
+                                Row() {
+                                    CarSegmentedButton(
+                                        modifier = Modifier
+                                            .width(IntrinsicSize.Min)
+                                            .height(80.dp),
+                                        dimensions = CarButtonDefaults.dimensions.copy(
+                                            minWidth = 0.dp,
+                                            horizontalPadding = 0.dp,
+                                            verticalPadding = 10.dp
+                                        ),
+                                        buttonContents = listOf(
+                                            @Composable {
+                                                Icon(
+                                                    modifier = Modifier
+                                                        .height(CarTheme.carDimensions.iconButtonSize)
+                                                        .width(80.dp),
+                                                    imageVector = Icons.Default.Settings,
+                                                    contentDescription = null
+                                                )
+                                            },{
+                                                Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                                            },{
+                                                Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                                            },{
+                                                Icon(imageVector = Icons.Default.Person, contentDescription = null)
+                                            },
+                                        ),
+                                        enabledIndexes = listOf(true, true, true, true),
+                                        canDeselect = false,
+                                        selectedIndex = selectedIndex,
+                                        onIndexChanged = { newIndex ->
+
+                                        },
+                                    )
+                                    Box(Modifier.weight(1f))
+                                }
+
                             }
                         )
                         CarListDivider()

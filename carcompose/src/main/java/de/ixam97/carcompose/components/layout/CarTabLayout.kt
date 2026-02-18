@@ -32,6 +32,7 @@ import de.ixam97.carcompose.utils.buildGradientBrush
 object CarTabLayout {
     enum class Orientation {
         Horizontal,
+        HorizontalCompact,
         Vertical
     }
 
@@ -62,7 +63,12 @@ fun CarTabLayout(
     content: @Composable () -> Unit
 ) {
 
-    val showDivider: Boolean = (tabOrientation == CarTabLayout.Orientation.Vertical) || (!CarTheme.carUiProperties.headerDividerBelowTabLayout && (tabOrientation == CarTabLayout.Orientation.Horizontal))
+    val showDivider: Boolean
+        = (tabOrientation == CarTabLayout.Orientation.Vertical)
+            || (
+                !CarTheme.carUiProperties.headerDividerBelowTabLayout
+                && (tabOrientation == CarTabLayout.Orientation.Horizontal || tabOrientation == CarTabLayout.Orientation.HorizontalCompact)
+            )
 
     Box(
         modifier = Modifier
@@ -154,11 +160,33 @@ private fun CarTabLayout(
             Column {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
                         .height(156.dp)
                 ) {
                     tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
                         CarTabLayoutHorizontalTab(
+                            modifier = Modifier.weight(1f),
+                            selected = selectedTabIndex == index,
+                            title = tab.title,
+                            icon = tab.icon,
+                            iconActive = tab.iconActive,
+                            enabled = tab.enabled
+                        ) {
+                            onTabSelected(index)
+                        }
+                    }
+                }
+                if (showDivider) CarHeaderDivider(isLoading)
+                content()
+            }
+        }
+        CarTabLayout.Orientation.HorizontalCompact -> {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
+                        CarTabLayoutHorizontalTabCompact(
                             modifier = Modifier.weight(1f),
                             selected = selectedTabIndex == index,
                             title = tab.title,
@@ -249,6 +277,48 @@ private fun CarTabLayoutHorizontalTab(
             modifier = Modifier
                 .padding(bottom = CarTheme.carDimensions.defaultVerticalPadding)
                 .size(CarTheme.carDimensions.iconButtonSize),
+            painter = if (selected) iconActive?:icon else icon,
+            contentDescription = null,
+            tint = foregroundColor
+        )
+        Text(
+            text = title,
+            style = CarTheme.carTypography.rowTitle,
+            color = foregroundColor
+        )
+    }
+}
+
+@Composable
+private fun CarTabLayoutHorizontalTabCompact(
+    modifier: Modifier = Modifier,
+    selected: Boolean,
+    title: String,
+    icon: Painter,
+    iconActive: Painter? = null,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    val foregroundColor = if (selected) {
+        CarTheme.carColors.accent
+    } else {
+        CarTheme.carColors.onBackground
+    }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
+
+    Row(
+        modifier = modifier
+            .clickable(
+                enabled = enabled,
+                onClick = onClick
+            )
+            .padding(vertical = CarTheme.carDimensions.defaultVerticalPadding * 1.5f),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier
+                .padding(end = CarTheme.carDimensions.defaultHorizontalPadding)
+                .size(CarTheme.carDimensions.iconButtonSize * 0.8f),
             painter = if (selected) iconActive?:icon else icon,
             contentDescription = null,
             tint = foregroundColor

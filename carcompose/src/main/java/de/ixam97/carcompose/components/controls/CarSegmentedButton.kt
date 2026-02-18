@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 
@@ -20,7 +21,10 @@ fun CarSegmentedButton(
     selectedIndex: Int,
     onIndexChanged: (Int) -> Unit,
     enabledIndexes: List<Boolean> = listOf(),
-    canDeselect: Boolean = false
+    canDeselect: Boolean = false,
+    colors: CarButtonColors = CarButtonDefaults.colors,
+    shape: Shape = CarButtonDefaults.shape,
+    dimensions: CarButtonDimensions = CarButtonDefaults.dimensions
 ) {
     if (buttonContents.isEmpty()) {
         throw(Exception("Segmented button contents cannot be empty!"))
@@ -63,6 +67,8 @@ fun CarSegmentedButton(
                     )
                     else -> RoundedCornerShape(cornerPercentInside)
                 },
+                colors = colors,
+                dimensions = dimensions,
                 enabled = enabled,
                 active = selectedIndex == index,
                 content = buttonContent
