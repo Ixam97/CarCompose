@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,9 +28,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.HeaderIconDummy
 import de.ixam97.carcompose.components.controls.CarButtonDefaults
+import de.ixam97.carcompose.components.controls.CarIconButton
 import de.ixam97.carcompose.components.controls.CarRow
 import de.ixam97.carcompose.components.controls.CarRowSwitch
 import de.ixam97.carcompose.components.controls.CarSegmentedButton
@@ -72,6 +75,26 @@ class MainActivity : ComponentActivity() {
                     headerTitle = "Car Compose",
                     tabOrientation = CarTabLayout.Orientation.HorizontalCompact,
                     headerStartContent = { HeaderIconDummy() },
+                    headerIconButtons = listOf(
+                        {
+                            var buttonActive by remember { mutableStateOf(false) }
+                            CarIconButton(
+                                imageVector = Icons.Outlined.Settings,
+                                activeImageVector = Icons.Default.Settings,
+                                active = buttonActive,
+                                onClick = { buttonActive = !buttonActive }
+                            )
+                        },
+                        {
+                            var buttonActive by remember { mutableStateOf(false) }
+                            CarIconButton(
+                                painter = painterResource(R.drawable.ic_grid_48),
+                                activePainter = painterResource(R.drawable.ic_grid_filled_48),
+                                active = buttonActive,
+                                onClick = { buttonActive = !buttonActive }
+                            )
+                        }
+                    ),
                     tabSelectedIndex = 0,
                     tabOnIndexChanged = {},
                     tabs = listOf(
