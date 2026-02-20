@@ -22,12 +22,19 @@ import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarTheme
 
+enum class CarRowBrowsableType {
+    Default,
+    External,
+    Hidden
+}
+
 @Composable
 fun CarRow(
     modifier: Modifier = Modifier,
     title: String? = null,
     description: String? = null,
     browsable: Boolean = false,
+    browsableType: CarRowBrowsableType = CarRowBrowsableType.Default,
     enabled: Boolean = true,
     onBrowse: () -> Unit = {},
     leadingContent: @Composable (() -> Unit)? = null,
@@ -92,12 +99,12 @@ fun CarRow(
                 Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
                 trailingContent()
             }
-            if (browsable) {
+            if (browsable && browsableType != CarRowBrowsableType.Hidden) {
                 Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
                 Icon(
                     modifier = Modifier
                         .size(48.dp),
-                    painter = CarIcons.arrowForwards,
+                    painter = if (browsableType == CarRowBrowsableType.External) CarIcons.arrowOutwards else CarIcons.arrowForwards,
                     tint = LocalContentColor.current,
                     contentDescription = null
                 )
