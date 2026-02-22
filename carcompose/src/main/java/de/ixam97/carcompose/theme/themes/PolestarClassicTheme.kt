@@ -19,7 +19,8 @@ val PolestarClassicCarColors = CarColors(
     onSurface = Color.White,
     onAccentContainer = Color.White,
     primaryDivider = listOf(mainAccentForeground),
-    secondaryDivider = listOf(secondaryDivider)
+    secondaryDivider = listOf(secondaryDivider),
+    textFieldBackground = listOf(secondarySurface)
 )
 
 val PolestarClassicCarDimensions = PolestarSharedCarDimensions.copy(

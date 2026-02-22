@@ -4,14 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -21,6 +20,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.HeaderIconDummy
@@ -36,6 +37,7 @@ import de.ixam97.carcompose.components.controls.CarIconButton
 import de.ixam97.carcompose.components.controls.CarRow
 import de.ixam97.carcompose.components.controls.CarRowSwitch
 import de.ixam97.carcompose.components.controls.CarSegmentedButton
+import de.ixam97.carcompose.components.controls.CarTextField
 import de.ixam97.carcompose.components.layout.CarColumn
 import de.ixam97.carcompose.components.layout.CarListDivider
 import de.ixam97.carcompose.components.layout.CarTabLayout
@@ -43,7 +45,6 @@ import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarComposeTheme
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.UiTheme
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,14 +54,6 @@ class MainActivity : ComponentActivity() {
 
             var selectedIndex by remember { mutableIntStateOf(0) }
             var switchState by remember { mutableStateOf(false) }
-
-            // CarTheme(
-            //     carUiType = when (selectedIndex) {
-            //         0 -> UiType.PolestarModern
-            //         1 -> UiType.PolestarClassic
-            //         else -> UiType.Generic
-            //     }
-            // ) {
 
             val theme: UiTheme = when (selectedIndex) {
                 0 -> CarComposeTheme.PolestarModern
@@ -73,7 +66,7 @@ class MainActivity : ComponentActivity() {
             theme.CarTheme {
                 CarTabLayout(
                     headerTitle = "Car Compose",
-                    tabOrientation = CarTabLayout.Orientation.HorizontalCompact,
+                    tabOrientation = CarTabLayout.Orientation.Vertical,
                     headerStartContent = { HeaderIconDummy() },
                     headerIconButtons = listOf(
                         {
@@ -165,6 +158,20 @@ class MainActivity : ComponentActivity() {
                             title = "Segmented Icon Buttons",
                             descriptionContent = {
                                 Row() {
+
+                                    @Composable
+                                    fun SegmentButtonIcon(
+                                        imageVector: ImageVector
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier
+                                                .height(CarTheme.carDimensions.iconButtonSize)
+                                                .width(80.dp),
+                                            imageVector = imageVector,
+                                            contentDescription = null
+                                        )
+                                    }
+
                                     CarSegmentedButton(
                                         modifier = Modifier
                                             .width(IntrinsicSize.Min)
@@ -176,19 +183,13 @@ class MainActivity : ComponentActivity() {
                                         ),
                                         buttonContents = listOf(
                                             @Composable {
-                                                Icon(
-                                                    modifier = Modifier
-                                                        .height(CarTheme.carDimensions.iconButtonSize)
-                                                        .width(80.dp),
-                                                    imageVector = Icons.Default.Settings,
-                                                    contentDescription = null
-                                                )
+                                                SegmentButtonIcon(Icons.Default.Settings)
                                             },{
-                                                Icon(imageVector = Icons.Default.Delete, contentDescription = null)
+                                                SegmentButtonIcon(Icons.Default.Delete,)
                                             },{
-                                                Icon(imageVector = Icons.Default.Done, contentDescription = null)
+                                                SegmentButtonIcon(Icons.Default.Done)
                                             },{
-                                                Icon(imageVector = Icons.Default.Person, contentDescription = null)
+                                                SegmentButtonIcon(Icons.Default.Person)
                                             },
                                         ),
                                         enabledIndexes = listOf(true, true, true, true),
@@ -225,14 +226,39 @@ class MainActivity : ComponentActivity() {
                         )
                         CarListDivider()
                         CarRow(
-                            browsable = true,
                             title = "Text Box?",
                             descriptionContent = {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .heightIn(min = 80.dp)
-                                        .background(buildGradientBrush(CarTheme.carColors.primarySurface))
+                                var textValue by remember { mutableStateOf("") }
+                                CarTextField(
+                                    value = textValue,
+                                    onValueChange = { textValue = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    placeholder = "Text field demo"
+                                )
+                                Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
+                                CarTextField(
+                                    value = textValue,
+                                    enabled = false,
+                                    onValueChange = { textValue = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    placeholder = "Disabled text field"
+                                )
+                                Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
+                                CarTextField(
+                                    value = textValue,
+                                    onValueChange = { textValue = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    placeholder = "5 Line text field",
+                                    minLines = 5
+                                )
+                                Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
+                                CarTextField(
+                                    value = textValue,
+                                    onValueChange = { textValue = it },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    placeholder = "Read only single line",
+                                    readOnly = true,
+                                    singleLine = true
                                 )
                             }
                         )

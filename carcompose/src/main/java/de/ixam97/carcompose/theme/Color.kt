@@ -47,7 +47,9 @@ data class CarColors (
     val primaryDivider: List<Color>,
     val secondaryDivider: List<Color>,
     val disabledAlpha: Float = 0.3f,
-    val disabledOverlay: Color = Color(0f, 0f, 0f, disabledAlpha)
+    val disabledOverlay: Color = Color(0f, 0f, 0f, disabledAlpha),
+    val textFieldBackground: List<Color> = primarySurface,
+    val textFieldTextColor: Color = onBackground
 )
 
 val LocalCarColors = staticCompositionLocalOf {

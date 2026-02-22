@@ -16,6 +16,7 @@ val customCarColors = GenericCarColors.copy(
     ),
     background = Color.Black,
     secondarySurface = listOf(Color(0xFF111922)),
+    textFieldBackground = listOf(Color(0xff161d39), Color(0xFF111922), ),
     onBackground = Color.White,
     onSurface = Color.White,
     onAccentContainer = Color.White,
@@ -27,12 +28,16 @@ val customCarColors = GenericCarColors.copy(
     )
 )
 
+val customCarDimensions = GenericCarDimensions.copy(
+    buttonRadiusPercent = 25
+)
+
 object CustomCarTheme : UiTheme {
     @Composable
     override fun CarTheme(content: @Composable (() -> Unit)) {
         de.ixam97.carcompose.theme.CarTheme(
             carTypography = GenericCarTypography,
-            carDimensions = GenericCarDimensions,
+            carDimensions = customCarDimensions,
             carUiProperties = GenericCarUiProperties,
             carColors = customCarColors,
             content = content

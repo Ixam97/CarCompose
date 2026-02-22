@@ -21,6 +21,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.utils.DefaultScrollbarSettings
 import kotlinx.coroutines.CoroutineScope
@@ -38,25 +39,26 @@ fun CarColumn(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val state = rememberScrollState()
-    var isInit by remember { mutableStateOf(true) }
+    // var isInit by remember { mutableStateOf(true) }
 
     val thumbSelectedColor = CarTheme.carColors.accent
 
     val isScrollable = rememberUpdatedState(state.canScrollForward || state.canScrollBackward)
     val scrollbarSettings by rememberUpdatedState {
         DefaultScrollbarSettings.copy(
-            enabled = isScrollable.value,
-            alwaysShowScrollbar = isInit,
+            enabled = true, // isScrollable.value,
+            thumbThickness = if (isScrollable.value) DefaultScrollbarSettings.thumbThickness else 0.dp,
+            alwaysShowScrollbar = false,
             thumbSelectedColor = thumbSelectedColor
         )
     }
 
-    LaunchedEffect(null) {
-        CoroutineScope(Dispatchers.Default).launch {
-            delay(1000)
-            isInit = false
-        }
-    }
+//    LaunchedEffect(null) {
+//        CoroutineScope(Dispatchers.Default).launch {
+//            delay(1000)
+//            isInit = false
+//        }
+//    }
 
     Box(
         modifier = modifier
