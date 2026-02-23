@@ -5,7 +5,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import de.ixam97.carcompose.components.controls.CarRow
+import de.ixam97.carcompose.components.controls.CarRowBrowsableType
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarColors
 import de.ixam97.carcompose.utils.buildGradientBrush
@@ -31,7 +35,8 @@ object CarTabLayout {
     enum class Orientation {
         Horizontal,
         HorizontalCompact,
-        Vertical
+        Vertical,
+        VerticalCompact
     }
 
     data class Tab<T> (
@@ -126,7 +131,7 @@ private fun <T> CarTabLayout(
                         )
                         .width(189.dp + CarTheme.carDimensions.defaultHorizontalPadding)
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
                         CarTabLayoutVerticalTab(
                             selected = selectedKey == tab.key, // selectedTabIndex == index,
                             title = tab.title,
@@ -152,6 +157,42 @@ private fun <T> CarTabLayout(
                 }
             }
         }
+        CarTabLayout.Orientation.VerticalCompact -> {
+            Row {
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            // start = CarTheme.carDimensions.defaultHorizontalPadding,
+                            top = CarTheme.carDimensions.defaultVerticalPadding
+                        )
+                        .width(IntrinsicSize.Max)
+                ) {
+                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
+                        CarTabLayoutVerticalTabCompact(
+                            selected = selectedKey == tab.key, // selectedTabIndex == index,
+                            title = tab.title,
+                            icon = tab.icon,
+                            iconActive = tab.iconActive,
+                            enabled = tab.enabled
+                        ) {
+                            onTabSelected(tab.key)
+                        }
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(2.dp)
+                                .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
+                                .background(brush = buildGradientBrush(CarTheme.carColors.secondaryDivider))
+                        )
+                    }
+                }
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    content(selectedKey)
+                }
+            }
+        }
 
         CarTabLayout.Orientation.Horizontal -> {
             Column {
@@ -159,7 +200,7 @@ private fun <T> CarTabLayout(
                     modifier = Modifier
                         .height(156.dp)
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
                         CarTabLayoutHorizontalTab(
                             modifier = Modifier.weight(1f),
                             selected = selectedKey == tab.key,
@@ -182,7 +223,7 @@ private fun <T> CarTabLayout(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
                         CarTabLayoutHorizontalTabCompact(
                             modifier = Modifier.weight(1f),
                             selected = selectedKey == tab.key,
@@ -242,6 +283,40 @@ private fun CarTabLayoutVerticalTab(
             color = foregroundColor
         )
     }
+}
+
+@Composable
+private fun CarTabLayoutVerticalTabCompact(
+    selected: Boolean,
+    title: String,
+    icon: Painter,
+    iconActive: Painter? = null,
+    enabled: Boolean = true,
+    onClick: () -> Unit
+) {
+    val foregroundColor = if (selected) {
+        CarTheme.carColors.accent
+    } else {
+        CarTheme.carColors.onBackground
+    }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
+
+    CarRow(
+        title = title,
+        leadingContent = {
+            Icon(
+                modifier = Modifier
+                    .size(CarTheme.carDimensions.iconButtonSize),
+                painter = if(selected) iconActive?:icon else icon,
+                contentDescription = null,
+            )
+        },
+        trailingContent = { Spacer(Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding)) },
+        foregroundColor = foregroundColor,
+        enabled = enabled,
+        browsable = enabled,
+        browsableType = CarRowBrowsableType.Hidden,
+        onBrowse = onClick
+    )
 }
 
 @Composable

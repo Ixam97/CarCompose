@@ -106,7 +106,7 @@ class MainActivity : ComponentActivity() {
             theme.CarTheme {
                 CarTabLayout(
                     headerTitle = "Car Compose",
-                    tabOrientation = CarTabLayout.Orientation.Vertical,
+                    tabOrientation = CarTabLayout.Orientation.VerticalCompact,
                     headerStartContent = { HeaderIconDummy() },
                     headerIconButtons = listOf(
                         {
