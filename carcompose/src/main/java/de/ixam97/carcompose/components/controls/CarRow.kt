@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarTheme
@@ -40,12 +41,9 @@ fun CarRow(
     leadingContent: @Composable (() -> Unit)? = null,
     descriptionContent: @Composable (ColumnScope.() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
-    content: @Composable (() -> Unit)? = null
+    content: @Composable (() -> Unit)? = null,
+    foregroundColor: Color = LocalContentColor.current
 ) {
-
-    val foregroundColor = CarTheme.carColors.onBackground.copy(
-        alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha
-    )
 
     Row(
        modifier = modifier
@@ -63,7 +61,9 @@ fun CarRow(
     ) {
 
         CompositionLocalProvider(
-            LocalContentColor provides foregroundColor
+            LocalContentColor provides foregroundColor.copy(
+                alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha
+            )
         ) {
             if (leadingContent != null) {
                 leadingContent()

@@ -95,7 +95,7 @@ fun CarTextField(
                 contentAlignment = Alignment.TopStart
             ) {
                 Row(
-                    verticalAlignment = Alignment.Top
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     leadingIcon?.let {
                         it()
