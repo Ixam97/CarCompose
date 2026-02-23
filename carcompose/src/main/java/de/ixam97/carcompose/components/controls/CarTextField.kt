@@ -2,7 +2,10 @@ package de.ixam97.carcompose.components.controls
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
@@ -56,6 +59,8 @@ fun CarTextField(
     enabled: Boolean = true,
     readOnly: Boolean = false,
     placeholder: String = "",
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
     textStyle: TextStyle = CarTheme.carTypography.rowTitle,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
@@ -80,7 +85,7 @@ fun CarTextField(
         maxLines = maxLines,
         decorationBox = { innerTextField ->
             Box(
-                modifier = Modifier
+                modifier = modifier
                     .clip(shape)
                     .background(colors.backgroundBrush)
                     .padding(
@@ -89,13 +94,26 @@ fun CarTextField(
                     ),
                 contentAlignment = Alignment.TopStart
             ) {
-                if (value.isEmpty())
-                    Text(
-                        text = placeholder,
-                        style = textStyle.copy(color = colors.placeholderTextColor)
-                    )
-                innerTextField()
-
+                Row(
+                    verticalAlignment = Alignment.Top
+                ) {
+                    leadingIcon?.let {
+                        it()
+                        Spacer(Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+                    }
+                    Box(modifier = Modifier.weight(1f)) {
+                        if (value.isEmpty())
+                            Text(
+                                text = placeholder,
+                                style = textStyle.copy(color = colors.placeholderTextColor)
+                            )
+                        innerTextField()
+                    }
+                    trailingIcon?.let {
+                        Spacer(Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+                        it()
+                    }
+                }
             }
         }
     )

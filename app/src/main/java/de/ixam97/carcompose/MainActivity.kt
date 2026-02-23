@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
@@ -28,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -46,6 +50,20 @@ import de.ixam97.carcompose.theme.CarComposeTheme
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.UiTheme
 
+
+
+enum class MainTabKeys {
+    Dashboard, Enabled, Disabled
+}
+
+enum class ThemeSegmentKeys {
+    Classic, Modern, Generic, Custom
+}
+
+enum class IconSegmentKeys {
+    Settings, Delete, Done, Person
+}
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +73,34 @@ class MainActivity : ComponentActivity() {
             var selectedIndex by remember { mutableIntStateOf(0) }
             var switchState by remember { mutableStateOf(false) }
 
-            val theme: UiTheme = when (selectedIndex) {
-                0 -> CarComposeTheme.PolestarModern
-                1 -> CarComposeTheme.PolestarClassic
-                2 -> CarComposeTheme.Generic
-                3 -> CustomCarTheme
+            val dashboardTab = CarTabLayout.Tab(
+                title = "Dashboard",
+                icon = painterResource(R.drawable.ic_grid_48),
+                iconActive = painterResource(R.drawable.ic_grid_filled_48),
+                key = MainTabKeys.Dashboard
+            )
+
+            val enabledTab = CarTabLayout.Tab(
+                title = "Enabled Tab",
+                icon = painterResource(R.drawable.ic_arrow_outwards_48),
+                key = MainTabKeys.Enabled
+            )
+
+            val disabledTab = CarTabLayout.Tab(
+                title = "DisabledTab",
+                icon = painterResource(R.drawable.ic_close_48),
+                enabled = switchState,
+                key = MainTabKeys.Disabled
+            )
+
+            var selectedTabKey by remember { mutableStateOf(MainTabKeys.Dashboard) }
+            var selectedThemeSegmentKey by remember { mutableStateOf<ThemeSegmentKeys?>(ThemeSegmentKeys.Modern) }
+            var selectedIconSegment by remember { mutableStateOf(IconSegmentKeys.Settings)}
+
+            val theme: UiTheme = when (selectedThemeSegmentKey) {
+                ThemeSegmentKeys.Modern -> CarComposeTheme.PolestarModern
+                ThemeSegmentKeys.Classic -> CarComposeTheme.PolestarClassic
+                ThemeSegmentKeys.Custom -> CustomCarTheme
                 else -> CarComposeTheme.Generic
             }
 
@@ -88,26 +129,14 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                     ),
-                    tabSelectedIndex = 0,
-                    tabOnIndexChanged = {},
+                    selectedKey = selectedTabKey,
+                    onTabSelected = { key -> selectedTabKey = key },
                     tabs = listOf(
-                        CarTabLayout.Tab(
-                            title = "Selected Tab",
-                            icon = CarIcons.settings,
-                            enabled = true
-                        ),
-                        CarTabLayout.Tab(
-                            title = "Enabled Tab",
-                            icon = CarIcons.arrowOutwards,
-                            enabled = true
-                        ),
-                        CarTabLayout.Tab(
-                            title = "Disabled Tab",
-                            icon = CarIcons.close,
-                            enabled = false
-                        )
+                        dashboardTab,
+                        enabledTab,
+                        disabledTab,
                     )
-                ) {
+                ) { key ->
                     CarColumn {
                         CarRow(
                             title = "Hello World!",
@@ -115,10 +144,8 @@ class MainActivity : ComponentActivity() {
                         )
                         CarListDivider()
                         CarRow(
-                            title = "Row with leading Content",
-                            leadingContent = {
-                                HeaderIconDummy()
-                            }
+                            title = "${key.javaClass.name}",
+                            description = "Selected Tab Key"
                         )
                         CarListDivider()
                         CarRow(
@@ -131,25 +158,32 @@ class MainActivity : ComponentActivity() {
                         CarRow(
                             title = "Car Theme",
                             descriptionContent = {
+
+                                val themeSegments = listOf(
+                                    CarSegmentedButton.Segment(
+                                        content = { Text("PS Modern") },
+                                        key = ThemeSegmentKeys.Modern,
+                                    ),
+                                    CarSegmentedButton.Segment(
+                                        content = { Text("PS Classic") },
+                                        key = ThemeSegmentKeys.Classic,
+                                    ),
+                                    CarSegmentedButton.Segment(
+                                        content = { Text("Generic") },
+                                        key = ThemeSegmentKeys.Generic,
+                                    ),
+                                    CarSegmentedButton.Segment(
+                                        content = { Text("Custom") },
+                                        key = ThemeSegmentKeys.Custom,
+                                    ),
+                                )
+
                                 CarSegmentedButton(
                                     modifier = Modifier.fillMaxWidth(),
-                                    buttonContents = listOf(
-                                        @Composable {
-                                            Text("PS Modern")
-                                        },{
-                                            Text("PS Classic")
-                                        },{
-                                            Text("Generic")
-                                        },{
-                                            Text("Custom")
-                                        },
-                                    ),
-                                    enabledIndexes = listOf(true, true, true, true),
-                                    canDeselect = false,
-                                    selectedIndex = selectedIndex,
-                                    onIndexChanged = { newIndex ->
-                                        selectedIndex = newIndex
-                                    },
+                                    segments = themeSegments,
+                                    canDeselect = true,
+                                    selectedKey = selectedThemeSegmentKey,
+                                    onSegmentChanged = { selectedThemeSegmentKey = it },
                                 )
                             }
                         )
@@ -158,7 +192,6 @@ class MainActivity : ComponentActivity() {
                             title = "Segmented Icon Buttons",
                             descriptionContent = {
                                 Row() {
-
                                     @Composable
                                     fun SegmentButtonIcon(
                                         imageVector: ImageVector
@@ -171,6 +204,25 @@ class MainActivity : ComponentActivity() {
                                             contentDescription = null
                                         )
                                     }
+                                    val iconSegments = listOf(
+                                        CarSegmentedButton.Segment(
+                                            content = { SegmentButtonIcon(Icons.Default.Settings) },
+                                            key = IconSegmentKeys.Settings
+                                        ),
+                                        CarSegmentedButton.Segment(
+                                            content = { SegmentButtonIcon(Icons.Default.Done) },
+                                            key = IconSegmentKeys.Done
+                                        ),
+                                        CarSegmentedButton.Segment(
+                                            content = { SegmentButtonIcon(Icons.Default.Person) },
+                                            key = IconSegmentKeys.Person
+                                        ),
+                                        CarSegmentedButton.Segment(
+                                            content = { SegmentButtonIcon(Icons.Default.Delete) },
+                                            key = IconSegmentKeys.Delete,
+                                            enabled = switchState
+                                        ),
+                                    )
 
                                     CarSegmentedButton(
                                         modifier = Modifier
@@ -181,23 +233,9 @@ class MainActivity : ComponentActivity() {
                                             horizontalPadding = 0.dp,
                                             verticalPadding = 10.dp
                                         ),
-                                        buttonContents = listOf(
-                                            @Composable {
-                                                SegmentButtonIcon(Icons.Default.Settings)
-                                            },{
-                                                SegmentButtonIcon(Icons.Default.Delete,)
-                                            },{
-                                                SegmentButtonIcon(Icons.Default.Done)
-                                            },{
-                                                SegmentButtonIcon(Icons.Default.Person)
-                                            },
-                                        ),
-                                        enabledIndexes = listOf(true, true, true, true),
-                                        canDeselect = false,
-                                        selectedIndex = selectedIndex,
-                                        onIndexChanged = { newIndex ->
-
-                                        },
+                                        segments = iconSegments ,
+                                        selectedKey = selectedIconSegment,
+                                        onSegmentChanged = { it?.let { selectedIconSegment = it }}
                                     )
                                     Box(Modifier.weight(1f))
                                 }
@@ -206,9 +244,9 @@ class MainActivity : ComponentActivity() {
                         )
                         CarListDivider()
                         CarRowSwitch(
-                            title = "Switch Row",
+                            title = "Enable disabled Tab",
                             state = switchState
-                        ) { switchState = !switchState}
+                        ) { switchState = it }
                         CarListDivider()
                         CarRow(
                             title = "Row with everything",
@@ -233,6 +271,11 @@ class MainActivity : ComponentActivity() {
                                     value = textValue,
                                     onValueChange = { textValue = it },
                                     modifier = Modifier.fillMaxWidth(),
+                                    leadingIcon = { Icon(
+                                        Icons.Default.Search,
+                                        null,
+                                        modifier = Modifier.size(40.dp)
+                                    )},
                                     placeholder = "Text field demo"
                                 )
                                 Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
@@ -241,6 +284,14 @@ class MainActivity : ComponentActivity() {
                                     enabled = false,
                                     onValueChange = { textValue = it },
                                     modifier = Modifier.fillMaxWidth(),
+                                    trailingIcon = {
+                                        Icon(
+                                            imageVector = if (switchState) Icons.Default.Check else Icons.Default.Close,
+                                            tint = if (switchState) Color.Green else Color.Red,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(40.dp)
+                                        )
+                                    },
                                     placeholder = "Disabled text field"
                                 )
                                 Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))

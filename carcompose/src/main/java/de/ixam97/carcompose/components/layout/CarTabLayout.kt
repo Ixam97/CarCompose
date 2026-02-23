@@ -34,11 +34,12 @@ object CarTabLayout {
         Vertical
     }
 
-    data class Tab (
+    data class Tab<T> (
         val title: String,
         val icon: Painter,
         val iconActive: Painter? = null,
-        val enabled: Boolean = true
+        val enabled: Boolean = true,
+        val key: T
     )
 }
 
@@ -46,19 +47,19 @@ object CarTabLayout {
  * Basic car layout including header, tabs and content
  */
 @Composable
-fun CarTabLayout(
+fun <T> CarTabLayout(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     tabOrientation: CarTabLayout.Orientation = CarTabLayout.Orientation.Vertical,
-    tabSelectedIndex: Int,
-    tabOnIndexChanged: (Int) -> Unit,
-    tabs: List<CarTabLayout.Tab>,
+    selectedKey: T,
+    onTabSelected: (T) -> Unit,
+    tabs: List<CarTabLayout.Tab<T>>,
     headerTitle: String = "",
     headerStartContent: @Composable (() -> Unit)? = null,
     headerContent: @Composable () -> Unit = { },
     headerEndContent: @Composable (() -> Unit)? = null,
     headerIconButtons: List<@Composable ()-> Unit> = emptyList<@Composable ()-> Unit>(),
-    content: @Composable () -> Unit
+    content: @Composable (T) -> Unit
 ) {
 
     val showDivider: Boolean
@@ -92,27 +93,26 @@ fun CarTabLayout(
                 )
                 CarTabLayout(
                     orientation = tabOrientation,
-                    selectedTabIndex = tabSelectedIndex,
-                    onTabSelected = { tabOnIndexChanged(it) },
+                    selectedKey = selectedKey,
+                    onTabSelected = onTabSelected,
                     isLoading = isLoading,
-                    tabs = tabs
-                ) {
-                    content()
-                }
+                    tabs = tabs,
+                    content = content
+                )
             }
         }
     }
 }
 
 @Composable
-private fun CarTabLayout(
+private fun <T> CarTabLayout(
     orientation: CarTabLayout.Orientation = CarTabLayout.Orientation.Vertical,
     isLoading: Boolean = false,
     showDivider: Boolean = CarTheme.carUiProperties.headerDividerBelowTabLayout,
-    tabs: List<CarTabLayout.Tab>,
-    selectedTabIndex: Int,
-    onTabSelected: (Int) -> Unit,
-    content: @Composable () -> Unit
+    tabs: List<CarTabLayout.Tab<T>>,
+    selectedKey: T,
+    onTabSelected: (T) -> Unit,
+    content: @Composable (T) -> Unit
 
 ) {
     when (orientation) {
@@ -128,13 +128,13 @@ private fun CarTabLayout(
                 ) {
                     tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
                         CarTabLayoutVerticalTab(
-                            selected = selectedTabIndex == index,
+                            selected = selectedKey == tab.key, // selectedTabIndex == index,
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
                             enabled = tab.enabled
                         ) {
-                            onTabSelected(index)
+                            onTabSelected(tab.key)
                         }
                         Box(
                             modifier = Modifier
@@ -148,7 +148,7 @@ private fun CarTabLayout(
                 Box(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    content()
+                    content(selectedKey)
                 }
             }
         }
@@ -162,18 +162,18 @@ private fun CarTabLayout(
                     tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
                         CarTabLayoutHorizontalTab(
                             modifier = Modifier.weight(1f),
-                            selected = selectedTabIndex == index,
+                            selected = selectedKey == tab.key,
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
                             enabled = tab.enabled
                         ) {
-                            onTabSelected(index)
+                            onTabSelected(tab.key)
                         }
                     }
                 }
                 if (showDivider) CarHeaderDivider(isLoading)
-                content()
+                content(selectedKey)
             }
         }
         CarTabLayout.Orientation.HorizontalCompact -> {
@@ -185,18 +185,18 @@ private fun CarTabLayout(
                     tabs.subList(0, tabs.size.coerceAtMost(4)).forEachIndexed { index, tab ->
                         CarTabLayoutHorizontalTabCompact(
                             modifier = Modifier.weight(1f),
-                            selected = selectedTabIndex == index,
+                            selected = selectedKey == tab.key,
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
                             enabled = tab.enabled
                         ) {
-                            onTabSelected(index)
+                            onTabSelected(tab.key)
                         }
                     }
                 }
                 if (showDivider) CarHeaderDivider(isLoading)
-                content()
+                content(selectedKey)
             }
         }
     }

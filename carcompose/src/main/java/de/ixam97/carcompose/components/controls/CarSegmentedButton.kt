@@ -14,24 +14,28 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 
+object CarSegmentedButton {
+    data class Segment<T>(
+        val content: @Composable RowScope.() -> Unit,
+        val key: T,
+        val onClick: (T) -> Unit = {},
+        val enabled: Boolean = true,
+    )
+}
+
 @Composable
-fun CarSegmentedButton(
+fun <T> CarSegmentedButton(
     modifier: Modifier = Modifier,
-    buttonContents: List<@Composable RowScope.()-> Unit>,
-    selectedIndex: Int,
-    onIndexChanged: (Int) -> Unit,
-    enabledIndexes: List<Boolean> = listOf(),
+    segments: List<CarSegmentedButton.Segment<T>>,
+    selectedKey: T?,
+    onSegmentChanged: (T?) -> Unit,
     canDeselect: Boolean = false,
     colors: CarButtonColors = CarButtonDefaults.colors,
     shape: Shape = CarButtonDefaults.shape,
     dimensions: CarButtonDimensions = CarButtonDefaults.dimensions
 ) {
-    if (buttonContents.isEmpty()) {
+    if (segments.isEmpty()) {
         throw(Exception("Segmented button contents cannot be empty!"))
-    }
-
-    if (enabledIndexes.isNotEmpty() && enabledIndexes.size != buttonContents.size) {
-        throw(Exception("Segmented button contents and enabled indexes do not match!"))
     }
 
     Row(
@@ -40,8 +44,8 @@ fun CarSegmentedButton(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        buttonContents.forEachIndexed { index, buttonContent ->
-            val enabled = if (enabledIndexes.isNotEmpty()) enabledIndexes[index] else true
+        segments.forEachIndexed { index, segment ->
+            val enabled = segment.enabled
             val cornerPercentEdge = CarTheme.carDimensions.buttonRadiusPercent
             val cornerPercentInside = cornerPercentEdge / 10
             CarButton(
@@ -49,8 +53,9 @@ fun CarSegmentedButton(
                     .weight(1f)
                     .fillMaxHeight(),
                 onClick = {
-                    if (canDeselect && selectedIndex == index) onIndexChanged(-1)
-                    else onIndexChanged(index)
+                    if (canDeselect && selectedKey == segment.key) onSegmentChanged(null)
+                    else onSegmentChanged(segment.key)
+                    segment.onClick(segment.key)
                 },
                 shape = when (index) {
                     0 -> RoundedCornerShape(
@@ -59,7 +64,7 @@ fun CarSegmentedButton(
                         topEndPercent = cornerPercentInside,
                         bottomEndPercent = cornerPercentInside
                     )
-                    (buttonContents.size - 1) -> RoundedCornerShape(
+                    (segments.size - 1) -> RoundedCornerShape(
                         topEndPercent = cornerPercentEdge,
                         bottomEndPercent = cornerPercentEdge,
                         topStartPercent = cornerPercentInside,
@@ -70,8 +75,8 @@ fun CarSegmentedButton(
                 colors = colors,
                 dimensions = dimensions,
                 enabled = enabled,
-                active = selectedIndex == index,
-                content = buttonContent
+                active = selectedKey == segment.key,
+                content = segment.content
             )
         }
     }
