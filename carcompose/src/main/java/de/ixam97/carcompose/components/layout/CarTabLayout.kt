@@ -59,6 +59,7 @@ fun <T> CarTabLayout(
     selectedKey: T,
     onTabSelected: (T) -> Unit,
     tabs: List<CarTabLayout.Tab<T>>,
+    maxTabs: Int = 4,
     headerTitle: String = "",
     headerStartContent: @Composable (() -> Unit)? = null,
     headerContent: @Composable () -> Unit = { },
@@ -68,7 +69,7 @@ fun <T> CarTabLayout(
 ) {
 
     val showDivider: Boolean
-        = (tabOrientation == CarTabLayout.Orientation.Vertical)
+        = (tabOrientation == CarTabLayout.Orientation.Vertical || tabOrientation == CarTabLayout.Orientation.VerticalCompact)
             || (
                 !CarTheme.carUiProperties.headerDividerBelowTabLayout
                 && (tabOrientation == CarTabLayout.Orientation.Horizontal || tabOrientation == CarTabLayout.Orientation.HorizontalCompact)
@@ -102,6 +103,7 @@ fun <T> CarTabLayout(
                     onTabSelected = onTabSelected,
                     isLoading = isLoading,
                     tabs = tabs,
+                    maxTabs = maxTabs,
                     content = content
                 )
             }
@@ -115,6 +117,7 @@ private fun <T> CarTabLayout(
     isLoading: Boolean = false,
     showDivider: Boolean = CarTheme.carUiProperties.headerDividerBelowTabLayout,
     tabs: List<CarTabLayout.Tab<T>>,
+    maxTabs: Int,
     selectedKey: T,
     onTabSelected: (T) -> Unit,
     content: @Composable (T) -> Unit
@@ -131,7 +134,7 @@ private fun <T> CarTabLayout(
                         )
                         .width(189.dp + CarTheme.carDimensions.defaultHorizontalPadding)
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(maxTabs)).forEach { tab ->
                         CarTabLayoutVerticalTab(
                             selected = selectedKey == tab.key, // selectedTabIndex == index,
                             title = tab.title,
@@ -167,7 +170,7 @@ private fun <T> CarTabLayout(
                         )
                         .width(IntrinsicSize.Max)
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(maxTabs)).forEach { tab ->
                         CarTabLayoutVerticalTabCompact(
                             selected = selectedKey == tab.key, // selectedTabIndex == index,
                             title = tab.title,
@@ -200,7 +203,7 @@ private fun <T> CarTabLayout(
                     modifier = Modifier
                         .height(156.dp)
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(maxTabs)).forEach { tab ->
                         CarTabLayoutHorizontalTab(
                             modifier = Modifier.weight(1f),
                             selected = selectedKey == tab.key,
@@ -223,7 +226,7 @@ private fun <T> CarTabLayout(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    tabs.subList(0, tabs.size.coerceAtMost(4)).forEach { tab ->
+                    tabs.subList(0, tabs.size.coerceAtMost(maxTabs)).forEach { tab ->
                         CarTabLayoutHorizontalTabCompact(
                             modifier = Modifier.weight(1f),
                             selected = selectedKey == tab.key,
