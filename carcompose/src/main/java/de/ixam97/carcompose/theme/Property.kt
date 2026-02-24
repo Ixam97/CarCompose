@@ -6,7 +6,6 @@ import androidx.compose.ui.Alignment
 
 @Immutable
 data class CarUiProperties(
-    val uiType: UiType = UiType.Generic,
     val headerContentAlignment: Alignment = Alignment.BottomStart,
     val headerIconButtonDividers: Boolean = true,
     val headerDividerBelowTabLayout: Boolean = true

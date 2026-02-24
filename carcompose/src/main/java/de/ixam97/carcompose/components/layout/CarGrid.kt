@@ -186,7 +186,7 @@ private fun RowScope.CarGridTile(
                 modifier = Modifier
                     .padding(top = CarTheme.carDimensions.rowTextSpacing / 2),
                 text = it,
-                style = CarTheme.carTypography.gridTileDescrription,
+                style = CarTheme.carTypography.gridTileDescription,
                 color = CarTheme.carColors.onSurface.copy(alpha = 0.7f),
                 maxLines = 1,
                 softWrap = false

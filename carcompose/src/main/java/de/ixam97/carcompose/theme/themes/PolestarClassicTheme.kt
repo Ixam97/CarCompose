@@ -1,13 +1,11 @@
 package de.ixam97.carcompose.theme.themes
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarColors
-import de.ixam97.carcompose.theme.CarTheme
+import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
-import de.ixam97.carcompose.theme.UiType
 
 val PolestarClassicCarColors = CarColors(
     accent = mainAccentForeground,
@@ -31,21 +29,14 @@ val PolestarClassicCarDimensions = PolestarSharedCarDimensions.copy(
 )
 
 val PolestarClassicCarUiProperties = CarUiProperties(
-    uiType = UiType.PolestarClassic,
     headerContentAlignment = Alignment.CenterStart,
     headerIconButtonDividers = false,
     headerDividerBelowTabLayout = false,
 )
 
-@Composable
-fun PolestarClassicTheme(
-    content: @Composable () -> Unit
-) {
-    CarTheme(
-        carTypography = PolestarCarTypography,
-        carColors = PolestarClassicCarColors,
-        carDimensions = PolestarClassicCarDimensions,
-        carUiProperties = PolestarClassicCarUiProperties,
-        content = content
-    )
-}
+val PolestarClassicThemeConfig: CarThemeConfig = CarThemeConfig(
+    carTypography = PolestarCarTypography,
+    carDarkColors = PolestarClassicCarColors,
+    carDimensions = PolestarClassicCarDimensions,
+    carUiProperties = PolestarClassicCarUiProperties
+)

@@ -1,12 +1,11 @@
 package de.ixam97.carcompose
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.GenericCarColors
 import de.ixam97.carcompose.theme.GenericCarDimensions
 import de.ixam97.carcompose.theme.GenericCarTypography
 import de.ixam97.carcompose.theme.GenericCarUiProperties
-import de.ixam97.carcompose.theme.UiTheme
 
 val customCarColors = GenericCarColors.copy(
     accent = Color(0xFF447ea6),
@@ -32,16 +31,9 @@ val customCarDimensions = GenericCarDimensions.copy(
     buttonRadiusPercent = 25
 )
 
-object CustomCarTheme : UiTheme {
-    @Composable
-    override fun CarTheme(content: @Composable (() -> Unit)) {
-        de.ixam97.carcompose.theme.CarTheme(
-            carTypography = GenericCarTypography,
-            carDimensions = customCarDimensions,
-            carUiProperties = GenericCarUiProperties,
-            carColors = customCarColors,
-            content = content
-        )
-    }
-
-}
+val CustomCarThemeConfig = CarThemeConfig(
+    carTypography = GenericCarTypography,
+    carDimensions = customCarDimensions,
+    carUiProperties = GenericCarUiProperties,
+    carDarkColors = customCarColors
+)

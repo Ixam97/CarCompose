@@ -69,7 +69,7 @@ val PolestarCarTypography = CarTypography(
         fontSize = 28.sp,
         fontWeight = FontWeight.Normal
     ),
-    gridTileDescrription = TextStyle(
+    gridTileDescription = TextStyle(
         fontFamily = PolestarFont,
         fontSize = 23.sp,
         fontWeight = FontWeight.Normal

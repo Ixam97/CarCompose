@@ -1,13 +1,11 @@
 package de.ixam97.carcompose.theme.themes
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarColors
-import de.ixam97.carcompose.theme.CarTheme
+import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
-import de.ixam97.carcompose.theme.UiType
 
 val PolestarModernCarColors = CarColors(
     accent = mainAccentForeground,
@@ -29,23 +27,15 @@ val PolestarModernCarDimensions = PolestarSharedCarDimensions.copy(
     headerHeight = 134.dp,
 )
 
-val PolestarModernCarUiProperties = CarUiProperties(
-    uiType = UiType.PolestarModern
-)
+val PolestarModernCarUiProperties = CarUiProperties()
 
 val PolestarModernCarTypography = PolestarCarTypography.copy(
     title = PolestarCarTypography.title.copy(fontWeight = FontWeight.Normal)
 )
 
-@Composable
-fun PolestarModernTheme(
-    content: @Composable () -> Unit
-) {
-    CarTheme(
-        carTypography = PolestarModernCarTypography,
-        carColors = PolestarModernCarColors,
-        carDimensions = PolestarModernCarDimensions,
-        carUiProperties = PolestarModernCarUiProperties,
-        content = content
-    )
-}
+val PolestarModernThemeConfig = CarThemeConfig(
+    carTypography = PolestarModernCarTypography,
+    carDarkColors = PolestarModernCarColors,
+    carDimensions = PolestarModernCarDimensions,
+    carUiProperties = PolestarModernCarUiProperties
+)

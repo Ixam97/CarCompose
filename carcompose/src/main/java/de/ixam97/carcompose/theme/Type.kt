@@ -12,7 +12,7 @@ data class CarTypography (
     val title: TextStyle,
     val rowTitle: TextStyle,
     val rowContent: TextStyle,
-    val gridTileDescrription: TextStyle,
+    val gridTileDescription: TextStyle,
     val defaultBody: TextStyle
 )
 
@@ -20,7 +20,7 @@ val GenericCarTypography: CarTypography = CarTypography(
     title = TextStyle.Default.copy(fontSize = 40.sp, fontWeight = FontWeight.Medium),
     rowTitle = TextStyle.Default.copy(fontSize = 25.sp),
     rowContent = TextStyle.Default.copy(fontSize = 25.sp),
-    gridTileDescrription = TextStyle.Default.copy(fontSize = 21.sp),
+    gridTileDescription = TextStyle.Default.copy(fontSize = 21.sp),
     defaultBody = TextStyle.Default.copy(fontSize = 25.sp)
 )
 

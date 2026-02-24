@@ -8,50 +8,29 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
-import de.ixam97.carcompose.theme.themes.PolestarClassicTheme
-import de.ixam97.carcompose.theme.themes.PolestarModernTheme
 
-enum class UiType {
-    Generic,
-    PolestarClassic,
-    PolestarModern
-}
+data class CarThemeConfig(
+    val carTypography: CarTypography,
+    val carDarkColors: CarColors,
+    val carBrightColors: CarColors? = null,
+    val carDimensions: CarDimensions,
+    val carUiProperties: CarUiProperties,
+)
 
-interface UiTheme {
-    @Composable
-    fun CarTheme(
-        content: @Composable () -> Unit
+@Composable
+fun CarTheme(
+    carThemeConfig: CarThemeConfig,
+    darkTheme: Boolean = true,
+    content: @Composable () -> Unit
+) {
+    CarTheme(
+        carTypography = carThemeConfig.carTypography,
+        carColors = if (darkTheme || carThemeConfig.carBrightColors == null) carThemeConfig.carDarkColors else carThemeConfig.carBrightColors,
+        carDimensions = carThemeConfig.carDimensions,
+        carUiProperties = carThemeConfig.carUiProperties,
+        content = content
     )
 }
-
-object CarComposeTheme {
-    object Generic: UiTheme {
-        @Composable
-        override fun CarTheme(
-            content: @Composable () -> Unit
-        ) {
-            GenericCarTheme(content)
-        }
-    }
-    object PolestarClassic: UiTheme {
-        @Composable
-        override fun CarTheme(
-            content: @Composable () -> Unit
-        ) {
-            PolestarClassicTheme(content)
-        }
-    }
-    object PolestarModern: UiTheme {
-        @Composable
-        override fun CarTheme(
-            content: @Composable () -> Unit
-        ) {
-            PolestarModernTheme(content)
-        }
-    }
-}
-
-interface CarBackstackEntry
 
 @Composable
 fun CarTheme(
@@ -103,27 +82,9 @@ object CarTheme {
         get() = LocalCarUiProperties.current
 }
 
-@Composable
-fun GenericCarTheme(
-    content: @Composable () -> Unit
-) {
-    CarTheme(
-        carTypography = GenericCarTypography,
-        carColors = GenericCarColors,
-        carDimensions = GenericCarDimensions,
-        carUiProperties = GenericCarUiProperties,
-        content = content
-    )
-}
-
-@Composable
-fun CarTheme(
-    carUiType: UiType,
-    content: @Composable () -> Unit
-) {
-    when (carUiType) {
-        UiType.PolestarClassic -> PolestarClassicTheme(content)
-        UiType.PolestarModern -> PolestarModernTheme(content)
-        else -> GenericCarTheme(content)
-    }
-}
+val GenericCarThemeConfig = CarThemeConfig(
+    carTypography = GenericCarTypography,
+    carDarkColors = GenericCarColors,
+    carDimensions = GenericCarDimensions,
+    carUiProperties = GenericCarUiProperties,
+)

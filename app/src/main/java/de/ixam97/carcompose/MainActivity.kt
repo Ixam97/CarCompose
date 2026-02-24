@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -29,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -46,10 +48,12 @@ import de.ixam97.carcompose.components.layout.CarColumn
 import de.ixam97.carcompose.components.layout.CarListDivider
 import de.ixam97.carcompose.components.layout.CarTabLayout
 import de.ixam97.carcompose.resources.CarIcons
-import de.ixam97.carcompose.theme.CarComposeTheme
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.theme.UiTheme
-
+import de.ixam97.carcompose.theme.CarThemeConfig
+import de.ixam97.carcompose.theme.GenericCarThemeConfig
+import de.ixam97.carcompose.theme.themes.PolestarClassicThemeConfig
+import de.ixam97.carcompose.theme.themes.PolestarModernThemeConfig
+import de.ixam97.carcompose.theme.themes.VolvoCarUxThemeConfig
 
 
 enum class MainTabKeys {
@@ -57,7 +61,7 @@ enum class MainTabKeys {
 }
 
 enum class ThemeSegmentKeys {
-    Classic, Modern, Generic, Custom
+    Classic, Modern, Generic, Custom, Volvo
 }
 
 enum class IconSegmentKeys {
@@ -70,7 +74,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            var switchState by remember { mutableStateOf(false) }
+            var switchState by rememberSaveable { mutableStateOf(false) }
+            var autoBrightModeSwitchState by rememberSaveable { mutableStateOf(true) }
 
             val dashboardTab = CarTabLayout.Tab(
                 title = "Dashboard",
@@ -92,21 +97,25 @@ class MainActivity : ComponentActivity() {
                 key = MainTabKeys.Disabled
             )
 
-            var selectedTabKey by remember { mutableStateOf(MainTabKeys.Dashboard) }
-            var selectedThemeSegmentKey by remember { mutableStateOf<ThemeSegmentKeys?>(ThemeSegmentKeys.Modern) }
-            var selectedIconSegment by remember { mutableStateOf(IconSegmentKeys.Settings)}
+            var selectedTabKey by rememberSaveable { mutableStateOf(MainTabKeys.Dashboard) }
+            var selectedThemeSegmentKey by rememberSaveable { mutableStateOf<ThemeSegmentKeys?>(ThemeSegmentKeys.Modern) }
+            var selectedIconSegment by rememberSaveable { mutableStateOf(IconSegmentKeys.Settings)}
 
-            val theme: UiTheme = when (selectedThemeSegmentKey) {
-                ThemeSegmentKeys.Modern -> CarComposeTheme.PolestarModern
-                ThemeSegmentKeys.Classic -> CarComposeTheme.PolestarClassic
-                ThemeSegmentKeys.Custom -> CustomCarTheme
-                else -> CarComposeTheme.Generic
+            val themeConfig: CarThemeConfig = when (selectedThemeSegmentKey) {
+                ThemeSegmentKeys.Modern -> PolestarModernThemeConfig
+                ThemeSegmentKeys.Classic -> PolestarClassicThemeConfig
+                ThemeSegmentKeys.Volvo -> VolvoCarUxThemeConfig
+                ThemeSegmentKeys.Custom -> CustomCarThemeConfig
+                else -> GenericCarThemeConfig
             }
 
-            theme.CarTheme {
+            CarTheme(
+                carThemeConfig = themeConfig,
+                darkTheme = if (autoBrightModeSwitchState) isSystemInDarkTheme() else true
+            ) {
                 CarTabLayout(
                     headerTitle = "Car Compose",
-                    tabOrientation = CarTabLayout.Orientation.VerticalCompact,
+                    tabOrientation = CarTabLayout.Orientation.Horizontal,
                     headerStartContent = { HeaderIconDummy() },
                     headerIconButtons = listOf(
                         {
@@ -172,6 +181,10 @@ class MainActivity : ComponentActivity() {
                                         key = ThemeSegmentKeys.Classic,
                                     ),
                                     CarSegmentedButton.Segment(
+                                        content = { Text("Volvo Car UX") },
+                                        key = ThemeSegmentKeys.Volvo,
+                                    ),
+                                    CarSegmentedButton.Segment(
                                         content = { Text("Generic") },
                                         key = ThemeSegmentKeys.Generic,
                                     ),
@@ -190,6 +203,12 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         )
+                        if (selectedThemeSegmentKey == ThemeSegmentKeys.Volvo) {
+                            CarRowSwitch(
+                                title = "Automatic Bright Mode",
+                                state = autoBrightModeSwitchState
+                            ) { autoBrightModeSwitchState = it}
+                        }
                         CarListDivider()
                         CarRow(
                             title = "Segmented Icon Buttons",
