@@ -83,6 +83,7 @@ fun <T> CarTabLayout(
         Surface(
             modifier = modifier
                 .fillMaxSize()
+                .background(CarTheme.carColors.background)
                 .padding(calculateWindowInsets()),
             color = LocalCarColors.current.background,
             contentColor = LocalCarColors.current.onBackground

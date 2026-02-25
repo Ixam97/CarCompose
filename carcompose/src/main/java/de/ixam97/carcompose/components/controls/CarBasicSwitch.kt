@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -73,11 +74,11 @@ fun CarBasicSwitch(
                 if (!enabled) drawRect(color = disabledOverlay)
             }
     ) {
-        Box(
-            modifier = Modifier
-                .then(ThumbElement(interactionSource, isChecked, thumbWidth))
-        ) {
-            with(localDensity) {
+        key(thumbWidth) {
+            Box(
+                modifier = Modifier
+                    .then(ThumbElement(interactionSource, isChecked, thumbWidth))
+            ) {
                 Box(modifier = Modifier
                     .width(thumbWidth)
                     .height(thumbHeight)

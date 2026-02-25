@@ -9,6 +9,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarColors
 import de.ixam97.carcompose.utils.calculateWindowInsets
 
@@ -34,6 +35,7 @@ fun CarPaneLayout(
         Surface(
             modifier = modifier
                 .fillMaxSize()
+                .background(CarTheme.carColors.background)
                 .padding(calculateWindowInsets()),
             color = LocalCarColors.current.background,
             contentColor = LocalCarColors.current.onBackground
