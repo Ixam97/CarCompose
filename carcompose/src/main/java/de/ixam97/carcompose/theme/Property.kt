@@ -8,7 +8,8 @@ import androidx.compose.ui.Alignment
 data class CarUiProperties(
     val headerContentAlignment: Alignment = Alignment.BottomStart,
     val headerIconButtonDividers: Boolean = true,
-    val headerDividerBelowTabLayout: Boolean = true
+    val headerDividerBelowTabLayout: Boolean = true,
+    val listSectionBackground: Boolean = false,
 )
 
 val GenericCarUiProperties = CarUiProperties()

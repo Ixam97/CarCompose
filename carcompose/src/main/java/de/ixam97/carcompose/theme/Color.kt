@@ -41,6 +41,8 @@ data class CarColors (
     val background: Color,
     val primarySurface: List<Color>,
     val secondarySurface: List<Color>,
+    val listSectionTitleColor: Color = accent,
+    val listSectionBackground: List<Color> = primarySurface,
     val onBackground: Color,
     val onSurface: Color,
     val onAccentContainer: Color,

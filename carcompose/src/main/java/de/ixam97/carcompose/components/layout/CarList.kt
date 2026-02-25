@@ -2,14 +2,17 @@ package de.ixam97.carcompose.components.layout
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.utils.buildGradientBrush
@@ -53,13 +56,15 @@ fun CarListSectionTitle(
             .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
             .padding(
                 top = CarTheme.carDimensions.mediumVerticalPadding,
-                bottom = CarTheme.carDimensions.defaultVerticalPadding
+                bottom = if (CarTheme.carUiProperties.listSectionBackground) 0.dp else CarTheme.carDimensions.defaultVerticalPadding
             ),
         text = title,
         style = CarTheme.carTypography.rowTitle,
-        color = CarTheme.carColors.accent
+        color = CarTheme.carColors.listSectionTitleColor
     )
-    CarListDivider()
+
+    if (!CarTheme.carUiProperties.listSectionBackground)
+        CarListDivider()
 }
 
 /**
@@ -68,16 +73,30 @@ fun CarListSectionTitle(
 @Composable
 fun ColumnScope.CarListSection(
     sectionTitle: String? = null,
+    dividerAtBottom: Boolean = false,
     listItems: List<CarListItem>
 ) {
     sectionTitle?.let {
         CarListSectionTitle(it)
     }
 
-    listItems.forEachIndexed { index, listItem ->
-        listItem.content()
-        if (index < listItems.size - 1) {
-            CarListDivider()
+    val listSectionContainerModifier = if (CarTheme.carUiProperties.listSectionBackground) Modifier
+        .padding(
+            horizontal = CarTheme.carDimensions.defaultHorizontalPadding,
+            vertical = CarTheme.carDimensions.defaultVerticalPadding
+        )
+        .clip(shape = RoundedCornerShape(14.dp))
+        .background(brush = buildGradientBrush(CarTheme.carColors.primarySurface))
+    else Modifier
+
+    Column(
+        modifier = listSectionContainerModifier
+    ) {
+        listItems.forEachIndexed { index, listItem ->
+            listItem.content()
+            if (index < listItems.size - 1 || (dividerAtBottom && !CarTheme.carUiProperties.listSectionBackground)) {
+                CarListDivider()
+            }
         }
     }
 }

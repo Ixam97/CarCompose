@@ -1,4 +1,4 @@
-package de.ixam97.carcompose
+package de.ixam97.carcomposeDemo
 
 import androidx.compose.ui.graphics.Color
 import de.ixam97.carcompose.theme.CarThemeConfig

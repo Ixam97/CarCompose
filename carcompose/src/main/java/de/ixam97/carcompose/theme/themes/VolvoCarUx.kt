@@ -1,6 +1,8 @@
 package de.ixam97.carcompose.theme.themes
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarDimensions
 import de.ixam97.carcompose.theme.CarThemeConfig
@@ -35,7 +37,9 @@ val VolvoBrightColors = CarColors(
     onSurface = volvoBrightOnSurfaceActive,
     onAccentContainer = volvoBrightOnAccent,
     primaryDivider = listOf(volvoBrightDivider),
-    secondaryDivider = listOf(volvoBrightDivider)
+    secondaryDivider = listOf(volvoBrightDivider),
+    textFieldBackground = listOf(volvoBrightSecondarySurface),
+    listSectionTitleColor = volvoBrightOnSurfacePassive
 )
 
 val VolvoDarkColors = CarColors(
@@ -48,14 +52,21 @@ val VolvoDarkColors = CarColors(
     onSurface = volvoDarkOnSurfaceActive,
     onAccentContainer = volvoDarkOnAccent,
     primaryDivider = listOf(volvoDarkDivider),
-    secondaryDivider = listOf(volvoDarkDivider)
+    secondaryDivider = listOf(volvoDarkDivider),
+    textFieldBackground = listOf(volvoDarkSecondarySurface),
+    listSectionTitleColor = volvoDarkOnSurfacePassive
 )
 
-val VolvoTypograph = GenericCarTypography.copy()
+val VolvoTypograph = GenericCarTypography.copy(
+    rowTitle = TextStyle.Default.copy(fontSize = 27.5.sp),
+    rowContent = TextStyle.Default.copy(fontSize = 20.sp),
+)
 
 val VolvoDimensions = CarDimensions()
 
-val VolvoProperties = CarUiProperties()
+val VolvoProperties = CarUiProperties(
+    listSectionBackground = true,
+)
 
 val VolvoCarUxThemeConfig: CarThemeConfig = CarThemeConfig(
     carTypography = VolvoTypograph,

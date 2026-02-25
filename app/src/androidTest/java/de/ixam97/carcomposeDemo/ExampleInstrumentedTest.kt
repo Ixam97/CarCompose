@@ -1,4 +1,4 @@
-package de.ixam97.carcompose
+package de.ixam97.carcomposeDemo
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

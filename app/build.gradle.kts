@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "de.ixam97.carcompose"
+    namespace = "de.ixam97.carcomposeDemo"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "de.ixam97.carcompose"
+        applicationId = "de.ixam97.carcomposeDemo"
         minSdk = 29
         targetSdk = 36
         versionCode = 1

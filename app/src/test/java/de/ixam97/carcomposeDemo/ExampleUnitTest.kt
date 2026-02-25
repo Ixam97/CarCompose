@@ -1,4 +1,4 @@
-package de.ixam97.carcompose
+package de.ixam97.carcomposeDemo
 
 import org.junit.Test
 
