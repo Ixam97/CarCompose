@@ -86,7 +86,7 @@ fun ColumnScope.CarListSection(
             vertical = CarTheme.carDimensions.defaultVerticalPadding
         )
         .clip(shape = RoundedCornerShape(14.dp))
-        .background(brush = buildGradientBrush(CarTheme.carColors.primarySurface))
+        .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
     else Modifier
 
     Column(
@@ -106,6 +106,7 @@ fun ColumnScope.CarListSection(
  */
 fun LazyListScope.carListSection(
     sectionTitle: String? = null,
+    dividerAtBottom: Boolean = false,
     listItems: List<CarListItem>
 ) {
     sectionTitle?.let {
@@ -113,10 +114,35 @@ fun LazyListScope.carListSection(
     }
     listItems.forEachIndexed { index, listItem ->
         item {
-            listItem.content()
-            if (index < listItems.size - 1) {
-                CarListDivider()
+            val elementModifier = if (CarTheme.carUiProperties.listSectionBackground) {
+                if (index == 0 && 0 == (listItems.size - 1)) Modifier
+                    .padding(
+                        horizontal = CarTheme.carDimensions.defaultHorizontalPadding,
+                        vertical = CarTheme.carDimensions.defaultVerticalPadding
+                    )
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                else if (index == 0) Modifier
+                    .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
+                    .padding(top = CarTheme.carDimensions.defaultVerticalPadding)
+                    .clip(RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp))
+                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                else if (index == listItems.size - 1) Modifier
+                    .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
+                    .padding(bottom = CarTheme.carDimensions.defaultVerticalPadding)
+                    .clip(RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp))
+                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                else Modifier
+                    .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
+                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+            } else Modifier
+            Column(elementModifier) {
+                listItem.content()
+                if (index < listItems.size - 1 || (dividerAtBottom && !CarTheme.carUiProperties.listSectionBackground)) {
+                    CarListDivider()
+                }
             }
+
         }
     }
 }
