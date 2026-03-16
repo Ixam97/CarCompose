@@ -1,5 +1,6 @@
 package de.ixam97.carcompose.theme.themes
 
+import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -7,7 +8,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarDimensions
+import de.ixam97.carcompose.theme.CarShapes
 import de.ixam97.carcompose.theme.CarTypography
 import java.io.File
 
@@ -84,5 +87,25 @@ val PolestarCarTypography = CarTypography(
 val PolestarSharedCarDimensions = CarDimensions(
     buttonMinWidth = 144.dp,
     buttonMinHeight = 101.dp,
-    buttonRadiusPercent = 0,
+)
+
+val PolestarSharedColors = CarColors(
+    accent = mainAccentForeground,
+    accentContainer = listOf(mainAccentBackground),
+    background = Color.Black,
+    primarySurface = listOf(primarySurface),
+    secondarySurface = listOf(secondarySurface),
+    onBackground = Color.White,
+    onSurface = Color.White,
+    onAccentContainer = Color.White,
+    primaryDivider = listOf(mainAccentForeground),
+    secondaryDivider = listOf(secondaryDivider),
+    textFieldBackground = listOf(secondarySurface),
+    snackBarAccent = parisDaisy,
+    snackBarForeground = Color.White,
+    snackBarBackground = listOf(graphite)
+)
+
+val PolestarSharedShapes = CarShapes(
+    buttonCornerSize = ZeroCornerSize
 )

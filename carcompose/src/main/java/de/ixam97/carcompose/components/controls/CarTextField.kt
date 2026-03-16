@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,7 +47,7 @@ object CarTextFieldDefaults {
             contentHorizontalPadding = CarTheme.carDimensions.defaultHorizontalPadding
         )
     val shape: Shape
-        @Composable get() = RoundedCornerShape(CarTheme.carDimensions.buttonMinHeight * (CarTheme.carDimensions.buttonRadiusPercent / 1000f))
+        @Composable get() = CarTheme.carShapes.textFieldShape
 }
 
 @Composable

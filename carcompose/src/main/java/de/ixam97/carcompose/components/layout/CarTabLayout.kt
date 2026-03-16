@@ -29,7 +29,6 @@ import de.ixam97.carcompose.components.controls.CarRowBrowsableType
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarColors
 import de.ixam97.carcompose.utils.buildGradientBrush
-import de.ixam97.carcompose.utils.calculateWindowInsets
 
 object CarTabLayout {
     enum class Orientation {
@@ -82,9 +81,7 @@ fun <T> CarTabLayout(
     ) {
         Surface(
             modifier = modifier
-                .fillMaxSize()
-                .background(CarTheme.carColors.background)
-                .padding(calculateWindowInsets()),
+                .fillMaxSize(),
             color = LocalCarColors.current.background,
             contentColor = LocalCarColors.current.onBackground
         ) {

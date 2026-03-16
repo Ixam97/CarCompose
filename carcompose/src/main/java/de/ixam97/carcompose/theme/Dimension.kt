@@ -16,11 +16,12 @@ data class CarDimensions (
     val headerDividerHorizontalPadding: Dp = 0.dp,
     val headerContentHorizontalPadding: Dp = 32.dp,
     val headerHeight: Dp = 90.dp,
-    val buttonRadiusPercent: Int = 50,
     val buttonMinHeight: Dp = 80.dp,
     val buttonMinWidth: Dp = 100.dp,
     val iconButtonSize: Dp = 48.dp,
-    val columnDefaultMaxWidth: Dp = 1165.dp
+    val columnDefaultMaxWidth: Dp = 1165.dp,
+    val segmentedButtonInnerPadding: Dp = 0.dp,
+    val segmentedButtonBorderWidth: Dp = 0.dp
 )
 
 val GenericCarDimensions = CarDimensions()

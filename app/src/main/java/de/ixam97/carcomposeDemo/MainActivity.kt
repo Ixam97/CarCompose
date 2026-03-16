@@ -1,6 +1,5 @@
 package de.ixam97.carcomposeDemo
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -33,8 +33,8 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.currentWindowDpSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -47,14 +47,13 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.WindowCompat
 import de.ixam97.carcompose.components.HeaderIconDummy
+import de.ixam97.carcompose.components.controls.CarButton
 import de.ixam97.carcompose.components.controls.CarButtonDefaults
 import de.ixam97.carcompose.components.controls.CarIconButton
 import de.ixam97.carcompose.components.controls.CarRow
@@ -64,7 +63,9 @@ import de.ixam97.carcompose.components.controls.CarTextField
 import de.ixam97.carcompose.components.layout.CarColumn
 import de.ixam97.carcompose.components.layout.CarListItem
 import de.ixam97.carcompose.components.layout.CarListSection
+import de.ixam97.carcompose.components.layout.CarSnackBarConfig
 import de.ixam97.carcompose.components.layout.CarTabLayout
+import de.ixam97.carcompose.components.layout.LocalCarSnackBarState
 import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.CarThemeConfig
@@ -86,6 +87,9 @@ enum class ThemeSegmentKeys {
 enum class IconSegmentKeys {
     Settings, Delete, Done, Person
 }
+
+const val SnackBar1Identifier = "SnackBar1Identifier"
+const val SnackBar2Identifier = "SnackBar2Identifier"
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -118,7 +122,7 @@ class MainActivity : ComponentActivity() {
             )
 
             var selectedTabKey by rememberSaveable { mutableStateOf(MainTabKeys.Dashboard) }
-            var selectedThemeSegmentKey by rememberSaveable { mutableStateOf<ThemeSegmentKeys?>(ThemeSegmentKeys.Modern) }
+            var selectedThemeSegmentKey by rememberSaveable { mutableStateOf<ThemeSegmentKeys?>(ThemeSegmentKeys.Volvo) }
             var selectedIconSegment by rememberSaveable { mutableStateOf(IconSegmentKeys.Settings)}
 
             val themeConfig: CarThemeConfig = when (selectedThemeSegmentKey) {
@@ -136,14 +140,6 @@ class MainActivity : ComponentActivity() {
                 carThemeConfig = themeConfig,
                 darkTheme = darkMode
             ) {
-
-                val view = LocalView.current
-                if (!view.isInEditMode) {
-                    SideEffect {
-                        val window = (view.context as Activity).window
-                        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkMode
-                    }
-                }
 
                 CarTabLayout(
                     headerTitle = stringResource(R.string.app_name),
@@ -185,6 +181,7 @@ class MainActivity : ComponentActivity() {
                     )
                 ) { key ->
                     val context = LocalContext.current
+                    val carSnackBarState = LocalCarSnackBarState.current
                     CarColumn {
                         CarListSection(
                             sectionTitle = "Basic Info:",
@@ -344,6 +341,49 @@ class MainActivity : ComponentActivity() {
                                         },
                                         trailingContent = {
                                             HeaderIconDummy()
+                                        },
+                                        onBrowse = {
+                                        }
+                                    )
+                                },
+                                CarListItem {
+                                    CarRow(
+                                        content = {
+                                            Row(
+                                                horizontalArrangement = Arrangement.spacedBy(CarTheme.carDimensions.defaultHorizontalPadding)
+                                            ) {
+                                                var timesClicked by remember { mutableIntStateOf(0) }
+                                                val baseSnackConfig = CarSnackBarConfig(
+                                                    identifier = SnackBar1Identifier,
+                                                    content = { Text("Times clicked Button: $timesClicked") },
+                                                    painter = rememberVectorPainter(Icons.Default.Settings),
+                                                    actionText = "Dismiss",
+                                                    onAction = { carSnackBarState.cancelSnackBar(SnackBar1Identifier) }
+                                                )
+
+                                                CarButton(
+                                                    onClick = {
+                                                        timesClicked++
+                                                        carSnackBarState.showSnackBar(baseSnackConfig.copy(isError = (timesClicked % 2 == 0)))
+                                                    }
+                                                ) { Text("SnackBar 1") }
+
+                                                CarButton(
+                                                    onClick = {
+                                                        if (carSnackBarState.isSnackBarVisible(SnackBar2Identifier)) {
+                                                            carSnackBarState.cancelSnackBar(SnackBar2Identifier)
+                                                        } else {
+                                                            carSnackBarState.showSnackBar(
+                                                                CarSnackBarConfig(
+                                                                    identifier = SnackBar2Identifier,
+                                                                    content = { Text("Snack Bar 2") },
+                                                                    duration = null
+                                                                )
+                                                            )
+                                                        }
+                                                    }
+                                                ) { Text("SnackBar 2") }
+                                            }
                                         }
                                     )
                                 },

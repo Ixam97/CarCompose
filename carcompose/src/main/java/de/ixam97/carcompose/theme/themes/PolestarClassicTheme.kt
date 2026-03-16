@@ -3,22 +3,12 @@ package de.ixam97.carcompose.theme.themes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
 
-val PolestarClassicCarColors = CarColors(
-    accent = mainAccentForeground,
-    accentContainer = listOf(mainAccentBackground),
+val PolestarClassicCarColors = PolestarSharedColors.copy(
     background = Color.Black,
-    primarySurface = listOf(primarySurface),
-    secondarySurface = listOf(secondarySurface),
-    onBackground = Color.White,
-    onSurface = Color.White,
-    onAccentContainer = Color.White,
-    primaryDivider = listOf(mainAccentForeground),
-    secondaryDivider = listOf(secondaryDivider),
-    textFieldBackground = listOf(secondarySurface)
+    primaryDivider = listOf(mainAccentForeground)
 )
 
 val PolestarClassicCarDimensions = PolestarSharedCarDimensions.copy(
@@ -38,5 +28,6 @@ val PolestarClassicThemeConfig: CarThemeConfig = CarThemeConfig(
     carTypography = PolestarCarTypography,
     carDarkColors = PolestarClassicCarColors,
     carDimensions = PolestarClassicCarDimensions,
-    carUiProperties = PolestarClassicCarUiProperties
+    carUiProperties = PolestarClassicCarUiProperties,
+    carShapes = PolestarSharedShapes
 )

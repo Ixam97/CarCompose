@@ -1,13 +1,19 @@
 package de.ixam97.carcompose.theme.themes
 
+import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarDimensions
+import de.ixam97.carcompose.theme.CarShapes
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
+import de.ixam97.carcompose.theme.GenericCarColors
 import de.ixam97.carcompose.theme.GenericCarTypography
+import kotlin.collections.listOf
 
 val volvoBrightAccent = Color(0xFF4A6DA8)
 val volvoBrightBackground = Color(0xFFEBEBEB)
@@ -36,10 +42,16 @@ val VolvoBrightColors = CarColors(
     onBackground = volvoBrightOnSurfaceActive,
     onSurface = volvoBrightOnSurfaceActive,
     onAccentContainer = volvoBrightOnAccent,
-    primaryDivider = listOf(volvoBrightDivider),
+    primaryDivider = listOf(Color.Transparent),
     secondaryDivider = listOf(volvoBrightDivider),
     textFieldBackground = listOf(volvoBrightSecondarySurface),
-    listSectionTitleColor = volvoBrightOnSurfacePassive
+    listSectionTitleColor = volvoBrightOnSurfacePassive,
+    disabledOverlay = Color.White.copy(alpha = GenericCarColors.disabledAlpha),
+    snackBarBackground = listOf(volvoDarkSecondarySurface),
+    snackBarForeground = volvoDarkOnSurfaceActive,
+    snackBarAccent = volvoDarkAccent,
+    segmentedButtonBackground = listOf(volvoBrightSecondarySurface),
+    segmentedButtonBorder = volvoBrightBackground
 )
 
 val VolvoDarkColors = CarColors(
@@ -51,10 +63,15 @@ val VolvoDarkColors = CarColors(
     onBackground = volvoDarkOnSurfaceActive,
     onSurface = volvoDarkOnSurfaceActive,
     onAccentContainer = volvoDarkOnAccent,
-    primaryDivider = listOf(volvoDarkDivider),
+    primaryDivider = listOf(Color.Transparent),
     secondaryDivider = listOf(volvoDarkDivider),
     textFieldBackground = listOf(volvoDarkSecondarySurface),
-    listSectionTitleColor = volvoDarkOnSurfacePassive
+    listSectionTitleColor = volvoDarkOnSurfacePassive,
+    snackBarBackground = listOf(volvoBrightSecondarySurface),
+    snackBarForeground = volvoBrightOnSurfaceActive,
+    snackBarAccent = volvoBrightAccent,
+    segmentedButtonBackground = listOf(volvoDarkSecondarySurface),
+    segmentedButtonBorder = Color.Transparent
 )
 
 val VolvoTypograph = GenericCarTypography.copy(
@@ -62,10 +79,19 @@ val VolvoTypograph = GenericCarTypography.copy(
     rowContent = TextStyle.Default.copy(fontSize = 20.sp),
 )
 
-val VolvoDimensions = CarDimensions()
+val VolvoDimensions = CarDimensions(
+    segmentedButtonBorderWidth = 1.75.dp,
+    segmentedButtonInnerPadding = 5.dp
+)
 
 val VolvoProperties = CarUiProperties(
     listSectionBackground = true,
+)
+
+val VolvoShapes = CarShapes(
+    buttonCornerSize = CornerSize(8.dp),
+    segmentedButtonOuterCornerSize = CornerSize(50),
+    textFieldShape = RoundedCornerShape(8.dp)
 )
 
 val VolvoCarUxThemeConfig: CarThemeConfig = CarThemeConfig(
@@ -73,5 +99,6 @@ val VolvoCarUxThemeConfig: CarThemeConfig = CarThemeConfig(
     carDarkColors = VolvoDarkColors,
     carBrightColors = VolvoBrightColors,
     carDimensions = VolvoDimensions,
-    carUiProperties = VolvoProperties
+    carUiProperties = VolvoProperties,
+    carShapes = VolvoShapes
 )

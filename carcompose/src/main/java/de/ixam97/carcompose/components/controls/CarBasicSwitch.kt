@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -28,7 +27,6 @@ import androidx.compose.ui.node.LayoutModifierNode
 import androidx.compose.ui.node.ModifierNodeElement
 import androidx.compose.ui.node.invalidateMeasurement
 import androidx.compose.ui.platform.InspectorInfo
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
@@ -49,7 +47,6 @@ fun CarBasicSwitch(
     @Suppress("NAME_SHADOWING")
     val interactionSource = interactionSource ?: remember { MutableInteractionSource() }
 
-    val localDensity = LocalDensity.current
     val accentContainerBrush = buildGradientBrush(CarTheme.carColors.accentContainer)
     val disabledOverlay = CarTheme.carColors.disabledOverlay
 
@@ -57,8 +54,8 @@ fun CarBasicSwitch(
     val thumbTextColor = CarTheme.carColors.onAccentContainer
 
 
-    val cornerPercentEdge = CarTheme.carDimensions.buttonRadiusPercent
-    val cornerPercentInside = cornerPercentEdge / 10
+    val trackShape = CarTheme.carShapes.switchTrackShape
+    val thumbShape = CarTheme.carShapes.switchThumbShape
 
     val thumbWidth = CarTheme.carDimensions.buttonMinWidth
     val thumbHeight = CarTheme.carDimensions.buttonMinHeight
@@ -67,7 +64,7 @@ fun CarBasicSwitch(
         modifier = modifier
             .height(thumbHeight)
             .width(thumbWidth * 2)
-            .clip(RoundedCornerShape(cornerPercentEdge))
+            .clip(trackShape)
             .background(CarTheme.carColors.secondarySurface.first())
             .drawWithContent {
                 drawContent()
@@ -78,13 +75,14 @@ fun CarBasicSwitch(
             Box(
                 modifier = Modifier
                     .then(ThumbElement(interactionSource, isChecked, thumbWidth))
+                    .align(Alignment.CenterStart)
             ) {
                 Box(modifier = Modifier
                     .width(thumbWidth)
                     .height(thumbHeight)
                     .background(
                         brush = accentContainerBrush,
-                        shape = RoundedCornerShape(cornerPercentInside)
+                        shape = thumbShape // TODO: Rework switch for more flexibility
                     )
                 )
             }

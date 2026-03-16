@@ -1,18 +1,23 @@
 package de.ixam97.carcompose.components.controls
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
+import de.ixam97.carcompose.utils.buildGradientBrush
 
 object CarSegmentedButton {
     data class Segment<T>(
@@ -31,23 +36,32 @@ fun <T> CarSegmentedButton(
     onSegmentChanged: (T?) -> Unit,
     canDeselect: Boolean = false,
     colors: CarButtonColors = CarButtonDefaults.colors,
-    shape: Shape = CarButtonDefaults.shape,
+    outerCornerSize: CornerSize = CarTheme.carShapes.segmentedButtonOuterCornerSize,
+    innerCornerSize: CornerSize = CarTheme.carShapes.segmentedButtonInnerCornerSize,
     dimensions: CarButtonDimensions = CarButtonDefaults.dimensions
 ) {
     if (segments.isEmpty()) {
         throw(Exception("Segmented button contents cannot be empty!"))
     }
 
+    val outerShape = RoundedCornerShape(outerCornerSize)
+
     Row(
         modifier = modifier
-            .height(IntrinsicSize.Min),
+            .height(IntrinsicSize.Min)
+            .clip(outerShape)
+            .border(
+                width = CarTheme.carDimensions.segmentedButtonBorderWidth,
+                color = CarTheme.carColors.segmentedButtonBorder,
+                shape = outerShape
+            )
+            .background(buildGradientBrush(CarTheme.carColors.segmentedButtonBackground))
+            .padding(CarTheme.carDimensions.segmentedButtonInnerPadding + CarTheme.carDimensions.segmentedButtonBorderWidth),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         segments.forEachIndexed { index, segment ->
             val enabled = segment.enabled
-            val cornerPercentEdge = CarTheme.carDimensions.buttonRadiusPercent
-            val cornerPercentInside = cornerPercentEdge / 10
             CarButton(
                 modifier = Modifier
                     .weight(1f)
@@ -59,18 +73,18 @@ fun <T> CarSegmentedButton(
                 },
                 shape = when (index) {
                     0 -> RoundedCornerShape(
-                        topStartPercent = cornerPercentEdge,
-                        bottomStartPercent = cornerPercentEdge,
-                        topEndPercent = cornerPercentInside,
-                        bottomEndPercent = cornerPercentInside
+                        outerCornerSize,
+                        innerCornerSize,
+                        innerCornerSize,
+                        outerCornerSize
                     )
                     (segments.size - 1) -> RoundedCornerShape(
-                        topEndPercent = cornerPercentEdge,
-                        bottomEndPercent = cornerPercentEdge,
-                        topStartPercent = cornerPercentInside,
-                        bottomStartPercent = cornerPercentInside
+                        innerCornerSize,
+                        outerCornerSize,
+                        outerCornerSize,
+                        innerCornerSize
                     )
-                    else -> RoundedCornerShape(cornerPercentInside)
+                    else -> RoundedCornerShape(innerCornerSize)
                 },
                 colors = colors,
                 dimensions = dimensions,

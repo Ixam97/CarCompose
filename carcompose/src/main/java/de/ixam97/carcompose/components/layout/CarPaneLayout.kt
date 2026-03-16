@@ -4,14 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarColors
-import de.ixam97.carcompose.utils.calculateWindowInsets
 
 /**
  * Basic car layout including header and content
@@ -34,9 +31,7 @@ fun CarPaneLayout(
     ) {
         Surface(
             modifier = modifier
-                .fillMaxSize()
-                .background(CarTheme.carColors.background)
-                .padding(calculateWindowInsets()),
+                .fillMaxSize(),
             color = LocalCarColors.current.background,
             contentColor = LocalCarColors.current.onBackground
         ) {

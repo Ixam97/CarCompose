@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
@@ -51,7 +50,7 @@ object CarButtonDefaults {
             activeTextColor = CarTheme.carColors.onAccentContainer
         )
     val shape: Shape
-        @Composable get() = RoundedCornerShape(CarTheme.carDimensions.buttonRadiusPercent)
+        @Composable get() = CarTheme.carShapes.buttonShape
     val dimensions: CarButtonDimensions
         @Composable get () = CarButtonDimensions(
             minWidth = CarTheme.carDimensions.buttonMinWidth,
