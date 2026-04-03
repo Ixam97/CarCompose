@@ -21,7 +21,10 @@ data class CarDimensions (
     val iconButtonSize: Dp = 48.dp,
     val columnDefaultMaxWidth: Dp = 1165.dp,
     val segmentedButtonInnerPadding: Dp = 0.dp,
-    val segmentedButtonBorderWidth: Dp = 0.dp
+    val segmentedButtonBorderWidth: Dp = 0.dp,
+    val radioButtonOuterSize: Dp = 43.dp,
+    val radioButtonInnerSize: Dp = radioButtonOuterSize / 2,
+    val radioButtonBorderWidth: Dp = 2.dp
 )
 
 val GenericCarDimensions = CarDimensions()

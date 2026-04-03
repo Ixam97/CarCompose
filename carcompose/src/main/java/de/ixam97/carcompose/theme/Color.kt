@@ -31,7 +31,8 @@ val GenericCarColors = CarColors(
     onSurface = genericOnSurface,
     onAccentContainer = genericOnAccent,
     primaryDivider = listOf(genericPrimarySurface),
-    secondaryDivider = listOf(genericPrimarySurface)
+    secondaryDivider = listOf(genericPrimarySurface),
+    radioButtonBorder = genericPrimarySurface
 )
 
 @Immutable
@@ -56,7 +57,12 @@ data class CarColors (
     val textFieldTextColor: Color = onBackground,
     val snackBarBackground: List<Color> = secondarySurface,
     val snackBarForeground: Color = onSurface,
-    val snackBarAccent: Color = accent
+    val snackBarAccent: Color = accent,
+    val radioButtonBorder: Color,
+    val radioButtonSelectedBorder: Color = accent,
+    val radioButtonBackground: Color = Color.Transparent,
+    val radioButtonSelectedBackground: Color = radioButtonBackground,
+    val radioButtonSelector: Color = accent,
 )
 
 val LocalCarColors = staticCompositionLocalOf {

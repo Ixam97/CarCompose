@@ -28,7 +28,8 @@ val customCarColors = CarColors(
         Color(0xff161d39),
     ),
     primarySurface = GenericCarColors.primarySurface,
-    secondaryDivider = GenericCarColors.secondaryDivider
+    secondaryDivider = GenericCarColors.secondaryDivider,
+    radioButtonBorder = GenericCarColors.radioButtonBorder
 )
 
 val customCarDimensions = GenericCarDimensions

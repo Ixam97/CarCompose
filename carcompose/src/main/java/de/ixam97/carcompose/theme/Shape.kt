@@ -1,5 +1,6 @@
 package de.ixam97.carcompose.theme
 
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Immutable
@@ -11,7 +12,8 @@ val GenericCarShapes = CarShapes(
     buttonCornerSize = CornerSize(50),
     segmentedButtonOuterCornerSize = CornerSize(50),
     segmentedButtonInnerCornerSize = CornerSize(8.dp),
-    textFieldShape = RoundedCornerShape(8.dp)
+    textFieldShape = RoundedCornerShape(8.dp),
+    radioButtonOuterShape = CircleShape
 )
 
 @Immutable
@@ -23,7 +25,9 @@ data class CarShapes(
     val segmentedButtonBackgroundCornerSize: CornerSize = segmentedButtonOuterCornerSize,
     val textFieldShape: Shape = RoundedCornerShape(segmentedButtonInnerCornerSize),
     val switchTrackShape: Shape = buttonShape,
-    val switchThumbShape: Shape = switchTrackShape
+    val switchThumbShape: Shape = switchTrackShape,
+    val radioButtonOuterShape: Shape,
+    val radioButtonInnerShape: Shape = radioButtonOuterShape
 )
 
 val LocalCarShapes = staticCompositionLocalOf {

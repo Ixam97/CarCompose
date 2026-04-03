@@ -2,6 +2,7 @@ package de.ixam97.carcompose.theme.themes
 
 import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -21,6 +22,7 @@ val primarySurface = Color(0xFF1B1C1D)
 val secondarySurface = Color(0xFF242526)
 val buttonSurface = secondarySurface
 
+val radioButtonBorder = Color(0xFF757575)
 val primaryDivider = Color(0xFF424242)
 val secondaryDivider = Color(0xFF242526)
 
@@ -87,6 +89,8 @@ val PolestarCarTypography = CarTypography(
 val PolestarSharedCarDimensions = CarDimensions(
     buttonMinWidth = 144.dp,
     buttonMinHeight = 101.dp,
+    radioButtonOuterSize = 60.dp,
+    radioButtonInnerSize = 37.dp
 )
 
 val PolestarSharedColors = CarColors(
@@ -103,9 +107,14 @@ val PolestarSharedColors = CarColors(
     textFieldBackground = listOf(secondarySurface),
     snackBarAccent = parisDaisy,
     snackBarForeground = Color.White,
-    snackBarBackground = listOf(graphite)
+    snackBarBackground = listOf(graphite),
+    radioButtonBorder = radioButtonBorder,
+    radioButtonSelector = mainAccentBackground,
+    radioButtonSelectedBorder = mainAccentBackground,
+    radioButtonSelectedBackground = Color.Transparent
 )
 
 val PolestarSharedShapes = CarShapes(
-    buttonCornerSize = ZeroCornerSize
+    buttonCornerSize = ZeroCornerSize,
+    radioButtonOuterShape = RectangleShape
 )

@@ -1,5 +1,6 @@
 package de.ixam97.carcompose.theme.themes
 
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
@@ -23,6 +24,7 @@ val volvoBrightOnSurfaceActive = Color(0xFF141414)
 val volvoBrightOnSurfacePassive = Color(0xFF707070)
 val volvoBrightOnAccent = Color(0xFFFFFFFF)
 val volvoBrightDivider = Color(0xFFE2E2E2)
+val volvoBrightRadioButtonBorder = Color(0xFFC5C5C5)
 
 val volvoDarkAccent = Color(0xFF1F78D1)
 val volvoDarkBackground = Color(0xFF141414)
@@ -32,6 +34,7 @@ val volvoDarkOnSurfaceActive = Color(0xFFFFFFFF)
 val volvoDarkOnSurfacePassive = Color(0xFFA2A2A2)
 val volvoDarkOnAccent = Color(0xFFFFFFFF)
 val volvoDarkDivider = Color(0xFF313131)
+val volvoDarkRadioButtonBorder = Color(0xFF4C4C4C)
 
 val VolvoBrightColors = CarColors(
     accent = volvoBrightAccent,
@@ -51,7 +54,11 @@ val VolvoBrightColors = CarColors(
     snackBarForeground = volvoDarkOnSurfaceActive,
     snackBarAccent = volvoDarkAccent,
     segmentedButtonBackground = listOf(volvoBrightSecondarySurface),
-    segmentedButtonBorder = volvoBrightBackground
+    segmentedButtonBorder = volvoBrightBackground,
+    radioButtonBorder = volvoBrightRadioButtonBorder,
+    radioButtonSelectedBorder = Color.Transparent,
+    radioButtonSelectedBackground = volvoBrightAccent,
+    radioButtonSelector = volvoBrightOnAccent
 )
 
 val VolvoDarkColors = CarColors(
@@ -71,7 +78,11 @@ val VolvoDarkColors = CarColors(
     snackBarForeground = volvoBrightOnSurfaceActive,
     snackBarAccent = volvoBrightAccent,
     segmentedButtonBackground = listOf(volvoDarkSecondarySurface),
-    segmentedButtonBorder = Color.Transparent
+    segmentedButtonBorder = Color.Transparent,
+    radioButtonBorder = volvoDarkRadioButtonBorder,
+    radioButtonSelectedBorder = Color.Transparent,
+    radioButtonSelectedBackground = volvoDarkAccent,
+    radioButtonSelector = volvoDarkOnAccent
 )
 
 val VolvoTypograph = GenericCarTypography.copy(
@@ -91,7 +102,8 @@ val VolvoProperties = CarUiProperties(
 val VolvoShapes = CarShapes(
     buttonCornerSize = CornerSize(8.dp),
     segmentedButtonOuterCornerSize = CornerSize(50),
-    textFieldShape = RoundedCornerShape(8.dp)
+    textFieldShape = RoundedCornerShape(8.dp),
+    radioButtonOuterShape = CircleShape
 )
 
 val VolvoCarUxThemeConfig: CarThemeConfig = CarThemeConfig(
