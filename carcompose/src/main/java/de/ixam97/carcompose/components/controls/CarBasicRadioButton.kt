@@ -8,6 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -86,16 +88,19 @@ fun CarBasicRadioButton(
             },
         contentAlignment = Alignment.Center
     ) {
+        // Using padding instead of size to archive a more consistent look on low dip displays.
+        val calculatedPadding = ((dimensions.outerSize - dimensions.innerSize) / 2.0f)
         AnimatedVisibility(
             visible = isSelected,
             modifier = Modifier
+                .padding(calculatedPadding)
                 .clip(shapes.innerShape),
             enter = expandIn(TweenSpec<IntSize>(durationMillis = 100)),
             exit = shrinkOut(TweenSpec<IntSize>(durationMillis = 100))
         ) {
             Box(
                 modifier = Modifier
-                    .size(dimensions.innerSize)
+                    .fillMaxSize()
                     .background(colors.selectorColor)
             )
         }
