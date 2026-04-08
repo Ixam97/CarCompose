@@ -63,6 +63,7 @@ data class CarColors (
     val radioButtonBackground: Color = Color.Transparent,
     val radioButtonSelectedBackground: Color = radioButtonBackground,
     val radioButtonSelector: Color = accent,
+    val backNavIconColor: Color = accent
 )
 
 val LocalCarColors = staticCompositionLocalOf {

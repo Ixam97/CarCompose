@@ -19,7 +19,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarTheme
 
@@ -103,8 +102,8 @@ fun CarRow(
                 Spacer(modifier = Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
                 Icon(
                     modifier = Modifier
-                        .size(48.dp),
-                    painter = if (browsableType == CarRowBrowsableType.External) CarIcons.arrowOutwards else CarIcons.arrowForwards,
+                        .size(CarTheme.carDimensions.iconButtonSize),
+                    painter = if (browsableType == CarRowBrowsableType.External) CarIcons.arrowOutwards else CarIcons.browseIcon,
                     tint = LocalContentColor.current,
                     contentDescription = null
                 )

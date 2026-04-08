@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import de.ixam97.carcompose.components.controls.CarBackIconButton
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarDimensions
 import de.ixam97.carcompose.theme.LocalCarUiProperties
@@ -28,6 +29,7 @@ fun CarHeader(
     isLoading: Boolean = false,
     showDivider: Boolean = true,
     title: String? = null,
+    onBackAction: (() -> Unit)? = null,
     leadingContent: @Composable (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     iconButtons: List<@Composable ()-> Unit> = emptyList<@Composable ()-> Unit>(),
@@ -48,6 +50,11 @@ fun CarHeader(
                     .height(67.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                if (onBackAction != null) {
+                    CarBackIconButton(onBackAction)
+                    Spacer(Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))
+                }
+
                 if (leadingContent != null) {
                     leadingContent()
                     Spacer(Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding))

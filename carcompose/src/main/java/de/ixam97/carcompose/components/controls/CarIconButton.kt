@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import de.ixam97.carcompose.resources.CarIcons
 import de.ixam97.carcompose.theme.CarTheme
 
 @Composable
@@ -63,6 +64,17 @@ fun CarIconButton(
             tint = currentTint.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
         )
     }
+}
+
+@Composable
+fun CarBackIconButton(
+    onBack: () -> Unit
+) {
+    CarIconButton(
+        painter = CarIcons.backIcon,
+        onClick = onBack,
+        tint = CarTheme.carColors.backNavIconColor
+    )
 }
 
 @Composable

@@ -3,6 +3,7 @@ package de.ixam97.carcompose.theme.themes
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import de.ixam97.carcompose.theme.CarNavIconStyle
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
 
@@ -22,6 +23,7 @@ val PolestarClassicCarUiProperties = CarUiProperties(
     headerContentAlignment = Alignment.CenterStart,
     headerIconButtonDividers = false,
     headerDividerBelowTabLayout = false,
+    rowBrowseIconStyle = CarNavIconStyle.ChevronForwardsSmall
 )
 
 val PolestarClassicThemeConfig: CarThemeConfig = CarThemeConfig(

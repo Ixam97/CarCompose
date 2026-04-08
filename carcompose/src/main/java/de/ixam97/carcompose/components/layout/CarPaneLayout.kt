@@ -18,6 +18,7 @@ fun CarPaneLayout(
     modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     headerTitle: String = "",
+    onBackAction: (() -> Unit)? = null,
     headerStartContent: @Composable (() -> Unit)? = null,
     headerContent: @Composable () -> Unit = { },
     headerEndContent: @Composable (() -> Unit)? = null,
@@ -39,6 +40,7 @@ fun CarPaneLayout(
                 CarHeader(
                     isLoading = isLoading,
                     title = headerTitle,
+                    onBackAction = onBackAction,
                     leadingContent = headerStartContent,
                     content = { headerContent() },
                     trailingContent = headerEndContent,

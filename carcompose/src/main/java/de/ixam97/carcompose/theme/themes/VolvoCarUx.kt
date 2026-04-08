@@ -5,8 +5,10 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.ixam97.carcompose.theme.CarNavIconStyle
 import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarDimensions
 import de.ixam97.carcompose.theme.CarShapes
@@ -21,7 +23,7 @@ val volvoBrightBackground = Color(0xFFEBEBEB)
 val volvoBrightPrimarySurface = Color(0xFFF5F5F5)
 val volvoBrightSecondarySurface = Color(0xFFFFFFFF)
 val volvoBrightOnSurfaceActive = Color(0xFF141414)
-val volvoBrightOnSurfacePassive = Color(0xFF707070)
+val volvoBrightOnSurfacePassive = Color(0xFF5C5C5C) // Color(0xFF707070)
 val volvoBrightOnAccent = Color(0xFFFFFFFF)
 val volvoBrightDivider = Color(0xFFE2E2E2)
 val volvoBrightRadioButtonBorder = Color(0xFFC5C5C5)
@@ -58,7 +60,8 @@ val VolvoBrightColors = CarColors(
     radioButtonBorder = volvoBrightRadioButtonBorder,
     radioButtonSelectedBorder = Color.Transparent,
     radioButtonSelectedBackground = volvoBrightAccent,
-    radioButtonSelector = volvoBrightOnAccent
+    radioButtonSelector = volvoBrightOnAccent,
+    backNavIconColor = volvoBrightOnSurfaceActive
 )
 
 val VolvoDarkColors = CarColors(
@@ -82,21 +85,27 @@ val VolvoDarkColors = CarColors(
     radioButtonBorder = volvoDarkRadioButtonBorder,
     radioButtonSelectedBorder = Color.Transparent,
     radioButtonSelectedBackground = volvoDarkAccent,
-    radioButtonSelector = volvoDarkOnAccent
+    radioButtonSelector = volvoDarkOnAccent,
+    backNavIconColor = volvoDarkOnSurfaceActive
 )
 
 val VolvoTypograph = GenericCarTypography.copy(
+    title = TextStyle.Default.copy(fontSize = 27.5.sp, fontWeight = FontWeight.SemiBold),
     rowTitle = TextStyle.Default.copy(fontSize = 27.5.sp),
     rowContent = TextStyle.Default.copy(fontSize = 20.sp),
 )
 
 val VolvoDimensions = CarDimensions(
+    iconButtonSize = 43.dp,
+    headerHeight = 106.dp,
     segmentedButtonBorderWidth = 1.75.dp,
     segmentedButtonInnerPadding = 5.dp
 )
 
 val VolvoProperties = CarUiProperties(
     listSectionBackground = true,
+    backButtonIconStyle = CarNavIconStyle.ChevronBackwards,
+    rowBrowseIconStyle = CarNavIconStyle.ChevronForwards
 )
 
 val VolvoShapes = CarShapes(

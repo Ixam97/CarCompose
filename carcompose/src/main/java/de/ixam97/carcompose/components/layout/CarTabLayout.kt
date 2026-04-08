@@ -60,6 +60,7 @@ fun <T> CarTabLayout(
     tabs: List<CarTabLayout.Tab<T>>,
     maxTabs: Int = 4,
     headerTitle: String = "",
+    onBackAction: (() -> Unit)? = null,
     headerStartContent: @Composable (() -> Unit)? = null,
     headerContent: @Composable () -> Unit = { },
     headerEndContent: @Composable (() -> Unit)? = null,
@@ -89,6 +90,7 @@ fun <T> CarTabLayout(
                 CarHeader(
                     isLoading = isLoading,
                     title = headerTitle,
+                    onBackAction = onBackAction,
                     leadingContent = headerStartContent,
                     content = { headerContent() },
                     trailingContent = headerEndContent,

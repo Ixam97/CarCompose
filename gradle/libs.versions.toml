@@ -9,7 +9,7 @@ lifecycle = "2.10.0"
 activityCompose = "1.10.1"
 composeBom = "2025.08.01"
 core = "1.17.0"
-nav3Core = "1.0.1"
+nav3Core = "1.1.0-rc01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,6 +29,7 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-material3-adaptive = { group = "androidx.compose.material3.adaptive", name="adaptive" }
+androidx-material-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
 github-scrollbar = {group = "com.github.nanihadesuka", name = "LazyColumnScrollbar", version = "2.2.0"}
