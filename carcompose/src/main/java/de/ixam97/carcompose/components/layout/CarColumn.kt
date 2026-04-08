@@ -13,23 +13,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.utils.DefaultScrollbarSettings
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import my.nanihadesuka.compose.ColumnScrollbar
 import my.nanihadesuka.compose.LazyColumnScrollbar
+import my.nanihadesuka.compose.ScrollbarSettings
 
 @Composable
 fun CarColumn(
@@ -39,26 +31,11 @@ fun CarColumn(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val state = rememberScrollState()
-    // var isInit by remember { mutableStateOf(true) }
-
-    val thumbSelectedColor = CarTheme.carColors.accent
-
+    val carScrollbarSettings = carScrollbarSettings()
     val isScrollable = rememberUpdatedState(state.canScrollForward || state.canScrollBackward)
     val scrollbarSettings by rememberUpdatedState {
-        DefaultScrollbarSettings.copy(
-            enabled = true, // isScrollable.value,
-            thumbThickness = if (isScrollable.value) DefaultScrollbarSettings.thumbThickness else 0.dp,
-            alwaysShowScrollbar = false,
-            thumbSelectedColor = thumbSelectedColor
-        )
+        carScrollbarSettings.copy(enabled = isScrollable.value)
     }
-
-//    LaunchedEffect(null) {
-//        CoroutineScope(Dispatchers.Default).launch {
-//            delay(1000)
-//            isInit = false
-//        }
-//    }
 
     Box(
         modifier = modifier
@@ -89,24 +66,11 @@ fun CarLazyColumn(
     content: LazyListScope.() -> Unit
 ) {
     val state = rememberLazyListState()
-    var isInit by remember { mutableStateOf(true) }
-
-    val thumbSelectedColor = CarTheme.carColors.accent
-
+    val carScrollbarSettings = carScrollbarSettings()
     val isScrollable = rememberUpdatedState(state.canScrollForward || state.canScrollBackward)
-    val scrollbarSettings by rememberUpdatedState {
-        DefaultScrollbarSettings.copy(
-            enabled = isScrollable.value,
-            alwaysShowScrollbar = isInit,
-            thumbSelectedColor = thumbSelectedColor
-        )
-    }
 
-    LaunchedEffect(null) {
-        CoroutineScope(Dispatchers.Default).launch {
-            delay(1000)
-            isInit = false
-        }
+    val scrollbarSettings by rememberUpdatedState {
+        carScrollbarSettings.copy(enabled = isScrollable.value)
     }
 
     Box(
@@ -128,4 +92,19 @@ fun CarLazyColumn(
             )
         }
     }
+}
+
+@Composable
+internal fun carScrollbarSettings() : ScrollbarSettings {
+
+    val thumbSelectedColor = CarTheme.carColors.accent
+    val thumbUnselectedColor = CarTheme.carColors.onSurface.copy(alpha = 0.7f)
+    val thumbShape = CarTheme.carShapes.buttonShape
+
+    return DefaultScrollbarSettings.copy(
+        alwaysShowScrollbar = false,
+        thumbSelectedColor = thumbSelectedColor,
+        thumbUnselectedColor = thumbUnselectedColor,
+        thumbShape = thumbShape
+    )
 }
