@@ -5,91 +5,34 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
-import androidx.compose.material3.adaptive.currentWindowDpSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
-import de.ixam97.carcompose.components.HeaderIconDummy
-import de.ixam97.carcompose.components.controls.CarButton
-import de.ixam97.carcompose.components.controls.CarButtonDefaults
-import de.ixam97.carcompose.components.controls.CarIconButton
-import de.ixam97.carcompose.components.controls.CarRow
-import de.ixam97.carcompose.components.controls.CarRowSwitch
-import de.ixam97.carcompose.components.controls.CarSegmentedButton
-import de.ixam97.carcompose.components.controls.CarTextField
-import de.ixam97.carcompose.components.layout.CarColumn
-import de.ixam97.carcompose.components.layout.CarListItem
-import de.ixam97.carcompose.components.layout.CarListSection
-import de.ixam97.carcompose.components.layout.CarSnackBarConfig
-import de.ixam97.carcompose.components.layout.CarTabLayout
-import de.ixam97.carcompose.components.layout.LocalCarSnackBarState
-import de.ixam97.carcompose.resources.CarIcons
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.theme.CarThemeConfig
-import de.ixam97.carcompose.theme.GenericCarThemeConfig
-import de.ixam97.carcompose.theme.themes.PolestarClassicThemeConfig
-import de.ixam97.carcompose.theme.themes.PolestarModernThemeConfig
-import de.ixam97.carcompose.theme.themes.VolvoCarUxThemeConfig
-import kotlin.collections.listOf
-
-
-enum class MainTabKeys {
-    Dashboard, Enabled, Disabled
-}
-
-enum class ThemeSegmentKeys {
-    Classic, Modern, Generic, Custom, Volvo
-}
-
-enum class IconSegmentKeys {
-    Settings, Delete, Done, Person
-}
-
-const val SnackBar1Identifier = "SnackBar1Identifier"
-const val SnackBar2Identifier = "SnackBar2Identifier"
+import de.ixam97.carcomposeDemo.navigationDecorators.LocalSharedViewModelStoreOwner
+import de.ixam97.carcomposeDemo.navigationDecorators.SharedViewModelStoreNavEntryDecorator
+import de.ixam97.carcomposeDemo.navigationDecorators.rememberSharedViewModelStoreNavEntryDecorator
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -98,355 +41,85 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
 
-            var switchState by rememberSaveable { mutableStateOf(false) }
-            var autoBrightModeSwitchState by rememberSaveable { mutableStateOf(true) }
+            val mainViewModel: MainViewModel = viewModel()
+            val backStack = rememberNavBackStack(MainScreenNavKey)
 
-            val dashboardTab = CarTabLayout.Tab(
-                title = "Dashboard",
-                icon = painterResource(de.ixam97.carcompose.R.drawable.ic_grid_48),
-                iconActive = painterResource(de.ixam97.carcompose.R.drawable.ic_grid_filled_48),
-                key = MainTabKeys.Dashboard
-            )
+            val themeState = mainViewModel.themeState.collectAsState()
 
-            val enabledTab = CarTabLayout.Tab(
-                title = "Enabled Tab",
-                icon = painterResource(de.ixam97.carcompose.R.drawable.ic_arrow_outwards_48),
-                key = MainTabKeys.Enabled
-            )
-
-            val disabledTab = CarTabLayout.Tab(
-                title = "DisabledTab",
-                icon = painterResource(de.ixam97.carcompose.R.drawable.ic_close_48),
-                enabled = switchState,
-                key = MainTabKeys.Disabled
-            )
-
-            var selectedTabKey by rememberSaveable { mutableStateOf(MainTabKeys.Dashboard) }
-            var selectedThemeSegmentKey by rememberSaveable { mutableStateOf<ThemeSegmentKeys?>(ThemeSegmentKeys.Volvo) }
-            var selectedIconSegment by rememberSaveable { mutableStateOf(IconSegmentKeys.Settings)}
-
-            val themeConfig: CarThemeConfig = when (selectedThemeSegmentKey) {
-                ThemeSegmentKeys.Modern -> PolestarModernThemeConfig
-                ThemeSegmentKeys.Classic -> PolestarClassicThemeConfig
-                ThemeSegmentKeys.Volvo -> VolvoCarUxThemeConfig
-                ThemeSegmentKeys.Custom -> CustomCarThemeConfig
-                else -> GenericCarThemeConfig
+            val darkMode = when (themeState.value.themeBrightnessMode) {
+                ThemeBrightnessMode.Dark -> true
+                ThemeBrightnessMode.Bright -> false
+                ThemeBrightnessMode.Auto -> isSystemInDarkTheme()
             }
 
-            val windowDpSize = currentWindowDpSize()
-            val darkMode = if (autoBrightModeSwitchState && themeConfig.carBrightColors != null) isSystemInDarkTheme() else true
-
             CarTheme(
-                carThemeConfig = themeConfig,
+                carThemeConfig = themeState.value.carThemeConfig,
                 darkTheme = darkMode
             ) {
 
-                CarTabLayout(
-                    headerTitle = stringResource(R.string.app_name),
-                    tabOrientation = if (windowDpSize.width < 1300.dp) CarTabLayout.Orientation.Horizontal else CarTabLayout.Orientation.VerticalCompact,
-                    headerStartContent = {
-                        Image(
-                            modifier = Modifier
-                                .size(CarTheme.carDimensions.iconButtonSize),
-                            painter = adaptiveIconPainterResource(R.drawable.ic_launcher),
-                            contentDescription = null
-                        )
-                    },
-                    headerIconButtons = listOf(
-                        {
-                            var buttonActive by remember { mutableStateOf(false) }
-                            CarIconButton(
-                                imageVector = Icons.Outlined.Settings,
-                                activeImageVector = Icons.Default.Settings,
-                                active = buttonActive,
-                                onClick = { buttonActive = !buttonActive }
-                            )
-                        },
-                        {
-                            var buttonActive by remember { mutableStateOf(false) }
-                            CarIconButton(
-                                painter = painterResource(de.ixam97.carcompose.R.drawable.ic_grid_48),
-                                activePainter = painterResource(de.ixam97.carcompose.R.drawable.ic_grid_filled_48),
-                                active = buttonActive,
-                                onClick = { buttonActive = !buttonActive }
+                NavDisplay(
+                    backStack = backStack,
+                    entryDecorators = listOf(
+                        rememberSaveableStateHolderNavEntryDecorator(),
+                        rememberViewModelStoreNavEntryDecorator { true },
+                        rememberSharedViewModelStoreNavEntryDecorator()
+                    ),
+                    entryProvider = entryProvider {
+                        entry<MainScreenNavKey> {
+                            MainScreen(
+                                mainViewModel = mainViewModel,
+                                backStack = backStack
                             )
                         }
-                    ),
-                    selectedKey = selectedTabKey,
-                    onTabSelected = { key -> selectedTabKey = key },
-                    tabs = listOf(
-                        dashboardTab,
-                        enabledTab,
-                        disabledTab,
-                    )
-                ) { key ->
-                    val context = LocalContext.current
-                    val carSnackBarState = LocalCarSnackBarState.current
-                    CarColumn {
-                        CarListSection(
-                            sectionTitle = "Basic Info:",
-                            dividerAtBottom = true,
-                            listItems = listOf(
-                                CarListItem {
-                                    CarRow(
-                                        title = "Width: ${windowDpSize.width}, Height: ${windowDpSize.height}",
-                                        description = "Window size"
-                                    )
-                                },
-                                CarListItem {
-                                    CarRow(
-                                        title = "${key.javaClass.name}",
-                                        description = "Selected Tab Key"
-                                    )
-                                },
-                                CarListItem {
-                                    CompositionLocalProvider(
-                                        LocalContentColor provides CarTheme.carColors.accent
-                                    ) {
-                                        CarRow(
-                                            title = "Row with trailing Content",
-                                            trailingContent = {
-                                                HeaderIconDummy()
-                                            }
-                                        )
-                                    }
-                                }
+                        entry<ThemeSelectionScreenNavKey> {
+                            ThemeSelectionScreen(
+                                mainViewModel = mainViewModel,
+                                backStack = backStack
                             )
-                        )
-                        CarListSection(
-                            sectionTitle = "Controls and Theming:",
-                            dividerAtBottom = true,
-                            listItems = listOf(
-                                CarListItem {
-                                    CarRow(
-                                        title = "Car Theme",
-                                        descriptionContent = {
-
-                                            val themeSegments = listOf(
-                                                CarSegmentedButton.Segment(
-                                                    content = { Text("PS Modern") },
-                                                    key = ThemeSegmentKeys.Modern,
-                                                ),
-                                                CarSegmentedButton.Segment(
-                                                    content = { Text("PS Classic") },
-                                                    key = ThemeSegmentKeys.Classic,
-                                                ),
-                                                CarSegmentedButton.Segment(
-                                                    content = { Text("Volvo Car UX") },
-                                                    key = ThemeSegmentKeys.Volvo,
-                                                ),
-                                                CarSegmentedButton.Segment(
-                                                    content = { Text("Generic") },
-                                                    key = ThemeSegmentKeys.Generic,
-                                                ),
-                                                CarSegmentedButton.Segment(
-                                                    content = { Text("Custom") },
-                                                    key = ThemeSegmentKeys.Custom,
-                                                ),
-                                            )
-
-                                            CarSegmentedButton(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                segments = themeSegments,
-                                                canDeselect = true,
-                                                selectedKey = selectedThemeSegmentKey,
-                                                onSegmentChanged = { selectedThemeSegmentKey = it },
-                                            )
-                                        }
-                                    )
-                                    if (selectedThemeSegmentKey == ThemeSegmentKeys.Volvo) {
-                                        CarRowSwitch(
-                                            title = "Automatic Bright Mode",
-                                            state = autoBrightModeSwitchState
-                                        ) { autoBrightModeSwitchState = it}
-                                    }
-                                },
-                                CarListItem {
-                                    CarRow(
-                                        title = "Segmented Icon Buttons",
-                                        descriptionContent = {
-                                            Row() {
-                                                @Composable
-                                                fun SegmentButtonIcon(
-                                                    imageVector: ImageVector
-                                                ) {
-                                                    Icon(
-                                                        modifier = Modifier
-                                                            .height(CarTheme.carDimensions.iconButtonSize)
-                                                            .width(80.dp),
-                                                        imageVector = imageVector,
-                                                        contentDescription = null
-                                                    )
-                                                }
-                                                val iconSegments = listOf(
-                                                    CarSegmentedButton.Segment(
-                                                        content = { SegmentButtonIcon(Icons.Default.Settings) },
-                                                        key = IconSegmentKeys.Settings
-                                                    ),
-                                                    CarSegmentedButton.Segment(
-                                                        content = { SegmentButtonIcon(Icons.Default.Done) },
-                                                        key = IconSegmentKeys.Done
-                                                    ),
-                                                    CarSegmentedButton.Segment(
-                                                        content = { SegmentButtonIcon(Icons.Default.Person) },
-                                                        key = IconSegmentKeys.Person
-                                                    ),
-                                                    CarSegmentedButton.Segment(
-                                                        content = { SegmentButtonIcon(Icons.Default.Delete) },
-                                                        key = IconSegmentKeys.Delete,
-                                                        enabled = switchState
-                                                    ),
-                                                )
-
-                                                CarSegmentedButton(
-                                                    modifier = Modifier
-                                                        .width(IntrinsicSize.Min)
-                                                        .height(80.dp),
-                                                    dimensions = CarButtonDefaults.dimensions.copy(
-                                                        minWidth = 0.dp,
-                                                        horizontalPadding = 0.dp,
-                                                        verticalPadding = 10.dp
-                                                    ),
-                                                    segments = iconSegments ,
-                                                    selectedKey = selectedIconSegment,
-                                                    onSegmentChanged = { it?.let { selectedIconSegment = it }}
-                                                )
-                                                Box(Modifier.weight(1f))
-                                            }
-
-                                        }
-                                    )
-                                },
-                                CarListItem {
-                                    CarRowSwitch(
-                                        title = "Enable disabled Tab",
-                                        state = switchState
-                                    ) { switchState = it }
-                                }
+                        }
+                        entry<TabScreenNavKey>(
+                            clazzContentKey = { key -> key.toContentKey()}
+                        ) {
+                            TabScreen(
+                                mainViewModel = mainViewModel,
+                                backStack = backStack
                             )
-                        )
-                        CarListSection(
-                            sectionTitle = "Other: ",
-                            listItems = listOf(
-                                CarListItem {
-                                    CarRow(
-                                        title = "Row with everything",
-                                        description = "Description for everything\nOver Multiple\nLines",
-                                        browsable = true,
-                                        leadingContent =  {
-                                            Icon(
-                                                painter = CarIcons.settings,
-                                                contentDescription = null
-                                            )
-                                        },
-                                        trailingContent = {
-                                            HeaderIconDummy()
-                                        },
-                                        onBrowse = {
-                                        }
-                                    )
-                                },
-                                CarListItem {
-                                    CarRow(
-                                        content = {
-                                            Row(
-                                                horizontalArrangement = Arrangement.spacedBy(CarTheme.carDimensions.defaultHorizontalPadding)
-                                            ) {
-                                                var timesClicked by remember { mutableIntStateOf(0) }
-                                                val baseSnackConfig = CarSnackBarConfig(
-                                                    identifier = SnackBar1Identifier,
-                                                    content = { Text("Times clicked Button: $timesClicked") },
-                                                    painter = rememberVectorPainter(Icons.Default.Settings),
-                                                    actionText = "Dismiss",
-                                                    onAction = { carSnackBarState.cancelSnackBar(SnackBar1Identifier) }
-                                                )
-
-                                                CarButton(
-                                                    onClick = {
-                                                        timesClicked++
-                                                        carSnackBarState.showSnackBar(baseSnackConfig.copy(isError = (timesClicked % 2 == 0)))
-                                                    }
-                                                ) { Text("SnackBar 1") }
-
-                                                CarButton(
-                                                    onClick = {
-                                                        if (carSnackBarState.isSnackBarVisible(SnackBar2Identifier)) {
-                                                            carSnackBarState.cancelSnackBar(SnackBar2Identifier)
-                                                        } else {
-                                                            carSnackBarState.showSnackBar(
-                                                                CarSnackBarConfig(
-                                                                    identifier = SnackBar2Identifier,
-                                                                    content = { Text("Snack Bar 2") },
-                                                                    duration = null
-                                                                )
-                                                            )
-                                                        }
-                                                    }
-                                                ) { Text("SnackBar 2") }
-                                            }
-                                        }
-                                    )
-                                },
-                                CarListItem {
-                                    CarRow(
-                                        title = "Text Box?",
-                                        descriptionContent = {
-                                            var textValue by remember { mutableStateOf("") }
-                                            CarTextField(
-                                                value = textValue,
-                                                onValueChange = { textValue = it },
-                                                modifier = Modifier.fillMaxWidth(),
-                                                leadingIcon = { Icon(
-                                                    Icons.Default.Search,
-                                                    null,
-                                                    modifier = Modifier.size(40.dp)
-                                                )},
-                                                placeholder = "Text field demo"
-                                            )
-                                            Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
-                                            CarTextField(
-                                                value = textValue,
-                                                enabled = false,
-                                                onValueChange = { textValue = it },
-                                                modifier = Modifier.fillMaxWidth(),
-                                                trailingIcon = {
-                                                    Icon(
-                                                        imageVector = if (switchState) Icons.Default.Check else Icons.Default.Close,
-                                                        tint = if (switchState) Color.Green else Color.Red,
-                                                        contentDescription = null,
-                                                        modifier = Modifier.size(40.dp)
-                                                    )
-                                                },
-                                                placeholder = "Disabled text field"
-                                            )
-                                            Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
-                                            CarTextField(
-                                                value = textValue,
-                                                onValueChange = { textValue = it },
-                                                modifier = Modifier.fillMaxWidth(),
-                                                placeholder = "5 Line text field",
-                                                minLines = 5
-                                            )
-                                            Spacer(Modifier.size(CarTheme.carDimensions.defaultVerticalPadding))
-                                            CarTextField(
-                                                value = textValue,
-                                                onValueChange = { textValue = it },
-                                                modifier = Modifier.fillMaxWidth(),
-                                                placeholder = "Read only single line",
-                                                readOnly = true,
-                                                singleLine = true
-                                            )
-                                        }
-                                    )
-                                }
+                        }
+                        entry<TabScreenSettingsScreenNavKey>(
+                            metadata = SharedViewModelStoreNavEntryDecorator.parent(TabScreenNavKey.toContentKey())
+                        ) {
+                            val parentViewModel = viewModel(
+                                modelClass = TabScreenViewModel::class,
+                                viewModelStoreOwner = LocalSharedViewModelStoreOwner.current
                             )
-                        )
-                    }
-                }
+                            TabScreenSettingsScreen(
+                                viewModel = parentViewModel,
+                                backStack = backStack
+                            )
+                        }
+                    },
+                    transitionSpec = {
+                        // Slide in from right when navigating forward
+                        slideInHorizontally(initialOffsetX = { it }) togetherWith
+                                slideOutHorizontally(targetOffsetX = { -it })
+                    },
+                    popTransitionSpec = {
+                        // Slide in from left when navigating back
+                        slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                                slideOutHorizontally(targetOffsetX = { it })
+                    },
+                    predictivePopTransitionSpec = {
+                        // Slide in from left when navigating back
+                        slideInHorizontally(initialOffsetX = { -it }) togetherWith
+                                slideOutHorizontally(targetOffsetX = { it })
+                    },
+                )
             }
         }
     }
 }
+
+fun NavKey.toContentKey() = this.toString()
 
 @Composable
 fun adaptiveIconPainterResource(
