@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.R
-import de.ixam97.carcompose.theme.themes.parisDaisy
+import de.ixam97.carcompose.theme.themes.polestarParisDaisy
 
 @Composable
 fun HeaderIconDummy(modifier: Modifier = Modifier) {
@@ -21,7 +21,7 @@ fun HeaderIconDummy(modifier: Modifier = Modifier) {
         modifier = modifier
             .height(48.dp)
             .width(48.dp)
-            .background(parisDaisy),
+            .background(polestarParisDaisy),
         contentAlignment = Alignment.Center
     ) {
         Icon(

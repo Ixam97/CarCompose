@@ -6,10 +6,11 @@ import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarNavIconStyle
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
+import de.ixam97.carcompose.utils.buildSolidBrush
 
 val PolestarClassicCarColors = PolestarSharedColors.copy(
     background = Color.Black,
-    primaryDivider = listOf(mainAccentForeground)
+    primaryDivider = buildSolidBrush(polestarMainAccentForeground)
 )
 
 val PolestarClassicCarDimensions = PolestarSharedCarDimensions.copy(

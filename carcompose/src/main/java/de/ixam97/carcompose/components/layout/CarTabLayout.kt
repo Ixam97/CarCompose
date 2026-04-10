@@ -28,7 +28,6 @@ import de.ixam97.carcompose.components.controls.CarRow
 import de.ixam97.carcompose.components.controls.CarRowBrowsableType
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarColors
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 object CarTabLayout {
     enum class Orientation {
@@ -149,7 +148,7 @@ private fun <T> CarTabLayout(
                                 .fillMaxWidth()
                                 .height(2.dp)
                                 .padding(start = CarTheme.carDimensions.defaultHorizontalPadding)
-                                .background(brush = buildGradientBrush(CarTheme.carColors.secondaryDivider))
+                                .background(brush = CarTheme.carColors.secondaryDivider)
                         )
                     }
                 }
@@ -185,7 +184,7 @@ private fun <T> CarTabLayout(
                                 .fillMaxWidth()
                                 .height(2.dp)
                                 .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
-                                .background(brush = buildGradientBrush(CarTheme.carColors.secondaryDivider))
+                                .background(brush = CarTheme.carColors.secondaryDivider)
                         )
                     }
                 }

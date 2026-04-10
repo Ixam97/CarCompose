@@ -4,14 +4,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
+import de.ixam97.carcompose.utils.buildSolidBrush
 
 val PolestarModernCarColors = PolestarSharedColors.copy(
-    background = background,
-    primaryDivider = listOf(primaryDivider),
+    background = polestarBackground,
+    primaryDivider = buildSolidBrush(polestarPrimaryDivider),
 )
 
 val PolestarModernCarDimensions = PolestarSharedCarDimensions.copy(
-    // theme specific dimensions
     headerDividerHorizontalPadding = 32.dp,
     headerHeight = 134.dp,
 )

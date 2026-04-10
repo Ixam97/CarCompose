@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import de.ixam97.carcompose.R
+import de.ixam97.carcompose.components.controls.CarSwitchProperties
 
 class CarNavIconStyle(@DrawableRes resId:  Int) {
 
@@ -33,7 +34,11 @@ data class CarUiProperties(
     val headerDividerBelowTabLayout: Boolean = true,
     val listSectionBackground: Boolean = false,
     val backButtonIconStyle: CarNavIconStyle = CarNavIconStyle.ArrowBackwards,
-    val rowBrowseIconStyle: CarNavIconStyle = CarNavIconStyle.ArrowForwards
+    val rowBrowseIconStyle: CarNavIconStyle = CarNavIconStyle.ArrowForwards,
+    val switchProperties: CarSwitchProperties = CarSwitchProperties(
+        uncheckedText = "Off",
+        checkedText = "On"
+    )
 )
 
 val GenericCarUiProperties = CarUiProperties()

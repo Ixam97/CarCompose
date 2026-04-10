@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 data class CarTextFieldColors(
     val backgroundBrush: Brush,
@@ -36,7 +35,7 @@ data class CarTextFieldDimensions(
 object CarTextFieldDefaults {
     val colors: CarTextFieldColors
         @Composable get() = CarTextFieldColors(
-            backgroundBrush = buildGradientBrush(CarTheme.carColors.textFieldBackground),
+            backgroundBrush = CarTheme.carColors.textFieldBackground,
             textColor = CarTheme.carColors.textFieldTextColor,
             placeholderTextColor = CarTheme.carColors.textFieldTextColor.copy(CarTheme.carColors.disabledAlpha),
             cursorColor = CarTheme.carColors.accent

@@ -1,33 +1,41 @@
 package de.ixam97.carcompose.theme
 
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
+import de.ixam97.carcompose.components.controls.CarRadioButtonShapes
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonShapes
+import de.ixam97.carcompose.components.controls.CarSwitchShapes
 
 val GenericCarShapes = CarShapes(
-    buttonCornerSize = CornerSize(50),
-    segmentedButtonOuterCornerSize = CornerSize(50),
-    segmentedButtonInnerCornerSize = CornerSize(8.dp),
-    textFieldShape = RoundedCornerShape(8.dp),
-    radioButtonOuterShape = CircleShape
+    defaultOuterCornerSize = CornerSize(50),
+    defaultInnerCornerSize = CornerSize(8.dp),
 )
 
 @Immutable
 data class CarShapes(
-    val buttonCornerSize: CornerSize,
-    val buttonShape: Shape = RoundedCornerShape(buttonCornerSize),
-    val segmentedButtonOuterCornerSize: CornerSize = buttonCornerSize,
-    val segmentedButtonInnerCornerSize: CornerSize = segmentedButtonOuterCornerSize,
-    val segmentedButtonBackgroundCornerSize: CornerSize = segmentedButtonOuterCornerSize,
-    val textFieldShape: Shape = RoundedCornerShape(segmentedButtonInnerCornerSize),
-    val switchTrackShape: Shape = buttonShape,
-    val switchThumbShape: Shape = switchTrackShape,
-    val radioButtonOuterShape: Shape,
-    val radioButtonInnerShape: Shape = radioButtonOuterShape
+    val defaultOuterCornerSize: CornerSize,
+    val defaultInnerCornerSize: CornerSize = defaultOuterCornerSize,
+    val buttonShape: Shape = RoundedCornerShape(defaultOuterCornerSize),
+    val textFieldShape: Shape = RoundedCornerShape(defaultInnerCornerSize),
+    val switchShapes: CarSwitchShapes = CarSwitchShapes(
+        track = RoundedCornerShape(defaultOuterCornerSize),
+        thumb = RoundedCornerShape(defaultInnerCornerSize)
+    ),
+    val radioButtonShapes: CarRadioButtonShapes = CarRadioButtonShapes(
+        outerShape = RoundedCornerShape(defaultOuterCornerSize)
+    ),
+    val checkboxShapes: CarRadioButtonShapes = CarRadioButtonShapes(
+        outerShape = RoundedCornerShape(defaultInnerCornerSize)
+    ),
+    val segmentedButtonShapes: CarSegmentedButtonShapes = CarSegmentedButtonShapes(
+        backgroundCornerSize = defaultOuterCornerSize,
+        outerCornerSize = defaultOuterCornerSize,
+        innerCornerSize = defaultInnerCornerSize
+    )
 )
 
 val LocalCarShapes = staticCompositionLocalOf {

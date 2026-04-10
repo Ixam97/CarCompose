@@ -1,6 +1,5 @@
 package de.ixam97.carcompose.theme.themes
 
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
@@ -8,15 +7,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import de.ixam97.carcompose.components.controls.CarRadioButtonColors
+import de.ixam97.carcompose.components.controls.CarRadioButtonShapes
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonColors
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonDimensions
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonShapes
+import de.ixam97.carcompose.components.controls.CarSwitchColors
+import de.ixam97.carcompose.components.controls.CarSwitchDimensions
+import de.ixam97.carcompose.components.controls.CarSwitchProperties
+import de.ixam97.carcompose.components.controls.CarSwitchShapes
 import de.ixam97.carcompose.theme.CarNavIconStyle
 import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarDimensions
 import de.ixam97.carcompose.theme.CarShapes
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
-import de.ixam97.carcompose.theme.GenericCarColors
 import de.ixam97.carcompose.theme.GenericCarTypography
-import kotlin.collections.listOf
+import de.ixam97.carcompose.utils.buildSolidBrush
 
 val volvoBrightAccent = Color(0xFF4A6DA8)
 val volvoBrightBackground = Color(0xFFEBEBEB)
@@ -40,53 +47,87 @@ val volvoDarkRadioButtonBorder = Color(0xFF4C4C4C)
 
 val VolvoBrightColors = CarColors(
     accent = volvoBrightAccent,
-    accentContainer = listOf(volvoBrightAccent),
+    accentContainer = volvoBrightAccent,
     background = volvoBrightBackground,
-    primarySurface = listOf(volvoBrightPrimarySurface),
-    secondarySurface = listOf(volvoBrightSecondarySurface),
+    primarySurface = volvoBrightPrimarySurface,
+    secondarySurface = volvoBrightSecondarySurface,
     onBackground = volvoBrightOnSurfaceActive,
     onSurface = volvoBrightOnSurfaceActive,
     onAccentContainer = volvoBrightOnAccent,
-    primaryDivider = listOf(Color.Transparent),
-    secondaryDivider = listOf(volvoBrightDivider),
-    textFieldBackground = listOf(volvoBrightSecondarySurface),
+    primaryDivider = buildSolidBrush(Color.Transparent),
+    secondaryDivider = buildSolidBrush(volvoBrightDivider),
+    textFieldBackground = buildSolidBrush(volvoBrightSecondarySurface),
     listSectionTitleColor = volvoBrightOnSurfacePassive,
-    disabledOverlay = Color.White.copy(alpha = GenericCarColors.disabledAlpha),
-    snackBarBackground = listOf(volvoDarkSecondarySurface),
+    // disabledOverlay = Color.White.copy(alpha = GenericCarColors.disabledAlpha),
+    snackBarBackground = buildSolidBrush(volvoDarkSecondarySurface),
     snackBarForeground = volvoDarkOnSurfaceActive,
     snackBarAccent = volvoDarkAccent,
-    segmentedButtonBackground = listOf(volvoBrightSecondarySurface),
-    segmentedButtonBorder = volvoBrightBackground,
-    radioButtonBorder = volvoBrightRadioButtonBorder,
-    radioButtonSelectedBorder = Color.Transparent,
-    radioButtonSelectedBackground = volvoBrightAccent,
-    radioButtonSelector = volvoBrightOnAccent,
-    backNavIconColor = volvoBrightOnSurfaceActive
+    backNavIconColor = volvoBrightOnSurfaceActive,
+    switchColors = CarSwitchColors(
+        border = Color.Transparent,
+        track = buildSolidBrush(volvoBrightRadioButtonBorder),
+        onTrack = Color.Transparent,
+        trackChecked = buildSolidBrush(volvoBrightAccent),
+        onTrackChecked = Color.Transparent,
+        thumb = buildSolidBrush(volvoBrightOnAccent),
+        onThumb = Color.Transparent
+    ),
+    radioButtonColors = CarRadioButtonColors(
+        borderColor = volvoBrightRadioButtonBorder,
+        selectedBorderColor = Color.Transparent,
+        selectedBackground = volvoBrightAccent,
+        selectorColor = volvoBrightOnAccent,
+    ),
+    segmentedButtonColors = CarSegmentedButtonColors(
+        background = buildSolidBrush(volvoBrightSecondarySurface),
+        border = volvoBrightBackground,
+        buttonContainer = buildSolidBrush(volvoBrightSecondarySurface),
+        buttonContainerActive = buildSolidBrush(volvoBrightAccent),
+        onButtonContainer = volvoBrightOnSurfaceActive,
+        onButtonContainerActive = volvoBrightOnAccent
+    )
 )
 
 val VolvoDarkColors = CarColors(
     accent = volvoDarkAccent,
-    accentContainer = listOf(volvoDarkAccent),
+    accentContainer = volvoDarkAccent,
     background = volvoDarkBackground,
-    primarySurface = listOf(volvoDarkPrimarySurface),
-    secondarySurface = listOf(volvoDarkSecondarySurface),
+    primarySurface = volvoDarkPrimarySurface,
+    secondarySurface = volvoDarkSecondarySurface,
     onBackground = volvoDarkOnSurfaceActive,
     onSurface = volvoDarkOnSurfaceActive,
     onAccentContainer = volvoDarkOnAccent,
-    primaryDivider = listOf(Color.Transparent),
-    secondaryDivider = listOf(volvoDarkDivider),
-    textFieldBackground = listOf(volvoDarkSecondarySurface),
+    primaryDivider = buildSolidBrush(Color.Transparent),
+    secondaryDivider = buildSolidBrush(volvoDarkDivider),
+    textFieldBackground = buildSolidBrush(volvoDarkSecondarySurface),
     listSectionTitleColor = volvoDarkOnSurfacePassive,
-    snackBarBackground = listOf(volvoBrightSecondarySurface),
+    snackBarBackground = buildSolidBrush(volvoBrightSecondarySurface),
     snackBarForeground = volvoBrightOnSurfaceActive,
     snackBarAccent = volvoBrightAccent,
-    segmentedButtonBackground = listOf(volvoDarkSecondarySurface),
-    segmentedButtonBorder = Color.Transparent,
-    radioButtonBorder = volvoDarkRadioButtonBorder,
-    radioButtonSelectedBorder = Color.Transparent,
-    radioButtonSelectedBackground = volvoDarkAccent,
-    radioButtonSelector = volvoDarkOnAccent,
-    backNavIconColor = volvoDarkOnSurfaceActive
+    backNavIconColor = volvoDarkOnSurfaceActive,
+    switchColors = CarSwitchColors(
+        border = Color.Transparent,
+        track = buildSolidBrush(volvoDarkRadioButtonBorder),
+        onTrack = Color.Transparent,
+        trackChecked = buildSolidBrush(volvoDarkAccent),
+        onTrackChecked = Color.Transparent,
+        thumb = buildSolidBrush(volvoDarkOnAccent),
+        onThumb = Color.Transparent
+    ),
+    radioButtonColors = CarRadioButtonColors(
+        borderColor = volvoDarkRadioButtonBorder,
+        selectedBorderColor = Color.Transparent,
+        selectedBackground = volvoDarkAccent,
+        selectorColor = volvoDarkOnAccent,
+    ),
+    segmentedButtonColors = CarSegmentedButtonColors(
+        background = buildSolidBrush(volvoDarkSecondarySurface),
+        border = Color.Transparent,
+        buttonContainer = buildSolidBrush(volvoDarkSecondarySurface),
+        buttonContainerActive = buildSolidBrush(volvoDarkAccent),
+        onButtonContainer = volvoDarkOnSurfaceActive,
+        onButtonContainerActive = volvoDarkOnAccent
+    )
 )
 
 val VolvoTypograph = GenericCarTypography.copy(
@@ -98,21 +139,44 @@ val VolvoTypograph = GenericCarTypography.copy(
 val VolvoDimensions = CarDimensions(
     iconButtonSize = 43.dp,
     headerHeight = 106.dp,
-    segmentedButtonBorderWidth = 1.75.dp,
-    segmentedButtonInnerPadding = 5.dp
+    switchDimensions = CarSwitchDimensions(
+        trackWidth = 78.dp,
+        trackHeight = 43.dp,
+        thumbWidth = 43.dp,
+        thumbHeight = 43.dp,
+        thumbPadding = 3.4.dp
+    ),
+    segmentedButtonDimensions = CarSegmentedButtonDimensions(
+        padding = 5.dp,
+        borderWidth = 1.75.dp
+    )
 )
 
 val VolvoProperties = CarUiProperties(
     listSectionBackground = true,
     backButtonIconStyle = CarNavIconStyle.ChevronBackwards,
-    rowBrowseIconStyle = CarNavIconStyle.ChevronForwards
+    rowBrowseIconStyle = CarNavIconStyle.ChevronForwards,
+    switchProperties = CarSwitchProperties(
+        uncheckedText = "",
+        checkedText = ""
+    )
 )
 
 val VolvoShapes = CarShapes(
-    buttonCornerSize = CornerSize(8.dp),
-    segmentedButtonOuterCornerSize = CornerSize(50),
+    defaultOuterCornerSize = CornerSize(8.dp),
     textFieldShape = RoundedCornerShape(8.dp),
-    radioButtonOuterShape = CircleShape
+    switchShapes = CarSwitchShapes(
+        track = RoundedCornerShape(50),
+        thumb = RoundedCornerShape(50)
+    ),
+    radioButtonShapes = CarRadioButtonShapes(
+        outerShape = RoundedCornerShape(50)
+    ),
+    segmentedButtonShapes = CarSegmentedButtonShapes(
+        backgroundCornerSize = CornerSize(50),
+        outerCornerSize = CornerSize(50),
+        innerCornerSize = CornerSize(50)
+    )
 )
 
 val VolvoCarUxThemeConfig: CarThemeConfig = CarThemeConfig(

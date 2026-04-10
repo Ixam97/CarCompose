@@ -4,13 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
@@ -18,14 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 data class CarButtonColors(
     val backgroundBrush: Brush,
@@ -44,8 +40,8 @@ data class CarButtonDimensions(
 object CarButtonDefaults {
     val colors: CarButtonColors
         @Composable get () = CarButtonColors(
-            backgroundBrush = buildGradientBrush(CarTheme.carColors.secondarySurface),
-            activeBrush = buildGradientBrush(CarTheme.carColors.accentContainer),
+            backgroundBrush = CarTheme.carColors.secondarySurfaceBrush,
+            activeBrush = CarTheme.carColors.accentContainerBrush,
             textColor = CarTheme.carColors.onSurface,
             activeTextColor = CarTheme.carColors.onAccentContainer
         )
@@ -74,21 +70,17 @@ fun CarButton(
 
     val backgroundBrush = if (active) colors.activeBrush else colors.backgroundBrush
     val foregroundColor = if (active) colors.activeTextColor else colors.textColor
-    val disabledOverlay = CarTheme.carColors.disabledOverlay
     Box(
         modifier = modifier
             .heightIn(min = dimensions.minHeight)
             .widthIn(min = dimensions.minWidth)
             .clip(shape)
+            .alpha(if (enabled) 1f else CarTheme.carColors.disabledAlpha)
             .background(backgroundBrush)
             .clickable(
                 enabled = enabled,
                 onClick = onClick
-            )
-            .drawWithContent {
-                drawContent()
-                if (!enabled) drawRect(color = disabledOverlay)
-            },
+            ),
         contentAlignment = Alignment.CenterStart
     ) {
         CompositionLocalProvider(
@@ -106,11 +98,5 @@ fun CarButton(
                 content = content
             )
         }
-        if (!enabled) Box(
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .width(IntrinsicSize.Max)
-                .background(CarTheme.carColors.disabledOverlay)
-        )
     }
 }

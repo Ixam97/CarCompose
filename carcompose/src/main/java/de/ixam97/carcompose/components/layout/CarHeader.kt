@@ -17,12 +17,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.controls.CarBackIconButton
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarDimensions
 import de.ixam97.carcompose.theme.LocalCarUiProperties
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 @Composable
 fun CarHeader(
@@ -84,7 +84,7 @@ fun CarHeader(
                                 modifier = Modifier
                                     .height(19.dp)
                                     .width(2.dp)
-                                    .background(CarTheme.carColors.secondaryDivider.first())
+                                    .background(CarTheme.carColors.secondaryDivider)
                             )
                         }
                     }
@@ -105,12 +105,12 @@ fun CarHeaderDivider(
             .height(2.dp)
             .fillMaxWidth()
             .padding(horizontal = LocalCarDimensions.current.headerDividerHorizontalPadding)
-            .background(brush = buildGradientBrush(CarTheme.carColors.primaryDivider))
+            .background(brush = if (isLoading) CarTheme.carColors.secondaryDivider else CarTheme.carColors.primaryDivider)
     ) {
         if (isLoading) LinearProgressIndicator(
             modifier = Modifier.fillMaxSize(),
             color = CarTheme.carColors.accent,
-            trackColor = CarTheme.carColors.secondaryDivider.first()
+            trackColor = Color.Transparent
         )
     }
 }

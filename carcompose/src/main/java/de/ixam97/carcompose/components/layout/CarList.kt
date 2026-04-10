@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 data class CarListItem(
     val content: @Composable () -> Unit
@@ -32,7 +31,7 @@ fun CarListDivider() {
             .fillMaxWidth()
             .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
             .background(
-                brush = buildGradientBrush(CarTheme.carColors.secondaryDivider)
+                brush = CarTheme.carColors.secondaryDivider
             )
     )
 }
@@ -86,7 +85,7 @@ fun ColumnScope.CarListSection(
             vertical = CarTheme.carDimensions.defaultVerticalPadding
         )
         .clip(shape = RoundedCornerShape(14.dp))
-        .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+        .background(brush = CarTheme.carColors.listSectionBackground)
     else Modifier
 
     Column(
@@ -121,20 +120,20 @@ fun LazyListScope.carListSection(
                         vertical = CarTheme.carDimensions.defaultVerticalPadding
                     )
                     .clip(RoundedCornerShape(14.dp))
-                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                    .background(brush = CarTheme.carColors.listSectionBackground)
                 else if (index == 0) Modifier
                     .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
                     .padding(top = CarTheme.carDimensions.defaultVerticalPadding)
                     .clip(RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp))
-                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                    .background(brush = CarTheme.carColors.listSectionBackground)
                 else if (index == listItems.size - 1) Modifier
                     .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
                     .padding(bottom = CarTheme.carDimensions.defaultVerticalPadding)
                     .clip(RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp))
-                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                    .background(brush = CarTheme.carColors.listSectionBackground)
                 else Modifier
                     .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
-                    .background(brush = buildGradientBrush(CarTheme.carColors.listSectionBackground))
+                    .background(brush = CarTheme.carColors.listSectionBackground)
             } else Modifier
             Column(elementModifier) {
                 listItem.content()

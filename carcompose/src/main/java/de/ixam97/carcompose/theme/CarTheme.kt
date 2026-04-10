@@ -1,6 +1,7 @@
 package de.ixam97.carcompose.theme
 
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,9 @@ import androidx.core.view.WindowCompat
 import de.ixam97.carcompose.components.layout.CarSnackBarHost
 import de.ixam97.carcompose.components.layout.CarSnackBarHostState
 import de.ixam97.carcompose.components.layout.LocalCarSnackBarState
+import de.ixam97.carcompose.theme.themes.PolestarClassicThemeConfig
+import de.ixam97.carcompose.theme.themes.PolestarModernThemeConfig
+import de.ixam97.carcompose.theme.themes.VolvoCarUxThemeConfig
 import de.ixam97.carcompose.utils.calculateWindowInsets
 
 data class CarThemeConfig(
@@ -29,6 +33,17 @@ data class CarThemeConfig(
     val carUiProperties: CarUiProperties,
     val carShapes: CarShapes
 )
+
+fun autodetectCarThemeConfig(fallback: CarThemeConfig = GenericCarThemeConfig) : CarThemeConfig {
+    return when (Build.BRAND) {
+        "Polestar" -> when (Build.DEVICE) {
+            "ihu_abl_car", "ihu42", "ihu_emulator" -> PolestarClassicThemeConfig
+            else -> PolestarModernThemeConfig
+        }
+        "VolvoCars" -> VolvoCarUxThemeConfig
+        else -> fallback
+    }
+}
 
 @Composable
 fun CarTheme(
@@ -74,7 +89,7 @@ fun CarTheme(
                 onPrimary = carColors.onAccentContainer,
                 background = carColors.background,
                 onBackground = carColors.onBackground,
-                surface = carColors.primarySurface.first(),
+                surface = carColors.primarySurface,
                 onSurface = carColors.onSurface
             )
         ) {

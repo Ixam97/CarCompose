@@ -2,15 +2,12 @@ package de.ixam97.carcompose.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+import de.ixam97.carcompose.components.controls.CarRadioButtonColors
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonColors
+import de.ixam97.carcompose.components.controls.CarSwitchColors
+import de.ixam97.carcompose.utils.buildSolidBrush
 
 val genericAccent = Color(0xFF58B9CA)
 val genericBackground = Color(0xFF131314)
@@ -23,47 +20,62 @@ val genericOnAccent = Color(0xFF002025)
 
 val GenericCarColors = CarColors(
     accent = genericAccent,
-    accentContainer = listOf(genericAccent),
+    accentContainer = genericAccent,
     background = genericBackground,
-    primarySurface = listOf(genericPrimarySurface),
-    secondarySurface = listOf(genericSecondarySurface),
+    primarySurface = genericPrimarySurface,
+    secondarySurface = genericSecondarySurface,
     onBackground = genericOnBackground,
     onSurface = genericOnSurface,
     onAccentContainer = genericOnAccent,
-    primaryDivider = listOf(genericPrimarySurface),
-    secondaryDivider = listOf(genericPrimarySurface),
-    radioButtonBorder = genericPrimarySurface
+    primaryDivider = buildSolidBrush(genericPrimarySurface),
+    secondaryDivider = buildSolidBrush(genericPrimarySurface),
 )
 
 @Immutable
 data class CarColors (
     val accent: Color,
-    val accentContainer: List<Color>,
+    val accentContainer: Color,
+    val accentContainerBrush: Brush = buildSolidBrush(accentContainer),
     val background: Color,
-    val primarySurface: List<Color>,
-    val secondarySurface: List<Color>,
+    val primarySurface: Color,
+    val primarySurfaceBrush: Brush = buildSolidBrush(primarySurface),
+    val secondarySurface: Color,
+    val secondarySurfaceBrush: Brush = buildSolidBrush(secondarySurface),
     val listSectionTitleColor: Color = accent,
-    val listSectionBackground: List<Color> = primarySurface,
+    val listSectionBackground: Brush = primarySurfaceBrush,
     val onBackground: Color,
     val onSurface: Color,
     val onAccentContainer: Color,
-    val primaryDivider: List<Color>,
-    val secondaryDivider: List<Color>,
-    val disabledAlpha: Float = 0.3f,
-    val disabledOverlay: Color = Color(0f, 0f, 0f, disabledAlpha),
-    val segmentedButtonBorder: Color = Color.Transparent,
-    val segmentedButtonBackground: List<Color> = listOf(Color.Transparent),
-    val textFieldBackground: List<Color> = primarySurface,
+    val primaryDivider: Brush,
+    val secondaryDivider: Brush,
+    val disabledAlpha: Float = 0.4f,
+    val textFieldBackground: Brush = primarySurfaceBrush,
     val textFieldTextColor: Color = onBackground,
-    val snackBarBackground: List<Color> = secondarySurface,
+    val snackBarBackground: Brush = secondarySurfaceBrush,
     val snackBarForeground: Color = onSurface,
     val snackBarAccent: Color = accent,
-    val radioButtonBorder: Color,
-    val radioButtonSelectedBorder: Color = accent,
-    val radioButtonBackground: Color = Color.Transparent,
-    val radioButtonSelectedBackground: Color = radioButtonBackground,
-    val radioButtonSelector: Color = accent,
-    val backNavIconColor: Color = accent
+    val backNavIconColor: Color = accent,
+    val switchColors: CarSwitchColors = CarSwitchColors(
+        border = Color.Transparent,
+        track = secondarySurfaceBrush,
+        onTrack = onSurface,
+        trackChecked = secondarySurfaceBrush,
+        onTrackChecked = onSurface,
+        thumb = accentContainerBrush,
+        onThumb = onAccentContainer
+    ),
+    val radioButtonColors: CarRadioButtonColors = CarRadioButtonColors(
+        borderColor = primarySurface,
+        selectedBorderColor = accent
+    ),
+    val segmentedButtonColors: CarSegmentedButtonColors = CarSegmentedButtonColors(
+        background = buildSolidBrush(Color.Transparent),
+        border = Color.Transparent,
+        buttonContainer = secondarySurfaceBrush,
+        buttonContainerActive = accentContainerBrush,
+        onButtonContainer = onSurface,
+        onButtonContainerActive = onAccentContainer
+    )
 )
 
 val LocalCarColors = staticCompositionLocalOf {

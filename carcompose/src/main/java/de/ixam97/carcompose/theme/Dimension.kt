@@ -4,6 +4,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import de.ixam97.carcompose.components.controls.CarRadioButtonDimensions
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonDimensions
+import de.ixam97.carcompose.components.controls.CarSwitchDimensions
 
 @Immutable
 data class CarDimensions (
@@ -20,11 +23,22 @@ data class CarDimensions (
     val buttonMinWidth: Dp = 100.dp,
     val iconButtonSize: Dp = 48.dp,
     val columnDefaultMaxWidth: Dp = 1165.dp,
-    val segmentedButtonInnerPadding: Dp = 0.dp,
-    val segmentedButtonBorderWidth: Dp = 0.dp,
-    val radioButtonOuterSize: Dp = 43.dp,
-    val radioButtonInnerSize: Dp = radioButtonOuterSize / 2,
-    val radioButtonBorderWidth: Dp = 2.dp
+    val switchDimensions: CarSwitchDimensions = CarSwitchDimensions(
+        trackWidth = buttonMinWidth * 2,
+        trackHeight = buttonMinHeight,
+        thumbWidth = buttonMinWidth,
+        thumbHeight = buttonMinHeight,
+        thumbPadding = 0.dp
+    ),
+    val radioButtonDimensions: CarRadioButtonDimensions = CarRadioButtonDimensions(
+        outerSize = 43.dp,
+        borderWidth = 2.dp
+    ),
+    val checkboxDimensions: CarRadioButtonDimensions = radioButtonDimensions.copy(innerSize = radioButtonDimensions.outerSize),
+    val segmentedButtonDimensions: CarSegmentedButtonDimensions = CarSegmentedButtonDimensions(
+        padding = 0.dp,
+        borderWidth = 0.dp
+    )
 )
 
 val GenericCarDimensions = CarDimensions()

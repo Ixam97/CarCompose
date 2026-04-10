@@ -37,8 +37,8 @@ import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.theme.themes.cinnabarRed
-import de.ixam97.carcompose.utils.buildGradientBrush
+import de.ixam97.carcompose.theme.themes.polestarCinnabarRed
+import de.ixam97.carcompose.utils.buildSolidBrush
 import kotlinx.coroutines.delay
 
 val LocalCarSnackBarState = staticCompositionLocalOf {
@@ -110,8 +110,8 @@ fun CarSnackBar(
 
     val animationTargetValue = remember { Animatable(initialValue = 0f) }
 
-    val actionColor = if (config.isError) cinnabarRed else CarTheme.carColors.snackBarAccent // parisDaisy
-    val backgroundColor = buildGradientBrush(if (config.isError) listOf(Color(0xFF1C0D0E)) else CarTheme.carColors.snackBarBackground) // Color(0xFF111922)
+    val actionColor = if (config.isError) polestarCinnabarRed else CarTheme.carColors.snackBarAccent // parisDaisy
+    val backgroundColor = if (config.isError) buildSolidBrush(Color(0xFF1C0D0E)) else CarTheme.carColors.snackBarBackground // Color(0xFF111922)
 
     LaunchedEffect(config) {
         if (config.duration != null && config.duration > 0) {

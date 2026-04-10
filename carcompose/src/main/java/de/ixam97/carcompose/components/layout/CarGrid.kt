@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.layout.CarGrid.Tile
 import de.ixam97.carcompose.theme.CarTheme
-import de.ixam97.carcompose.utils.buildGradientBrush
 
 internal val LocalNumColumns = compositionLocalOf { 3 }
 
@@ -169,7 +168,7 @@ private fun RowScope.CarGridTile(
             else {
                 Box(Modifier
                     .fillMaxSize()
-                    .background(buildGradientBrush(CarTheme.carColors.secondarySurface))
+                    .background(CarTheme.carColors.secondarySurfaceBrush)
                 )
             }
         }
