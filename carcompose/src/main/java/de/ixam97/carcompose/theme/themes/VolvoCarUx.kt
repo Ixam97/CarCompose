@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.sp
 import de.ixam97.carcompose.components.controls.CarRadioButtonColors
 import de.ixam97.carcompose.components.controls.CarRadioButtonShapes
 import de.ixam97.carcompose.components.controls.CarSegmentedButtonColors
-import de.ixam97.carcompose.components.controls.CarSegmentedButtonDimensions
 import de.ixam97.carcompose.components.controls.CarSegmentedButtonShapes
 import de.ixam97.carcompose.components.controls.CarSwitchColors
 import de.ixam97.carcompose.components.controls.CarSwitchDimensions
