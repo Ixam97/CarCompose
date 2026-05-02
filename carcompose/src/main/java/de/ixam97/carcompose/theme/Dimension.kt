@@ -36,8 +36,12 @@ data class CarDimensions (
     ),
     val checkboxDimensions: CarRadioButtonDimensions = radioButtonDimensions.copy(innerSize = radioButtonDimensions.outerSize),
     val segmentedButtonDimensions: CarSegmentedButtonDimensions = CarSegmentedButtonDimensions(
-        padding = 0.dp,
-        borderWidth = 0.dp
+        outerPadding = 0.dp,
+        borderWidth = 0.dp,
+        buttonHorizontalPadding = defaultHorizontalPadding,
+        buttonVerticalPadding = defaultVerticalPadding,
+        buttonMinWidth = buttonMinWidth,
+        buttonMinHeight = buttonMinHeight,
     )
 )
 

@@ -31,8 +31,12 @@ data class CarSegmentedButtonColors(
 )
 
 data class CarSegmentedButtonDimensions(
-    val padding: Dp,
-    val borderWidth: Dp
+    val outerPadding: Dp,
+    val borderWidth: Dp,
+    val buttonHorizontalPadding: Dp,
+    val buttonVerticalPadding: Dp,
+    val buttonMinWidth: Dp,
+    val buttonMinHeight: Dp
 )
 
 data class CarSegmentedButtonShapes(
@@ -86,7 +90,7 @@ fun <T> CarSegmentedButton(
                 shape = outerShape
             )
             .background(colors.background)
-            .padding(dimensions.padding + dimensions.borderWidth),
+            .padding(dimensions.outerPadding + dimensions.borderWidth),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -122,7 +126,12 @@ fun <T> CarSegmentedButton(
                     textColor = colors.onButtonContainer,
                     activeTextColor = colors.onButtonContainerActive
                 ),
-                dimensions = CarButtonDefaults.dimensions,
+                dimensions = CarButtonDefaults.dimensions.copy(
+                    minWidth = dimensions.buttonMinWidth,
+                    minHeight = dimensions.buttonMinHeight,
+                    horizontalPadding = dimensions.buttonHorizontalPadding,
+                    verticalPadding = dimensions.buttonVerticalPadding
+                ),
                 enabled = enabled,
                 active = selectedKey == segment.key,
                 content = segment.content
