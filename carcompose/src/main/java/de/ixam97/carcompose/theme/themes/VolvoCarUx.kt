@@ -22,6 +22,7 @@ import de.ixam97.carcompose.theme.CarDimensions
 import de.ixam97.carcompose.theme.CarShapes
 import de.ixam97.carcompose.theme.CarThemeConfig
 import de.ixam97.carcompose.theme.CarUiProperties
+import de.ixam97.carcompose.theme.GenericCarDimensions
 import de.ixam97.carcompose.theme.GenericCarTypography
 import de.ixam97.carcompose.utils.buildSolidBrush
 
@@ -146,8 +147,8 @@ val VolvoDimensions = CarDimensions(
         thumbHeight = 43.dp,
         thumbPadding = 3.4.dp
     ),
-    segmentedButtonDimensions = CarSegmentedButtonDimensions(
-        padding = 5.dp,
+    segmentedButtonDimensions = GenericCarDimensions.segmentedButtonDimensions.copy(
+        outerPadding = 5.dp,
         borderWidth = 1.75.dp
     )
 )
