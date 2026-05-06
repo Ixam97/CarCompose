@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.utils.DefaultScrollbarSettings
 import my.nanihadesuka.compose.ColumnScrollbar
@@ -34,7 +35,7 @@ fun CarColumn(
     val carScrollbarSettings = carScrollbarSettings()
     val isScrollable = rememberUpdatedState(state.canScrollForward || state.canScrollBackward)
     val scrollbarSettings by rememberUpdatedState {
-        carScrollbarSettings.copy(enabled = isScrollable.value)
+        carScrollbarSettings.copy(thumbThickness = if (isScrollable.value) DefaultScrollbarSettings.thumbThickness else 0.dp)
     }
 
     Box(
@@ -102,6 +103,7 @@ internal fun carScrollbarSettings() : ScrollbarSettings {
     val thumbShape = CarTheme.carShapes.buttonShape
 
     return DefaultScrollbarSettings.copy(
+        enabled = true,
         alwaysShowScrollbar = false,
         thumbSelectedColor = thumbSelectedColor,
         thumbUnselectedColor = thumbUnselectedColor,
