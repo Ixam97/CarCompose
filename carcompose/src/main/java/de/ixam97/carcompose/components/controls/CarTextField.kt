@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import de.ixam97.carcompose.theme.CarTheme
 
@@ -63,6 +64,7 @@ fun CarTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     colors: CarTextFieldColors = CarTextFieldDefaults.colors,
     dimensions: CarTextFieldDimensions = CarTextFieldDefaults.dimensions,
     shape: Shape = CarTextFieldDefaults.shape
@@ -81,6 +83,7 @@ fun CarTextField(
         singleLine = singleLine,
         minLines = minLines,
         maxLines = maxLines,
+        visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Box(
                 modifier = modifier
