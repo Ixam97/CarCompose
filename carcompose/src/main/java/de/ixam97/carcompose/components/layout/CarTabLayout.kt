@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -132,6 +134,7 @@ private fun <T> CarTabLayout(
                             top = CarTheme.carDimensions.defaultVerticalPadding
                         )
                         .width(189.dp + CarTheme.carDimensions.defaultHorizontalPadding)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     tabs.subList(0, tabs.size.coerceAtMost(maxTabs)).forEach { tab ->
                         CarTabLayoutVerticalTab(
@@ -168,6 +171,7 @@ private fun <T> CarTabLayout(
                             top = CarTheme.carDimensions.defaultVerticalPadding
                         )
                         .width(IntrinsicSize.Max)
+                        .verticalScroll(rememberScrollState())
                 ) {
                     tabs.subList(0, tabs.size.coerceAtMost(maxTabs)).forEach { tab ->
                         CarTabLayoutVerticalTabCompact(
@@ -189,7 +193,7 @@ private fun <T> CarTabLayout(
                     }
                 }
                 Box(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.weight(1f)//fillMaxSize()
                 ) {
                     content(selectedKey)
                 }
