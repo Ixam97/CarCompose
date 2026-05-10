@@ -9,25 +9,26 @@ import de.ixam97.carcompose.components.controls.CarSegmentedButtonColors
 import de.ixam97.carcompose.components.controls.CarSwitchColors
 import de.ixam97.carcompose.utils.buildSolidBrush
 
-val genericAccent = Color(0xFF58B9CA)
-val genericBackground = Color(0xFF131314)
-val genericPrimarySurface = Color(0xFF252B2C)
-val genericSecondarySurface = Color(0xFF00363E)
-val genericOnBackground = Color(0xFFE3E3E3)
-val genericOnSurface = Color(0xFFC0EAF4)
-val genericOnAccent = Color(0xFF002025)
+val genericAccent = Color(0xFF91CEF5) // Color(0xFF58B9CA)
+val genericAccentContainer = Color(0xFF91CEF5)
+val genericBackground = Color(0xFF181C1F) // Color(0xFF131314)
+val genericPrimarySurface = Color(0xFF282A2D) // Color(0xFF252B2C)
+val genericSecondarySurface = Color(0xFF374955) // Color(0xFF00363E)
+val genericOnBackground = Color(0xFFDFE3E7) // Color(0xFFE3E3E3)
+val genericOnSurface = Color(0xFFD2E5F4) // Color(0xFFC0EAF4)
+val genericOnAccent = Color(0xFF00344B) // Color(0xFF002025)
 
 
 val GenericCarColors = CarColors(
     accent = genericAccent,
-    accentContainer = genericAccent,
+    accentContainer = genericAccentContainer,
     background = genericBackground,
     primarySurface = genericPrimarySurface,
     secondarySurface = genericSecondarySurface,
     onBackground = genericOnBackground,
     onSurface = genericOnSurface,
     onAccentContainer = genericOnAccent,
-    primaryDivider = buildSolidBrush(genericPrimarySurface),
+    primaryDivider = buildSolidBrush(Color.Transparent),
     secondaryDivider = buildSolidBrush(genericPrimarySurface),
 )
 

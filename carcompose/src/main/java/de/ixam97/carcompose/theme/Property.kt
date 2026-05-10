@@ -41,7 +41,10 @@ data class CarUiProperties(
     )
 )
 
-val GenericCarUiProperties = CarUiProperties()
+val GenericCarUiProperties = CarUiProperties(
+    headerIconButtonDividers = false,
+    rowBrowseIconStyle = CarNavIconStyle.ChevronForwardsSmall
+)
 
 val LocalCarUiProperties = staticCompositionLocalOf {
     GenericCarUiProperties
