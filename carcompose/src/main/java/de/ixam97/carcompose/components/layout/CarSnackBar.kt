@@ -1,5 +1,6 @@
 package de.ixam97.carcompose.components.layout
 
+import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -34,6 +35,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.theme.CarTheme
@@ -49,6 +51,7 @@ data class CarSnackBarConfig(
     val identifier: String,
     val content: @Composable (() -> Unit),
     val painter: Painter? = null,
+    @DrawableRes val drawableResId: Int? = null,
     val isError: Boolean = false,
     val actionText: String? = null,
     val onAction: () -> Unit = {},
@@ -152,7 +155,8 @@ fun CarSnackBar(
                         .defaultMinSize(minHeight = 120.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    config.painter?.let { painter ->
+                    if (config.painter != null || config.drawableResId != null) {
+                        val painter = config.painter?:painterResource(config.drawableResId!!)
                         Icon(
                             modifier = Modifier
                                 .padding(vertical = CarTheme.carDimensions.defaultVerticalPadding)
