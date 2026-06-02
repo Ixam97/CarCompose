@@ -18,6 +18,9 @@ val genericOnBackground = Color(0xFFDFE3E7) // Color(0xFFE3E3E3)
 val genericOnSurface = Color(0xFFD2E5F4) // Color(0xFFC0EAF4)
 val genericOnAccent = Color(0xFF00344B) // Color(0xFF002025)
 
+val genericUncheckedTrack = Color(0xFF374955)
+val genericUncheckedThumb = Color(0xFFB6C9D8)
+
 
 val GenericCarColors = CarColors(
     accent = genericAccent,
@@ -30,6 +33,17 @@ val GenericCarColors = CarColors(
     onAccentContainer = genericOnAccent,
     primaryDivider = buildSolidBrush(Color.Transparent),
     secondaryDivider = buildSolidBrush(genericPrimarySurface),
+    switchColors = CarSwitchColors(
+        border = Color.Transparent,
+        track = buildSolidBrush(genericUncheckedTrack),
+        trackChecked = buildSolidBrush(genericAccent),
+        thumb = buildSolidBrush(genericUncheckedThumb),
+        thumbChecked = buildSolidBrush(genericOnAccent),
+        onThumb = Color.Transparent,
+        onThumbChecked = Color.Transparent,
+        onTrack = Color.Transparent,
+        onTrackChecked = Color.Transparent,
+    )
 )
 
 @Immutable

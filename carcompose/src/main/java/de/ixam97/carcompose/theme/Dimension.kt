@@ -45,7 +45,15 @@ data class CarDimensions (
     )
 )
 
-val GenericCarDimensions = CarDimensions()
+val GenericCarDimensions = CarDimensions(
+    switchDimensions = CarSwitchDimensions(
+        trackWidth = 88.dp,
+        trackHeight = 48.dp,
+        thumbWidth = 48.dp,
+        thumbHeight = 48.dp,
+        thumbPadding = 4.dp
+    ),
+)
 
 val LocalCarDimensions = staticCompositionLocalOf {
     GenericCarDimensions

@@ -90,7 +90,29 @@ fun CarTheme(
                 background = carColors.background,
                 onBackground = carColors.onBackground,
                 surface = carColors.primarySurface,
-                onSurface = carColors.onSurface
+                surfaceContainerHigh = carColors.primarySurface,
+                surfaceContainerHighest = carColors.secondarySurface,
+                onSurface = carColors.onSurface,
+                onSurfaceVariant = carColors.onSurface.copy(alpha =  0.7f),
+                secondaryContainer = carColors.accentContainer.copy(alpha = 0.3f),
+                onSecondaryContainer = carColors.onSurface.copy(alpha =  0.8f)
+            ),
+            typography = MaterialTheme.typography.copy(
+                displayLarge = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                displayMedium = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                displaySmall = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                headlineLarge = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                headlineMedium = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                headlineSmall = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                titleLarge = carTypography.title.copy(fontSize = carTypography.title.fontSize / CarTheme.SCALING_FACTOR),
+                titleMedium = carTypography.rowTitle.copy(fontSize = carTypography.rowTitle.fontSize / CarTheme.SCALING_FACTOR),
+                titleSmall = carTypography.rowTitle.copy(fontSize = carTypography.rowTitle.fontSize / CarTheme.SCALING_FACTOR),
+                bodyLarge = carTypography.rowContent.copy(fontSize = carTypography.rowContent.fontSize / CarTheme.SCALING_FACTOR),
+                bodyMedium = carTypography.rowContent.copy(fontSize = carTypography.rowContent.fontSize / CarTheme.SCALING_FACTOR),
+                bodySmall = carTypography.rowContent.copy(fontSize = carTypography.rowContent.fontSize / CarTheme.SCALING_FACTOR),
+                labelLarge = carTypography.rowContent.copy(fontSize = carTypography.rowContent.fontSize / CarTheme.SCALING_FACTOR),
+                labelMedium = carTypography.rowContent.copy(fontSize = carTypography.rowContent.fontSize / CarTheme.SCALING_FACTOR),
+                labelSmall = carTypography.rowContent.copy(fontSize = carTypography.rowContent.fontSize / CarTheme.SCALING_FACTOR),
             )
         ) {
             Box(
@@ -135,6 +157,8 @@ object CarTheme {
     val carShapes: CarShapes
         @Composable
         get() = LocalCarShapes.current
+
+    const val SCALING_FACTOR = 1.5f
 }
 
 val GenericCarThemeConfig = CarThemeConfig(
