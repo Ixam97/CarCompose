@@ -43,7 +43,11 @@ data class CarUiProperties(
 
 val GenericCarUiProperties = CarUiProperties(
     headerIconButtonDividers = false,
-    rowBrowseIconStyle = CarNavIconStyle.ChevronForwardsSmall
+    rowBrowseIconStyle = CarNavIconStyle.ChevronForwardsSmall,
+    switchProperties = CarSwitchProperties(
+        uncheckedText = "",
+        checkedText = ""
+    )
 )
 
 val LocalCarUiProperties = staticCompositionLocalOf {

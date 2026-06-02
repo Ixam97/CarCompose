@@ -13,6 +13,10 @@ import de.ixam97.carcompose.components.controls.CarSwitchShapes
 val GenericCarShapes = CarShapes(
     defaultOuterCornerSize = CornerSize(50),
     defaultInnerCornerSize = CornerSize(8.dp),
+    switchShapes = CarSwitchShapes(
+        track = RoundedCornerShape(50),
+        thumb = RoundedCornerShape(50)
+    ),
 )
 
 @Immutable
