@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -33,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.res.painterResource
@@ -57,6 +59,7 @@ data class CarSnackBarConfig(
     val onAction: () -> Unit = {},
     val duration: Int? = 3000,
     val progress: Float? = null,
+    val continuousLoading: Boolean = false
 )
 
 class CarSnackBarHostState {
@@ -194,13 +197,25 @@ fun CarSnackBar(
                         }
                     }
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(animationTargetValue.value)
-                        .height(8.dp)
-                        .align(Alignment.BottomStart)
-                        .background(actionColor),
-                )
+                if (config.continuousLoading) {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .align(Alignment.BottomStart),
+                        color = actionColor,
+                        trackColor = Color.Transparent,
+                        strokeCap = StrokeCap.Square
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(animationTargetValue.value)
+                            .height(8.dp)
+                            .align(Alignment.BottomStart)
+                            .background(actionColor),
+                    )
+                }
             }
         }
     }
