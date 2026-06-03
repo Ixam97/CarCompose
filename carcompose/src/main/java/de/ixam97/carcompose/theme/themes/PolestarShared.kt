@@ -109,6 +109,7 @@ val PolestarSharedColors = CarColors(
     onBackground = Color.White,
     onSurface = Color.White,
     onAccentContainer = Color.White,
+    listSectionBackground = buildSolidBrush(polestarBackground),
     primaryDivider = buildSolidBrush(polestarMainAccentForeground),
     secondaryDivider = buildSolidBrush(polestarSecondaryDivider),
     textFieldBackground = buildSolidBrush(polestarSecondarySurface),
