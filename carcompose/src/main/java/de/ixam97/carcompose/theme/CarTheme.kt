@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
@@ -49,6 +50,7 @@ fun autodetectCarThemeConfig(fallback: CarThemeConfig = GenericCarThemeConfig) :
 fun CarTheme(
     carThemeConfig: CarThemeConfig,
     darkTheme: Boolean = true,
+    windowInsets: PaddingValues = calculateWindowInsets(),
     content: @Composable () -> Unit
 ) {
     CarTheme(
@@ -58,6 +60,7 @@ fun CarTheme(
         carUiProperties = carThemeConfig.carUiProperties,
         carShapes = carThemeConfig.carShapes,
         darkTheme = darkTheme,
+        windowInsets = windowInsets,
         content = content
     )
 }
@@ -70,6 +73,7 @@ fun CarTheme(
     carUiProperties: CarUiProperties,
     carShapes: CarShapes,
     darkTheme: Boolean,
+    windowInsets: PaddingValues,
     content: @Composable () -> Unit
 ) {
 
@@ -119,7 +123,7 @@ fun CarTheme(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(CarTheme.carColors.background)
-                    .padding(calculateWindowInsets()),
+                    .padding(windowInsets),
             ) {
                 val view = LocalView.current
                 if (!view.isInEditMode) {
