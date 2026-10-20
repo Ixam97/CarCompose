@@ -164,6 +164,7 @@ val VolvoProperties = CarUiProperties(
 
 val VolvoShapes = CarShapes(
     defaultOuterCornerSize = CornerSize(8.dp),
+    listSectionCornerSize = CornerSize(14.dp),
     textFieldShape = RoundedCornerShape(8.dp),
     switchShapes = CarSwitchShapes(
         track = RoundedCornerShape(50),

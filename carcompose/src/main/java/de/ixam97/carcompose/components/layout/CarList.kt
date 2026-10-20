@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.ZeroCornerSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -119,17 +120,27 @@ fun LazyListScope.carListSection(
                         horizontal = CarTheme.carDimensions.defaultHorizontalPadding,
                         vertical = CarTheme.carDimensions.defaultVerticalPadding
                     )
-                    .clip(RoundedCornerShape(14.dp))
+                    .clip(RoundedCornerShape(CarTheme.carShapes.listSectionCornerSize))
                     .background(brush = CarTheme.carColors.listSectionBackground)
                 else if (index == 0) Modifier
                     .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
                     .padding(top = CarTheme.carDimensions.defaultVerticalPadding)
-                    .clip(RoundedCornerShape(topStart = 14.dp, topEnd = 14.dp))
+                    .clip(RoundedCornerShape(
+                        topStart = CarTheme.carShapes.listSectionCornerSize,
+                        topEnd = CarTheme.carShapes.listSectionCornerSize,
+                        bottomStart = ZeroCornerSize,
+                        bottomEnd = ZeroCornerSize
+                    ))
                     .background(brush = CarTheme.carColors.listSectionBackground)
                 else if (index == listItems.size - 1) Modifier
                     .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
                     .padding(bottom = CarTheme.carDimensions.defaultVerticalPadding)
-                    .clip(RoundedCornerShape(bottomStart = 14.dp, bottomEnd = 14.dp))
+                    .clip(RoundedCornerShape(
+                        topStart = ZeroCornerSize,
+                        topEnd = ZeroCornerSize,
+                        bottomStart = CarTheme.carShapes.listSectionCornerSize,
+                        bottomEnd = CarTheme.carShapes.listSectionCornerSize
+                    ))
                     .background(brush = CarTheme.carColors.listSectionBackground)
                 else Modifier
                     .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)

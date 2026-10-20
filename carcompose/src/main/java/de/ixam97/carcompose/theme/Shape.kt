@@ -13,6 +13,7 @@ import de.ixam97.carcompose.components.controls.CarSwitchShapes
 val GenericCarShapes = CarShapes(
     defaultOuterCornerSize = CornerSize(50),
     defaultInnerCornerSize = CornerSize(8.dp),
+    listSectionCornerSize = CornerSize(14.dp),
     switchShapes = CarSwitchShapes(
         track = RoundedCornerShape(50),
         thumb = RoundedCornerShape(50)
@@ -22,6 +23,7 @@ val GenericCarShapes = CarShapes(
 @Immutable
 data class CarShapes(
     val defaultOuterCornerSize: CornerSize,
+    val listSectionCornerSize: CornerSize = defaultOuterCornerSize,
     val defaultInnerCornerSize: CornerSize = defaultOuterCornerSize,
     val buttonShape: Shape = RoundedCornerShape(defaultOuterCornerSize),
     val textFieldShape: Shape = RoundedCornerShape(defaultInnerCornerSize),
