@@ -13,6 +13,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +36,8 @@ data class CarThemeConfig(
     val carShapes: CarShapes
 )
 
+val LocalCarDarkTheme = compositionLocalOf { true }
+
 fun autodetectCarThemeConfig(fallback: CarThemeConfig = GenericCarThemeConfig) : CarThemeConfig {
     return when (Build.BRAND) {
         "Polestar" -> when (Build.DEVICE) {
@@ -53,16 +56,20 @@ fun CarTheme(
     windowInsets: PaddingValues = calculateWindowInsets(),
     content: @Composable () -> Unit
 ) {
-    CarTheme(
-        carTypography = carThemeConfig.carTypography,
-        carColors = if (darkTheme || carThemeConfig.carBrightColors == null) carThemeConfig.carDarkColors else carThemeConfig.carBrightColors,
-        carDimensions = carThemeConfig.carDimensions,
-        carUiProperties = carThemeConfig.carUiProperties,
-        carShapes = carThemeConfig.carShapes,
-        darkTheme = darkTheme,
-        windowInsets = windowInsets,
-        content = content
-    )
+    CompositionLocalProvider(
+        LocalCarDarkTheme provides (darkTheme || carThemeConfig.carBrightColors == null)
+    ) {
+        CarTheme(
+            carTypography = carThemeConfig.carTypography,
+            carColors = if (darkTheme || carThemeConfig.carBrightColors == null) carThemeConfig.carDarkColors else carThemeConfig.carBrightColors,
+            carDimensions = carThemeConfig.carDimensions,
+            carUiProperties = carThemeConfig.carUiProperties,
+            carShapes = carThemeConfig.carShapes,
+            darkTheme = darkTheme,
+            windowInsets = windowInsets,
+            content = content
+        )
+    }
 }
 
 @Composable
@@ -161,6 +168,9 @@ object CarTheme {
     val carShapes: CarShapes
         @Composable
         get() = LocalCarShapes.current
+    val useDarkTheme: Boolean
+        @Composable
+        get() = LocalCarDarkTheme.current
 
     const val SCALING_FACTOR = 1.5f
 }
