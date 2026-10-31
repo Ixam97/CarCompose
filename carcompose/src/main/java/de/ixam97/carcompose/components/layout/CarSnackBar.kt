@@ -1,5 +1,6 @@
 package de.ixam97.carcompose.components.layout
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -64,15 +65,20 @@ data class CarSnackBarConfig(
 
 class CarSnackBarHostState {
 
+    init {
+        Log.v("CarSnackBarHostState", "init")
+    }
+
     var currentCarSnackBarConfigs = mutableStateListOf<CarSnackBarConfig>()
-        private set
 
     fun showSnackBar(config: CarSnackBarConfig) {
+        Log.v("CarSnackBarHostState", "show snackbar")
         currentCarSnackBarConfigs.removeIf { it.identifier == config.identifier }
         currentCarSnackBarConfigs.add(config)
     }
 
     fun cancelSnackBar(identifier: String) {
+        Log.v("CarSnackBarHostState", "cancel snackbar")
         currentCarSnackBarConfigs.removeIf { it.identifier == identifier }
     }
 
