@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 import de.ixam97.carcompose.components.controls.CarRadioButtonDimensions
 import de.ixam97.carcompose.components.controls.CarSegmentedButtonDimensions
 import de.ixam97.carcompose.components.controls.CarSwitchDimensions
+import de.ixam97.carcompose.components.layout.CarTabDimensions
 
 @Immutable
 data class CarDimensions (
@@ -42,6 +43,10 @@ data class CarDimensions (
         buttonVerticalPadding = defaultVerticalPadding,
         buttonMinWidth = buttonMinWidth,
         buttonMinHeight = buttonMinHeight,
+    ),
+    val tabDimensions: CarTabDimensions = CarTabDimensions(
+        decorLineThickness = 0.dp,
+        verticalDividerLineHeight = 2.dp
     )
 )
 

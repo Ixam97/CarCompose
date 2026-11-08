@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
@@ -23,13 +24,33 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import de.ixam97.carcompose.components.controls.CarRow
-import de.ixam97.carcompose.components.controls.CarRowBrowsableType
 import de.ixam97.carcompose.theme.CarTheme
 import de.ixam97.carcompose.theme.LocalCarColors
+
+data class CarTabColors(
+    val foregroundColor: Color,
+    val selectedForegroundColor: Color,
+    val backgroundBrush: Brush,
+    val selectedBackgroundBrush: Brush,
+    val selectedDecorLineColor: Color
+)
+
+data class CarTabDimensions(
+    val decorLineThickness: Dp,
+    val verticalDividerLineHeight: Dp
+)
+
+object CarTabDefaults {
+    val colors: CarTabColors
+        @Composable get() = CarTheme.carColors.tabColors
+    val dimensions: CarTabDimensions
+        @Composable get() = CarTheme.carDimensions.tabDimensions
+}
 
 object CarTabLayout {
     enum class Orientation {
@@ -121,6 +142,8 @@ private fun <T> CarTabLayout(
     maxTabs: Int,
     selectedKey: T,
     onTabSelected: (T) -> Unit,
+    colors: CarTabColors = CarTabDefaults.colors,
+    dimensions: CarTabDimensions = CarTabDefaults.dimensions,
     content: @Composable (T) -> Unit
 
 ) {
@@ -142,14 +165,16 @@ private fun <T> CarTabLayout(
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
-                            enabled = tab.enabled
+                            enabled = tab.enabled,
+                            colors = colors,
+                            dimensions = dimensions
                         ) {
                             onTabSelected(tab.key)
                         }
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(2.dp)
+                                .height(dimensions.verticalDividerLineHeight)
                                 .padding(start = CarTheme.carDimensions.defaultHorizontalPadding)
                                 .background(brush = CarTheme.carColors.secondaryDivider)
                         )
@@ -179,15 +204,17 @@ private fun <T> CarTabLayout(
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
-                            enabled = tab.enabled
+                            enabled = tab.enabled,
+                            colors = colors,
+                            dimensions = dimensions
                         ) {
                             onTabSelected(tab.key)
                         }
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(2.dp)
-                                .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
+                                .height(dimensions.verticalDividerLineHeight)
+                                .padding(start = CarTheme.carDimensions.defaultHorizontalPadding)
                                 .background(brush = CarTheme.carColors.secondaryDivider)
                         )
                     }
@@ -213,14 +240,21 @@ private fun <T> CarTabLayout(
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
-                            enabled = tab.enabled
+                            enabled = tab.enabled,
+                            colors = colors,
+                            dimensions = dimensions
                         ) {
                             onTabSelected(tab.key)
                         }
                     }
                 }
                 if (showDivider) CarHeaderDivider(isLoading)
-                content(selectedKey)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    content(selectedKey)
+                }
             }
         }
         CarTabLayout.Orientation.HorizontalCompact -> {
@@ -236,14 +270,21 @@ private fun <T> CarTabLayout(
                             title = tab.title,
                             icon = tab.icon,
                             iconActive = tab.iconActive,
-                            enabled = tab.enabled
+                            enabled = tab.enabled,
+                            colors = colors,
+                            dimensions = dimensions
                         ) {
                             onTabSelected(tab.key)
                         }
                     }
                 }
                 if (showDivider) CarHeaderDivider(isLoading)
-                content(selectedKey)
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.TopCenter
+                ) {
+                    content(selectedKey)
+                }
             }
         }
     }
@@ -256,15 +297,17 @@ private fun CarTabLayoutVerticalTab(
     icon: Painter,
     iconActive: Painter? = null,
     enabled: Boolean = true,
+    colors: CarTabColors,
+    dimensions: CarTabDimensions,
     onClick: () -> Unit
 ) {
     val foregroundColor = if (selected) {
-        CarTheme.carColors.accent
+        colors.selectedForegroundColor
     } else {
-        CarTheme.carColors.onBackground
+        colors.foregroundColor
     }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
 
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(195.dp)
@@ -272,21 +315,34 @@ private fun CarTabLayoutVerticalTab(
                 enabled = enabled,
                 onClick = onClick
             )
-            .padding(start = CarTheme.carDimensions.defaultHorizontalPadding),
-        verticalArrangement = Arrangement.Center
+            .background(if (selected) colors.selectedBackgroundBrush else colors.backgroundBrush)
     ) {
-        Icon(
+        Column(
             modifier = Modifier
-                .padding(vertical = CarTheme.carDimensions.defaultVerticalPadding)
-                .size(CarTheme.carDimensions.iconButtonSize),
-            painter = if(selected) iconActive?:icon else icon,
-            contentDescription = null,
-            tint = foregroundColor
-        )
-        Text(
-            text = title,
-            style = CarTheme.carTypography.rowTitle,
-            color = foregroundColor
+                .weight(1f)
+                .fillMaxHeight()
+                .padding(start = CarTheme.carDimensions.defaultHorizontalPadding),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                modifier = Modifier
+                    .padding(vertical = CarTheme.carDimensions.defaultVerticalPadding)
+                    .size(CarTheme.carDimensions.iconButtonSize),
+                painter = if (selected) iconActive ?: icon else icon,
+                contentDescription = null,
+                tint = foregroundColor
+            )
+            Text(
+                text = title,
+                style = CarTheme.carTypography.rowTitle,
+                color = foregroundColor
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(dimensions.decorLineThickness)
+                .background(if (selected) colors.selectedDecorLineColor else Color.Transparent)
         )
     }
 }
@@ -298,31 +354,50 @@ private fun CarTabLayoutVerticalTabCompact(
     icon: Painter,
     iconActive: Painter? = null,
     enabled: Boolean = true,
+    colors: CarTabColors,
+    dimensions: CarTabDimensions,
     onClick: () -> Unit
 ) {
     val foregroundColor = if (selected) {
-        CarTheme.carColors.accent
+        colors.selectedForegroundColor
     } else {
-        CarTheme.carColors.onBackground
+        colors.foregroundColor
     }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
 
-    CarRow(
-        title = title,
-        leadingContent = {
-            Icon(
-                modifier = Modifier
-                    .size(CarTheme.carDimensions.iconButtonSize),
-                painter = if(selected) iconActive?:icon else icon,
-                contentDescription = null,
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .widthIn(min = 400.dp)
+            .height(CarTheme.carDimensions.rowMinHeight + CarTheme.carDimensions.defaultVerticalPadding * 2)
+            .clickable(
+                enabled = enabled,
+                onClick = onClick
             )
-        },
-        trailingContent = { Spacer(Modifier.size(CarTheme.carDimensions.defaultHorizontalPadding)) },
-        foregroundColor = foregroundColor,
-        enabled = enabled,
-        browsable = enabled,
-        browsableType = CarRowBrowsableType.Hidden,
-        onBrowse = onClick
-    )
+            .background(if (selected) colors.selectedBackgroundBrush else colors.backgroundBrush),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            modifier = Modifier
+                .padding(horizontal = CarTheme.carDimensions.defaultHorizontalPadding)
+                .size(CarTheme.carDimensions.iconButtonSize),
+            painter = if (selected) iconActive ?: icon else icon,
+            contentDescription = null,
+            tint = foregroundColor
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = title,
+            style = CarTheme.carTypography.rowTitle,
+            color = foregroundColor
+        )
+        Box(
+            modifier = Modifier
+                .padding(start = CarTheme.carDimensions.defaultHorizontalPadding)
+                .width(dimensions.decorLineThickness)
+                .fillMaxHeight()
+                .background(if (selected) colors.selectedDecorLineColor else Color.Transparent)
+        )
+    }
 }
 
 @Composable
@@ -333,37 +408,53 @@ private fun CarTabLayoutHorizontalTab(
     icon: Painter,
     iconActive: Painter? = null,
     enabled: Boolean = true,
+    colors: CarTabColors,
+    dimensions: CarTabDimensions,
     onClick: () -> Unit
 ) {
     val foregroundColor = if (selected) {
-        CarTheme.carColors.accent
+        colors.selectedForegroundColor
     } else {
-        CarTheme.carColors.onBackground
+        colors.foregroundColor
     }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxHeight()
             .clickable(
                 enabled = enabled,
                 onClick = onClick
             ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        contentAlignment = Alignment.TopCenter
     ) {
-        Icon(
+        Column(
             modifier = Modifier
-                .padding(bottom = CarTheme.carDimensions.defaultVerticalPadding)
-                .size(CarTheme.carDimensions.iconButtonSize),
-            painter = if (selected) iconActive?:icon else icon,
-            contentDescription = null,
-            tint = foregroundColor
-        )
-        Text(
-            text = title,
-            style = CarTheme.carTypography.rowTitle,
-            color = foregroundColor
-        )
+                .width(IntrinsicSize.Max),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier.weight(1f))
+            Icon(
+                modifier = Modifier
+                    .padding(bottom = CarTheme.carDimensions.defaultVerticalPadding)
+                    .size(CarTheme.carDimensions.iconButtonSize),
+                painter = if (selected) iconActive?:icon else icon,
+                contentDescription = null,
+                tint = foregroundColor
+            )
+            Text(
+                text = title,
+                style = CarTheme.carTypography.rowTitle,
+                color = foregroundColor
+            )
+            Spacer(Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .height(dimensions.decorLineThickness)
+                    .fillMaxWidth()
+                    .background(if (selected) colors.selectedDecorLineColor else Color.Transparent)
+            )
+        }
+
     }
 }
 
@@ -375,36 +466,55 @@ private fun CarTabLayoutHorizontalTabCompact(
     icon: Painter,
     iconActive: Painter? = null,
     enabled: Boolean = true,
+    colors: CarTabColors,
+    dimensions: CarTabDimensions,
     onClick: () -> Unit
 ) {
     val foregroundColor = if (selected) {
-        CarTheme.carColors.accent
+        colors.selectedForegroundColor
     } else {
-        CarTheme.carColors.onBackground
+        colors.foregroundColor
     }.copy(alpha = if (enabled) 1f else CarTheme.carColors.disabledAlpha)
 
-    Row(
+    Box(
         modifier = modifier
             .clickable(
                 enabled = enabled,
                 onClick = onClick
-            )
-            .padding(vertical = CarTheme.carDimensions.defaultVerticalPadding * 1.5f),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+            ),
+        contentAlignment = Alignment.TopCenter
     ) {
-        Icon(
+        Column(
             modifier = Modifier
-                .padding(end = CarTheme.carDimensions.defaultHorizontalPadding)
-                .size(CarTheme.carDimensions.iconButtonSize * 0.8f),
-            painter = if (selected) iconActive?:icon else icon,
-            contentDescription = null,
-            tint = foregroundColor
-        )
-        Text(
-            text = title,
-            style = CarTheme.carTypography.rowTitle,
-            color = foregroundColor
-        )
+                .height(IntrinsicSize.Min)
+                .width(IntrinsicSize.Max),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = modifier.padding(vertical = CarTheme.carDimensions.defaultVerticalPadding * 1.5f),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(end = CarTheme.carDimensions.defaultHorizontalPadding)
+                        .size(CarTheme.carDimensions.iconButtonSize * 0.8f),
+                    painter = if (selected) iconActive ?: icon else icon,
+                    contentDescription = null,
+                    tint = foregroundColor
+                )
+                Text(
+                    text = title,
+                    style = CarTheme.carTypography.rowTitle,
+                    color = foregroundColor
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .height(dimensions.decorLineThickness)
+                    .fillMaxWidth()
+                    .background(if (selected) colors.selectedDecorLineColor else Color.Transparent)
+            )
+        }
     }
 }

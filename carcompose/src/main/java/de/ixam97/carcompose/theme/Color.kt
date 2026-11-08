@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import de.ixam97.carcompose.components.controls.CarRadioButtonColors
 import de.ixam97.carcompose.components.controls.CarSegmentedButtonColors
 import de.ixam97.carcompose.components.controls.CarSwitchColors
+import de.ixam97.carcompose.components.layout.CarTabColors
 import de.ixam97.carcompose.utils.buildSolidBrush
 
 val genericAccent = Color(0xFF91CEF5) // Color(0xFF58B9CA)
@@ -90,6 +91,13 @@ data class CarColors (
         buttonContainerActive = accentContainerBrush,
         onButtonContainer = onSurface,
         onButtonContainerActive = onAccentContainer
+    ),
+    val tabColors: CarTabColors = CarTabColors(
+        foregroundColor = onBackground,
+        selectedForegroundColor = accent,
+        backgroundBrush = buildSolidBrush(Color.Transparent),
+        selectedBackgroundBrush = buildSolidBrush(Color.Transparent),
+        selectedDecorLineColor = Color.Transparent
     )
 )
 

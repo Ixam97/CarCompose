@@ -10,11 +10,14 @@ import androidx.compose.ui.unit.sp
 import de.ixam97.carcompose.components.controls.CarRadioButtonColors
 import de.ixam97.carcompose.components.controls.CarRadioButtonShapes
 import de.ixam97.carcompose.components.controls.CarSegmentedButtonColors
+import de.ixam97.carcompose.components.controls.CarSegmentedButtonDimensions
 import de.ixam97.carcompose.components.controls.CarSegmentedButtonShapes
 import de.ixam97.carcompose.components.controls.CarSwitchColors
 import de.ixam97.carcompose.components.controls.CarSwitchDimensions
 import de.ixam97.carcompose.components.controls.CarSwitchProperties
 import de.ixam97.carcompose.components.controls.CarSwitchShapes
+import de.ixam97.carcompose.components.layout.CarTabColors
+import de.ixam97.carcompose.components.layout.CarTabDimensions
 import de.ixam97.carcompose.theme.CarNavIconStyle
 import de.ixam97.carcompose.theme.CarColors
 import de.ixam97.carcompose.theme.CarDimensions
@@ -25,7 +28,7 @@ import de.ixam97.carcompose.theme.GenericCarDimensions
 import de.ixam97.carcompose.theme.GenericCarTypography
 import de.ixam97.carcompose.utils.buildSolidBrush
 
-val volvoBrightAccent = Color(0xFF4A6DA8)
+val volvoBrightAccent = Color(0xFF1F78D1) // Color(0xFF4A6DA8)
 val volvoBrightBackground = Color(0xFFEBEBEB)
 val volvoBrightPrimarySurface = Color(0xFFF5F5F5)
 val volvoBrightSecondarySurface = Color(0xFFFFFFFF)
@@ -79,12 +82,20 @@ val VolvoBrightColors = CarColors(
         selectorColor = volvoBrightOnAccent,
     ),
     segmentedButtonColors = CarSegmentedButtonColors(
-        background = buildSolidBrush(volvoBrightSecondarySurface),
+//        background = buildSolidBrush(volvoBrightSecondarySurface),
+        background = buildSolidBrush(Color.Transparent),
         border = volvoBrightBackground,
         buttonContainer = buildSolidBrush(volvoBrightSecondarySurface),
         buttonContainerActive = buildSolidBrush(volvoBrightAccent),
         onButtonContainer = volvoBrightOnSurfaceActive,
         onButtonContainerActive = volvoBrightOnAccent
+    ),
+    tabColors = CarTabColors(
+        foregroundColor = volvoBrightOnSurfacePassive,
+        selectedForegroundColor = volvoBrightOnSurfaceActive,
+        backgroundBrush = buildSolidBrush(Color.Transparent),
+        selectedBackgroundBrush = buildSolidBrush(volvoBrightPrimarySurface),
+        selectedDecorLineColor = volvoBrightOnSurfaceActive
     )
 )
 
@@ -121,12 +132,20 @@ val VolvoDarkColors = CarColors(
         selectorColor = volvoDarkOnAccent,
     ),
     segmentedButtonColors = CarSegmentedButtonColors(
-        background = buildSolidBrush(volvoDarkSecondarySurface),
+        // background = buildSolidBrush(volvoDarkSecondarySurface),
+        background = buildSolidBrush(Color.Transparent),
         border = Color.Transparent,
         buttonContainer = buildSolidBrush(volvoDarkSecondarySurface),
         buttonContainerActive = buildSolidBrush(volvoDarkAccent),
         onButtonContainer = volvoDarkOnSurfaceActive,
         onButtonContainerActive = volvoDarkOnAccent
+    ),
+    tabColors = CarTabColors(
+        foregroundColor = volvoDarkOnSurfacePassive,
+        selectedForegroundColor = volvoDarkOnSurfaceActive,
+        backgroundBrush = buildSolidBrush(Color.Transparent),
+        selectedBackgroundBrush = buildSolidBrush(volvoDarkPrimarySurface),
+        selectedDecorLineColor = volvoDarkOnSurfaceActive
     )
 )
 
@@ -146,9 +165,13 @@ val VolvoDimensions = CarDimensions(
         thumbHeight = 43.dp,
         thumbPadding = 3.4.dp
     ),
-    segmentedButtonDimensions = GenericCarDimensions.segmentedButtonDimensions.copy(
-        outerPadding = 5.dp,
-        borderWidth = 1.75.dp
+//    segmentedButtonDimensions = GenericCarDimensions.segmentedButtonDimensions.copy(
+//        outerPadding = 5.dp,
+//        borderWidth = 1.75.dp
+//    ),
+    tabDimensions = CarTabDimensions(
+        decorLineThickness = 4.dp,
+        verticalDividerLineHeight = 0.dp
     )
 )
 
@@ -173,10 +196,15 @@ val VolvoShapes = CarShapes(
     radioButtonShapes = CarRadioButtonShapes(
         outerShape = RoundedCornerShape(50)
     ),
+//    segmentedButtonShapes = CarSegmentedButtonShapes(
+//        backgroundCornerSize = CornerSize(50),
+//        outerCornerSize = CornerSize(50),
+//        innerCornerSize = CornerSize(50)
+//    ),
     segmentedButtonShapes = CarSegmentedButtonShapes(
-        backgroundCornerSize = CornerSize(50),
-        outerCornerSize = CornerSize(50),
-        innerCornerSize = CornerSize(50)
+        backgroundCornerSize = CornerSize(0),
+        outerCornerSize = CornerSize(14.dp),
+        innerCornerSize = CornerSize(2.dp)
     )
 )
 
