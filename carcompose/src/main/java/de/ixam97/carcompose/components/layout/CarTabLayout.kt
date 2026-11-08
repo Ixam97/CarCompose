@@ -251,7 +251,7 @@ private fun <T> CarTabLayout(
                 if (showDivider) CarHeaderDivider(isLoading)
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.TopCenter
+                    // contentAlignment = Alignment.TopCenter
                 ) {
                     content(selectedKey)
                 }
@@ -281,7 +281,7 @@ private fun <T> CarTabLayout(
                 if (showDivider) CarHeaderDivider(isLoading)
                 Box(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.TopCenter
+                    // contentAlignment = Alignment.TopCenter
                 ) {
                     content(selectedKey)
                 }
